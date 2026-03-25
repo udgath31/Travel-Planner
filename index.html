@@ -230,6 +230,37 @@
 
   .sight-empty { font-size: 13px; color: var(--text-faint); text-align: center; padding: 20px 0; }
   .sight-need-days { font-size: 12px; color: var(--amber); background: var(--amber-light); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
+
+  /* Custom place add row */
+  .custom-place-row { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
+  .custom-place-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); width: 100%; margin-bottom: 2px; }
+  .custom-place-input {
+    flex: 1; min-width: 140px; font-family: 'DM Sans', sans-serif; font-size: 13px;
+    padding: 9px 12px; border-radius: 9px; border: 1.5px solid var(--border);
+    background: var(--white); color: var(--text); outline: none; transition: border-color 0.15s;
+  }
+  .custom-place-input:focus { border-color: var(--purple); }
+  .custom-place-input::placeholder { color: var(--text-faint); }
+  .custom-place-add-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 9px 14px; border-radius: 9px; border: none;
+    background: var(--green); color: var(--white); cursor: pointer; white-space: nowrap;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: background 0.15s;
+  }
+  .custom-place-add-btn:hover { background: var(--green-dark); }
+  .custom-tiles-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; width: 100%; }
+  .custom-tile {
+    display: flex; align-items: center; gap: 10px;
+    background: var(--green-light); border: 1.5px solid var(--green); border-radius: 10px;
+    padding: 8px 12px; font-size: 13px;
+  }
+  .custom-tile-name { flex: 1; font-weight: 500; color: var(--green-dark); }
+  .custom-tile-remove {
+    background: none; border: none; cursor: pointer; color: var(--green-dark);
+    font-size: 18px; line-height: 1; padding: 0; opacity: 0.5;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .custom-tile-remove:hover { opacity: 1; }
 </style>
 </head>
 <body>
@@ -309,6 +340,15 @@
       <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
       <div class="place-grid" id="grid-london"></div>
       <!-- Action bar -->
+      <!-- Custom place input -->
+      <div class="custom-place-row">
+        <div class="custom-place-label">Add a place that's not listed</div>
+        <input class="custom-place-input" id="custom-input-london" type="text"
+               placeholder="e.g. Kew Gardens, Oxford Street…"
+               onkeydown="if(event.key==='Enter')addCustomPlace('london')">
+        <button class="custom-place-add-btn" onclick="addCustomPlace('london')">+ Add</button>
+        <div class="custom-tiles-list" id="custom-list-london"></div>
+      </div>
       <div class="realism-warn" id="warn-london"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-london"><strong>0</strong> selected</span>
@@ -372,6 +412,15 @@
       </div>
       <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
       <div class="place-grid" id="grid-ams"></div>
+      <!-- Custom place input -->
+      <div class="custom-place-row">
+        <div class="custom-place-label">Add a place that's not listed</div>
+        <input class="custom-place-input" id="custom-input-ams" type="text"
+               placeholder="e.g. Kew Gardens, Oxford Street…"
+               onkeydown="if(event.key==='Enter')addCustomPlace('ams')">
+        <button class="custom-place-add-btn" onclick="addCustomPlace('ams')">+ Add</button>
+        <div class="custom-tiles-list" id="custom-list-ams"></div>
+      </div>
       <div class="realism-warn" id="warn-ams"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-ams"><strong>0</strong> selected</span>
@@ -420,6 +469,15 @@
       </div>
       <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
       <div class="place-grid" id="grid-cdg"></div>
+      <!-- Custom place input -->
+      <div class="custom-place-row">
+        <div class="custom-place-label">Add a place that's not listed</div>
+        <input class="custom-place-input" id="custom-input-cdg" type="text"
+               placeholder="e.g. Kew Gardens, Oxford Street…"
+               onkeydown="if(event.key==='Enter')addCustomPlace('cdg')">
+        <button class="custom-place-add-btn" onclick="addCustomPlace('cdg')">+ Add</button>
+        <div class="custom-tiles-list" id="custom-list-cdg"></div>
+      </div>
       <div class="realism-warn" id="warn-cdg"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-cdg"><strong>0</strong> selected</span>
@@ -468,6 +526,15 @@
       </div>
       <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
       <div class="place-grid" id="grid-fco"></div>
+      <!-- Custom place input -->
+      <div class="custom-place-row">
+        <div class="custom-place-label">Add a place that's not listed</div>
+        <input class="custom-place-input" id="custom-input-fco" type="text"
+               placeholder="e.g. Kew Gardens, Oxford Street…"
+               onkeydown="if(event.key==='Enter')addCustomPlace('fco')">
+        <button class="custom-place-add-btn" onclick="addCustomPlace('fco')">+ Add</button>
+        <div class="custom-tiles-list" id="custom-list-fco"></div>
+      </div>
       <div class="realism-warn" id="warn-fco"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-fco"><strong>0</strong> selected</span>
@@ -629,97 +696,89 @@ function copyResult() {
 ───────────────────────────────────────── */
 const SIGHTS = {
   london: [
-    { name: 'Tower of London',              type: 'landmarks', emoji: '🏰', img: 'tower+of+london',           desc: 'Historic castle and home of the Crown Jewels.' },
-    { name: 'Buckingham Palace',            type: 'landmarks', emoji: '👑', img: 'buckingham+palace+london',  desc: 'Official London residence of the King.' },
-    { name: 'Tower Bridge',                 type: 'landmarks', emoji: '🌉', img: 'tower+bridge+london',       desc: 'Iconic Victorian bascule bridge over the Thames.' },
-    { name: 'Big Ben & Parliament',         type: 'landmarks', emoji: '🕰️', img: 'big+ben+westminster',       desc: 'The famous clock tower and Houses of Parliament.' },
-    { name: 'St. Paul\'s Cathedral',        type: 'landmarks', emoji: '🔔', img: 'st+pauls+cathedral+london', desc: 'Wren\'s masterpiece — climb the dome for city views.' },
-    { name: 'The British Museum',           type: 'history',   emoji: '🏛️', img: 'british+museum+london',     desc: 'World-class collection spanning 2 million years.' },
-    { name: 'Westminster Abbey',            type: 'history',   emoji: '⛪', img: 'westminster+abbey',          desc: 'Gothic coronation church of British monarchs.' },
-    { name: 'Churchill War Rooms',          type: 'history',   emoji: '🗺️', img: 'churchill+war+rooms',        desc: 'Underground WWII bunker used by Churchill.' },
-    { name: 'National Portrait Gallery',    type: 'history',   emoji: '🖼️', img: 'national+portrait+gallery',  desc: 'Portraits of kings, scientists and artists across the centuries.' },
-    { name: 'Borough Market',               type: 'food',      emoji: '🥩', img: 'borough+market+london',      desc: 'London\'s oldest food market — great street food.' },
-    { name: 'Covent Garden',                type: 'food',      emoji: '🍽️', img: 'covent+garden+london',       desc: 'Lively piazza with restaurants and street performers.' },
-    { name: 'Brick Lane',                   type: 'food',      emoji: '🍛', img: 'brick+lane+london',           desc: 'Famous for Bengali curry houses and street art.' },
-    { name: 'Portobello Road Market',       type: 'food',      emoji: '🧆', img: 'portobello+road+market',      desc: 'Weekend antiques and street food in Notting Hill.' },
-    { name: 'Maltby Street Market',         type: 'food',      emoji: '🧇', img: 'maltby+street+market',        desc: 'Bermondsey\'s favourite weekend foodie destination.' },
-    { name: 'Hyde Park',                    type: 'scenic',    emoji: '🌳', img: 'hyde+park+london',            desc: 'Royal park with the Serpentine lake — great for a stroll.' },
-    { name: 'Greenwich Park',               type: 'scenic',    emoji: '🌅', img: 'greenwich+park+london',       desc: 'Hilltop views over London and the Prime Meridian.' },
-    { name: 'River Thames Cruise',          type: 'scenic',    emoji: '⛵', img: 'river+thames+london',         desc: 'See London\'s skyline from the water.' },
-    { name: 'London Eye',                   type: 'fun',       emoji: '🎡', img: 'london+eye',                  desc: 'Giant observation wheel with views stretching 25 miles.' },
-    { name: 'Natural History Museum',       type: 'fun',       emoji: '🦕', img: 'natural+history+museum+london', desc: 'Free museum — dinosaurs, gems and the famous blue whale.' },
-    { name: 'Science Museum',               type: 'fun',       emoji: '🚀', img: 'science+museum+london',       desc: 'Interactive exhibits for all ages including space gallery.' },
-    { name: 'Platform 9¾ (King\'s Cross)',  type: 'hp',        emoji: '🧙', img: 'kings+cross+station+london',  desc: 'The iconic Harry Potter departure platform photo spot.' },
-    { name: 'Warner Bros. Studio Tour',     type: 'hp',        emoji: '⚡', img: 'warner+bros+studio+tour+leavesden', desc: 'Walk through original HP sets, costumes and props.' },
-    { name: 'Leadenhall Market',            type: 'hp',        emoji: '🏮', img: 'leadenhall+market+london',    desc: 'The real-world filming location for Diagon Alley.' },
-    { name: 'Christ Church, Oxford',        type: 'hp',        emoji: '🏫', img: 'christ+church+oxford',        desc: 'Inspiration for Hogwarts — the Great Hall staircase.' },
-    { name: 'The Elephant House, Edinburgh',type: 'hp',        emoji: '☕', img: 'elephant+house+edinburgh',    desc: 'Café where J.K. Rowling wrote early Harry Potter chapters.' },
+    { name: 'Tower of London',             type: 'landmarks', emoji: '🏰', desc: 'Historic castle and home of the Crown Jewels.',                   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Tower_of_London_viewed_from_the_River_Thames.jpg/400px-Tower_of_London_viewed_from_the_River_Thames.jpg' },
+    { name: 'Buckingham Palace',           type: 'landmarks', emoji: '👑', desc: 'Official London residence of the King.',                          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Buckingham_Palace%2C_London_-_April_2009.jpg/400px-Buckingham_Palace%2C_London_-_April_2009.jpg' },
+    { name: 'Tower Bridge',                type: 'landmarks', emoji: '🌉', desc: 'Iconic Victorian bascule bridge over the Thames.',                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Tower_bridge_from_the_south_bank.jpg/400px-Tower_bridge_from_the_south_bank.jpg' },
+    { name: 'Big Ben & Parliament',        type: 'landmarks', emoji: '🕰️', desc: 'The famous clock tower and Houses of Parliament.',               img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Westminster_Bridge_and_the_Houses_of_Parliament.jpg/400px-Westminster_Bridge_and_the_Houses_of_Parliament.jpg' },
+    { name: "St. Paul's Cathedral",        type: 'landmarks', emoji: '🔔', desc: "Wren's masterpiece — climb the dome for city views.",            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/St_Pauls_Cathedral_from_the_southwest.jpg/400px-St_Pauls_Cathedral_from_the_southwest.jpg' },
+    { name: 'The British Museum',          type: 'history',   emoji: '🏛️', desc: 'World-class collection spanning 2 million years.',              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/British_Museum_from_NE_2.JPG/400px-British_Museum_from_NE_2.JPG' },
+    { name: 'Westminster Abbey',           type: 'history',   emoji: '⛪', desc: 'Gothic coronation church of British monarchs.',                  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Westminster_Abbey_-_geograph.org.uk_-_413920.jpg/400px-Westminster_Abbey_-_geograph.org.uk_-_413920.jpg' },
+    { name: 'Churchill War Rooms',         type: 'history',   emoji: '🗺️', desc: 'Underground WWII bunker used by Churchill.',                     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Churchill_War_Rooms_entrance.jpg/400px-Churchill_War_Rooms_entrance.jpg' },
+    { name: 'National Portrait Gallery',   type: 'history',   emoji: '🖼️', desc: 'Portraits of kings, scientists and artists across centuries.',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/National_Portrait_Gallery%2C_London_2014.jpg/400px-National_Portrait_Gallery%2C_London_2014.jpg' },
+    { name: 'Borough Market',              type: 'food',      emoji: '🥩', desc: "London's oldest food market — great street food.",              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Borough_Market_-_geograph.org.uk_-_1176832.jpg/400px-Borough_Market_-_geograph.org.uk_-_1176832.jpg' },
+    { name: 'Covent Garden',               type: 'food',      emoji: '🍽️', desc: 'Lively piazza with restaurants and street performers.',         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Covent_Garden_2013.jpg/400px-Covent_Garden_2013.jpg' },
+    { name: 'Brick Lane',                  type: 'food',      emoji: '🍛', desc: 'Famous for Bengali curry houses and street art.',                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Brick_Lane_E1_-_geograph.org.uk_-_1176698.jpg/400px-Brick_Lane_E1_-_geograph.org.uk_-_1176698.jpg' },
+    { name: 'Portobello Road Market',      type: 'food',      emoji: '🧆', desc: 'Weekend antiques and street food in Notting Hill.',              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Portobello_Road_Market.jpg/400px-Portobello_Road_Market.jpg' },
+    { name: 'Hyde Park',                   type: 'scenic',    emoji: '🌳', desc: 'Royal park with the Serpentine lake — great for a stroll.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Hyde_Park%2C_London_-_Aug_2009.jpg/400px-Hyde_Park%2C_London_-_Aug_2009.jpg' },
+    { name: 'Greenwich Park',              type: 'scenic',    emoji: '🌅', desc: 'Hilltop views over London and the Prime Meridian.',              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Greenwich_Park_and_Isle_of_Dogs.jpg/400px-Greenwich_Park_and_Isle_of_Dogs.jpg' },
+    { name: 'River Thames Cruise',         type: 'scenic',    emoji: '⛵', desc: "See London's skyline from the water.",                          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/400px-London_Skyline_%28125508655%29.jpeg' },
+    { name: 'London Eye',                  type: 'fun',       emoji: '🎡', desc: 'Giant observation wheel with views stretching 25 miles.',       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/London_Eye_Twilight_April_2006.jpg/400px-London_Eye_Twilight_April_2006.jpg' },
+    { name: 'Natural History Museum',      type: 'fun',       emoji: '🦕', desc: 'Free museum — dinosaurs, gems and the famous blue whale.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Natural_History_Museum_London_Jan_2006.jpg/400px-Natural_History_Museum_London_Jan_2006.jpg' },
+    { name: 'Science Museum',              type: 'fun',       emoji: '🚀', desc: 'Interactive exhibits for all ages including space gallery.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Science_Museum_London_-_entrance_2013.jpg/400px-Science_Museum_London_-_entrance_2013.jpg' },
+    { name: "Platform 9¾ (King's Cross)",  type: 'hp',        emoji: '🧙', desc: 'The iconic Harry Potter departure platform photo spot.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/London_Kings_Cross_station_2.jpg/400px-London_Kings_Cross_station_2.jpg' },
+    { name: 'Warner Bros. Studio Tour',    type: 'hp',        emoji: '⚡', desc: 'Walk through original HP sets, costumes and props.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/WB_Studio_Tour_-_The_Making_of_Harry_Potter_-_geograph.org.uk_-_3533245.jpg/400px-WB_Studio_Tour_-_The_Making_of_Harry_Potter_-_geograph.org.uk_-_3533245.jpg' },
+    { name: 'Leadenhall Market',           type: 'hp',        emoji: '🏮', desc: 'The real-world filming location for Diagon Alley.',             img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Leadenhall_Market%2C_London_%28geograph_3753354%29.jpg/400px-Leadenhall_Market%2C_London_%28geograph_3753354%29.jpg' },
+    { name: 'Christ Church, Oxford',       type: 'hp',        emoji: '🏫', desc: 'Inspiration for Hogwarts — the Great Hall staircase.',         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/ChristChurch.jpg/400px-ChristChurch.jpg' },
+    { name: 'The Elephant House, Edinburgh',type: 'hp',       emoji: '☕', desc: 'Café where J.K. Rowling wrote early Harry Potter chapters.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Elephant_House_Edinburgh.jpg/400px-Elephant_House_Edinburgh.jpg' },
   ],
   ams: [
-    { name: 'Rijksmuseum',                  type: 'landmarks', emoji: '🏛️', img: 'rijksmuseum+amsterdam',          desc: 'Dutch national museum with Rembrandt and Vermeer.' },
-    { name: 'Van Gogh Museum',              type: 'landmarks', emoji: '🌻', img: 'van+gogh+museum+amsterdam',      desc: 'Largest collection of Van Gogh\'s paintings in the world.' },
-    { name: 'Royal Palace (Dam Square)',    type: 'landmarks', emoji: '👑', img: 'royal+palace+dam+square+amsterdam', desc: 'Magnificent 17th-century palace at the heart of the city.' },
-    { name: 'Tulip Museum',                 type: 'landmarks', emoji: '🌷', img: 'tulip+amsterdam',                 desc: 'The world\'s only museum dedicated to the tulip.' },
-    { name: 'Westerkerk Tower',             type: 'landmarks', emoji: '🗼', img: 'westerkerk+amsterdam',            desc: 'Climb the tower for the best views over the canal ring.' },
-    { name: 'Anne Frank House',             type: 'history',   emoji: '📖', img: 'anne+frank+house+amsterdam',     desc: 'The hiding place where Anne Frank wrote her diary.' },
-    { name: 'Jewish Historical Museum',     type: 'history',   emoji: '✡️', img: 'jewish+historical+museum+amsterdam', desc: 'Tells the story of Jewish life in the Netherlands.' },
-    { name: 'Amsterdam Museum',             type: 'history',   emoji: '🏙️', img: 'amsterdam+museum',               desc: 'From fishing village to global city — 700 years of history.' },
-    { name: 'Stedelijk Museum',             type: 'history',   emoji: '🎨', img: 'stedelijk+museum+amsterdam',     desc: 'Modern art including Mondrian, Warhol and Basquiat.' },
-    { name: 'Canal Ring Cruise',            type: 'scenic',    emoji: '🛶', img: 'amsterdam+canal+cruise',          desc: 'Glide through UNESCO-listed golden-age canals by boat.' },
-    { name: 'Jordaan Neighbourhood',        type: 'scenic',    emoji: '🌷', img: 'jordaan+amsterdam',              desc: 'Charming streets, houseboats and independent boutiques.' },
-    { name: 'Vondelpark',                   type: 'scenic',    emoji: '🌳', img: 'vondelpark+amsterdam',            desc: 'Amsterdam\'s most beloved green space for a morning walk.' },
-    { name: 'Keukenhof Gardens (day trip)', type: 'scenic',    emoji: '🌸', img: 'keukenhof+gardens+netherlands',  desc: 'World\'s largest flower garden — nearby easy day trip.' },
-    { name: 'Albert Cuyp Market',           type: 'food',      emoji: '🧀', img: 'albert+cuyp+market+amsterdam',   desc: 'Longest street market in the Netherlands — try stroopwafels.' },
-    { name: 'Foodhallen',                   type: 'food',      emoji: '🍽️', img: 'foodhallen+amsterdam',           desc: 'Indoor food hall with diverse street food stalls.' },
-    { name: 'Dutch Cheese Tasting',         type: 'food',      emoji: '🧀', img: 'dutch+cheese+gouda',             desc: 'Sample Gouda and Edam at traditional cheese shops.' },
-    { name: 'Heineken Experience',          type: 'fun',       emoji: '🍺', img: 'heineken+experience+amsterdam',  desc: 'Interactive brewery tour in the original Heineken factory.' },
-    { name: 'NEMO Science Museum',          type: 'fun',       emoji: '🔬', img: 'nemo+science+museum+amsterdam',  desc: 'Hands-on science for families — great rooftop views too.' },
-    { name: 'Amsterdam Dungeon',            type: 'fun',       emoji: '👻', img: 'amsterdam+dungeon',              desc: 'Theatrical walk-through of Amsterdam\'s dark history.' },
-    { name: 'City Cycling Tour',            type: 'fun',       emoji: '🚲', img: 'cycling+amsterdam+canal',        desc: 'Rent a bike and explore the city exactly like a local.' },
+    { name: 'Rijksmuseum',                 type: 'landmarks', emoji: '🏛️', desc: 'Dutch national museum with Rembrandt and Vermeer.',             img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Amsterdam_-_Rijksmuseum_-_2013_%28cropped%29.jpg/400px-Amsterdam_-_Rijksmuseum_-_2013_%28cropped%29.jpg' },
+    { name: 'Van Gogh Museum',             type: 'landmarks', emoji: '🌻', desc: "Largest collection of Van Gogh's paintings in the world.",      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Van_Gogh_Museum_2013.jpg/400px-Van_Gogh_Museum_2013.jpg' },
+    { name: 'Royal Palace (Dam Square)',   type: 'landmarks', emoji: '👑', desc: '17th-century palace at the heart of the city.',                 img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Amsterdam_-_Koninklijk_Paleis_-_2013.jpg/400px-Amsterdam_-_Koninklijk_Paleis_-_2013.jpg' },
+    { name: 'Westerkerk Tower',            type: 'landmarks', emoji: '🗼', desc: 'Climb the tower for the best views over the canal ring.',       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Westerkerk_Amsterdam_2016.jpg/400px-Westerkerk_Amsterdam_2016.jpg' },
+    { name: 'Anne Frank House',            type: 'history',   emoji: '📖', desc: 'The hiding place where Anne Frank wrote her diary.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Anne_Frank_House_Amsterdam_-_April_2017.jpg/400px-Anne_Frank_House_Amsterdam_-_April_2017.jpg' },
+    { name: 'Jewish Historical Museum',    type: 'history',   emoji: '✡️', desc: 'Tells the story of Jewish life in the Netherlands.',           img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Joods_historisch_museum_Amsterdam.jpg/400px-Joods_historisch_museum_Amsterdam.jpg' },
+    { name: 'Stedelijk Museum',            type: 'history',   emoji: '🎨', desc: 'Modern art including Mondrian, Warhol and Basquiat.',          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Stedelijk_museum_amsterdam_2012.jpg/400px-Stedelijk_museum_amsterdam_2012.jpg' },
+    { name: 'Canal Ring Cruise',           type: 'scenic',    emoji: '🛶', desc: 'Glide through UNESCO-listed golden-age canals by boat.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Herengracht_386_-_386A.jpg/400px-Herengracht_386_-_386A.jpg' },
+    { name: 'Jordaan Neighbourhood',       type: 'scenic',    emoji: '🌷', desc: 'Charming streets, houseboats and independent boutiques.',       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Jordaan_area_Amsterdam.jpg/400px-Jordaan_area_Amsterdam.jpg' },
+    { name: 'Vondelpark',                  type: 'scenic',    emoji: '🌳', desc: "Amsterdam's most beloved green space for a morning walk.",      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Vondelpark_2012.JPG/400px-Vondelpark_2012.JPG' },
+    { name: 'Albert Cuyp Market',          type: 'food',      emoji: '🧀', desc: 'Longest street market in the Netherlands — try stroopwafels.', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Albert_Cuypmarkt.jpg/400px-Albert_Cuypmarkt.jpg' },
+    { name: 'Foodhallen',                  type: 'food',      emoji: '🍽️', desc: 'Indoor food hall with diverse street food stalls.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Foodhallen_Amsterdam.jpg/400px-Foodhallen_Amsterdam.jpg' },
+    { name: 'Dutch Cheese Tasting',        type: 'food',      emoji: '🧀', desc: 'Sample Gouda and Edam at traditional cheese shops.',           img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Cheeses_at_a_market.jpg/400px-Cheeses_at_a_market.jpg' },
+    { name: 'Heineken Experience',         type: 'fun',       emoji: '🍺', desc: 'Interactive brewery tour in the original Heineken factory.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Heineken_Experience_Amsterdam_2.jpg/400px-Heineken_Experience_Amsterdam_2.jpg' },
+    { name: 'NEMO Science Museum',         type: 'fun',       emoji: '🔬', desc: 'Hands-on science for families — great rooftop views too.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NEMO_science_museum_Amsterdam.jpg/400px-NEMO_science_museum_Amsterdam.jpg' },
+    { name: 'City Cycling Tour',           type: 'fun',       emoji: '🚲', desc: 'Rent a bike and explore the city exactly like a local.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Amsterdam_Bicycle.jpg/400px-Amsterdam_Bicycle.jpg' },
   ],
   cdg: [
-    { name: 'Eiffel Tower',                 type: 'landmarks', emoji: '🗼', img: 'eiffel+tower+paris',             desc: 'Paris\'s most iconic landmark — book tickets in advance.' },
-    { name: 'The Louvre',                   type: 'landmarks', emoji: '🏛️', img: 'louvre+museum+paris',            desc: 'World\'s largest art museum and home of the Mona Lisa.' },
-    { name: 'Notre-Dame Cathedral',         type: 'landmarks', emoji: '⛪', img: 'notre+dame+cathedral+paris',     desc: 'Gothic masterpiece — stunning exterior views.' },
-    { name: 'Arc de Triomphe',              type: 'landmarks', emoji: '🏛️', img: 'arc+de+triomphe+paris',          desc: 'Monumental arch at the centre of the Champs-Élysées.' },
-    { name: 'Sacré-Cœur Basilica',         type: 'landmarks', emoji: '🕌', img: 'sacre+coeur+paris+montmartre',   desc: 'White basilica on Montmartre hill with city panoramas.' },
-    { name: 'Palace of Versailles',         type: 'history',   emoji: '👑', img: 'palace+of+versailles',           desc: 'Royal château with the Hall of Mirrors (30 min from Paris).' },
-    { name: 'Musée d\'Orsay',              type: 'history',   emoji: '🎨', img: 'musee+d+orsay+paris',            desc: 'Impressionist masterpieces by Monet, Renoir and Degas.' },
-    { name: 'Sainte-Chapelle',              type: 'history',   emoji: '🌈', img: 'sainte+chapelle+paris',          desc: 'Medieval chapel with breathtaking stained glass windows.' },
-    { name: 'Catacombs of Paris',           type: 'history',   emoji: '💀', img: 'paris+catacombs',                desc: 'Underground ossuary holding remains of six million people.' },
-    { name: 'Conciergerie',                 type: 'history',   emoji: '⚔️', img: 'conciergerie+paris',             desc: 'Former royal palace and prison from the French Revolution.' },
-    { name: 'Montmartre Quarter',           type: 'scenic',    emoji: '🎨', img: 'montmartre+paris',               desc: 'Artists\' village with cobblestone streets and vineyard views.' },
-    { name: 'Seine River Cruise',           type: 'scenic',    emoji: '⛵', img: 'seine+river+paris+cruise',       desc: 'See Paris monuments illuminated at dusk from the water.' },
-    { name: 'Luxembourg Gardens',           type: 'scenic',    emoji: '🌳', img: 'luxembourg+gardens+paris',       desc: 'Formal French gardens — perfect for a morning coffee stroll.' },
-    { name: 'Champs-Élysées',              type: 'scenic',    emoji: '🛍️', img: 'champs+elysees+paris',           desc: 'The world\'s most famous boulevard.' },
-    { name: 'Le Marais',                    type: 'food',      emoji: '🥐', img: 'le+marais+paris',                desc: 'Historic quarter packed with bakeries and bistros.' },
-    { name: 'French Patisserie Walk',       type: 'food',      emoji: '🥖', img: 'paris+patisserie+bakery',        desc: 'Sample croissants, macarons and eclairs across the 6th.' },
-    { name: 'Rue Cler Market',              type: 'food',      emoji: '🧺', img: 'rue+cler+market+paris',          desc: 'Charming pedestrian street market beloved by locals.' },
-    { name: 'Café de Flore',                type: 'food',      emoji: '☕', img: 'cafe+de+flore+paris',            desc: 'One of Paris\'s oldest and most famous literary cafes.' },
-    { name: 'Centre Pompidou',              type: 'fun',       emoji: '🎭', img: 'centre+pompidou+paris',          desc: 'Bold inside-out architecture and modern art collections.' },
-    { name: 'Disneyland Paris',             type: 'fun',       emoji: '🎡', img: 'disneyland+paris',               desc: 'Full day at the magical park — 45 min from central Paris.' },
+    { name: 'Eiffel Tower',                type: 'landmarks', emoji: '🗼', desc: "Paris's most iconic landmark — book tickets in advance.",      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Tour_Eiffel_Wikimedia_Commons.jpg/400px-Tour_Eiffel_Wikimedia_Commons.jpg' },
+    { name: 'The Louvre',                  type: 'landmarks', emoji: '🏛️', desc: "World's largest art museum and home of the Mona Lisa.",        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Louvre_Museum_Wikimedia_Commons.jpg/400px-Louvre_Museum_Wikimedia_Commons.jpg' },
+    { name: 'Notre-Dame Cathedral',        type: 'landmarks', emoji: '⛪', desc: 'Gothic masterpiece — stunning exterior views.',                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Notre_Dame_de_Paris_2013-07-24.jpg/400px-Notre_Dame_de_Paris_2013-07-24.jpg' },
+    { name: 'Arc de Triomphe',             type: 'landmarks', emoji: '🏛️', desc: "Monumental arch at the centre of the Champs-Élysées.",        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Arc_de_Triomphe%2C_Paris_21_October_2010.jpg/400px-Arc_de_Triomphe%2C_Paris_21_October_2010.jpg' },
+    { name: 'Sacré-Cœur Basilica',        type: 'landmarks', emoji: '🕌', desc: 'White basilica on Montmartre hill with city panoramas.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Sacre_Coeur_2014.jpg/400px-Sacre_Coeur_2014.jpg' },
+    { name: 'Palace of Versailles',        type: 'history',   emoji: '👑', desc: 'Royal château with the Hall of Mirrors (30 min from Paris).',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Versailles_garden.jpg/400px-Versailles_garden.jpg' },
+    { name: "Musée d'Orsay",              type: 'history',   emoji: '🎨', desc: 'Impressionist masterpieces by Monet, Renoir and Degas.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Mus%C3%A9e_d%27Orsay_2.jpg/400px-Mus%C3%A9e_d%27Orsay_2.jpg' },
+    { name: 'Sainte-Chapelle',             type: 'history',   emoji: '🌈', desc: 'Medieval chapel with breathtaking stained glass windows.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Sainte_Chapelle_-_Upper_Chapel_Apse.jpg/400px-Sainte_Chapelle_-_Upper_Chapel_Apse.jpg' },
+    { name: 'Catacombs of Paris',          type: 'history',   emoji: '💀', desc: 'Underground ossuary holding remains of six million people.',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Catacombes_de_Paris_-_Ossuaire_-_1.jpg/400px-Catacombes_de_Paris_-_Ossuaire_-_1.jpg' },
+    { name: 'Montmartre Quarter',          type: 'scenic',    emoji: '🎨', desc: "Artists' village with cobblestone streets and vineyard views.", img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Paris_-_Montmartre_-_Rue_Lepic.jpg/400px-Paris_-_Montmartre_-_Rue_Lepic.jpg' },
+    { name: 'Seine River Cruise',          type: 'scenic',    emoji: '⛵', desc: 'See Paris monuments illuminated at dusk from the water.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Paris_night.jpg/400px-Paris_night.jpg' },
+    { name: 'Luxembourg Gardens',          type: 'scenic',    emoji: '🌳', desc: 'Formal French gardens — perfect for a morning coffee stroll.', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Jardin_du_Luxembourg.jpg/400px-Jardin_du_Luxembourg.jpg' },
+    { name: 'Champs-Élysées',             type: 'scenic',    emoji: '🛍️', desc: "The world's most famous boulevard.",                          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/ChampsElysees.jpg/400px-ChampsElysees.jpg' },
+    { name: 'Le Marais',                   type: 'food',      emoji: '🥐', desc: 'Historic quarter packed with bakeries and bistros.',           img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Le_Marais_Paris.jpg/400px-Le_Marais_Paris.jpg' },
+    { name: 'French Patisserie Walk',      type: 'food',      emoji: '🥖', desc: 'Sample croissants, macarons and eclairs across the 6th.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Assorted_French_Macarons.jpg/400px-Assorted_French_Macarons.jpg' },
+    { name: 'Café de Flore',               type: 'food',      emoji: '☕', desc: "One of Paris's oldest and most famous literary cafes.",        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Cafe_de_Flore_exterior.jpg/400px-Cafe_de_Flore_exterior.jpg' },
+    { name: 'Centre Pompidou',             type: 'fun',       emoji: '🎭', desc: 'Bold inside-out architecture and modern art collections.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Centre_Georges_Pompidou_2017.jpg/400px-Centre_Georges_Pompidou_2017.jpg' },
+    { name: 'Disneyland Paris',            type: 'fun',       emoji: '🎡', desc: 'Full day at the magical park — 45 min from central Paris.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Disneyland_Paris_Sleeping_Beauty_Castle.jpg/400px-Disneyland_Paris_Sleeping_Beauty_Castle.jpg' },
   ],
   fco: [
-    { name: 'Colosseum',                    type: 'landmarks', emoji: '🏟️', img: 'colosseum+rome',                 desc: 'Ancient amphitheatre — one of the greatest ever built.' },
-    { name: 'Vatican Museums',              type: 'landmarks', emoji: '🏛️', img: 'vatican+museums+rome',           desc: 'Vast papal collection leading to the Sistine Chapel.' },
-    { name: 'St. Peter\'s Basilica',        type: 'landmarks', emoji: '⛪', img: 'st+peters+basilica+rome',        desc: 'Renaissance masterpiece with free entry and dome views.' },
-    { name: 'Trevi Fountain',               type: 'landmarks', emoji: '⛲', img: 'trevi+fountain+rome',             desc: 'Toss a coin in the world\'s most famous Baroque fountain.' },
-    { name: 'Castel Sant\'Angelo',          type: 'landmarks', emoji: '🏰', img: 'castel+sant+angelo+rome',        desc: 'Former papal fortress with rooftop views over the Tiber.' },
-    { name: 'Pantheon',                     type: 'history',   emoji: '🏛️', img: 'pantheon+rome',                  desc: 'Almost perfectly preserved ancient Roman temple.' },
-    { name: 'Roman Forum',                  type: 'history',   emoji: '🏺', img: 'roman+forum',                    desc: 'Heart of ancient Rome — ruins of temples and government.' },
-    { name: 'Palatine Hill',                type: 'history',   emoji: '🌿', img: 'palatine+hill+rome',             desc: 'The oldest part of Rome with sweeping Forum views.' },
-    { name: 'Borghese Gallery',             type: 'history',   emoji: '🎨', img: 'borghese+gallery+rome',          desc: 'Bernini sculptures and Caravaggio paintings in a villa.' },
-    { name: 'Day Trip: Pompeii',            type: 'history',   emoji: '🌋', img: 'pompeii+ruins',                  desc: 'Preserved Roman city buried by Vesuvius (~2.5 hrs by train).' },
-    { name: 'Piazza Navona',                type: 'scenic',    emoji: '🏙️', img: 'piazza+navona+rome',             desc: 'Baroque oval piazza with three monumental fountains.' },
-    { name: 'Pincio Hill Terrace',          type: 'scenic',    emoji: '🌅', img: 'pincio+hill+terrace+rome',       desc: 'Best panoramic viewpoint over Rome — stunning at sunset.' },
-    { name: 'Trastevere Walk',              type: 'scenic',    emoji: '🌿', img: 'trastevere+rome',                desc: 'Medieval streets lit by lanterns — magical in the evening.' },
-    { name: 'Gianicolo Hill',               type: 'scenic',    emoji: '🌄', img: 'gianicolo+hill+rome',            desc: 'Second-best view in Rome — a favourite local picnic spot.' },
-    { name: 'Campo de\' Fiori Market',      type: 'food',      emoji: '🥗', img: 'campo+de+fiori+rome',            desc: 'Vibrant morning market and lively evening piazza.' },
-    { name: 'Testaccio Market',             type: 'food',      emoji: '🍝', img: 'testaccio+market+rome',          desc: 'Rome\'s best indoor food market — try supplì and porchetta.' },
-    { name: 'Trastevere Dining',            type: 'food',      emoji: '🍷', img: 'trastevere+dining+rome',         desc: 'Cobblestone neighbourhood packed with trattorias.' },
-    { name: 'Gelato Tour',                  type: 'food',      emoji: '🍦', img: 'gelato+rome',                    desc: 'Hunt for the best artisan gelato in the old town.' },
-    { name: 'Bioparco Rome Zoo',            type: 'fun',       emoji: '🦁', img: 'bioparco+rome+zoo',              desc: 'Family-friendly zoo inside the Villa Borghese gardens.' },
-    { name: 'Piazza Venezia',               type: 'fun',       emoji: '🎭', img: 'piazza+venezia+rome',            desc: 'Central hub — great for people-watching and street life.' },
+    { name: 'Colosseum',                   type: 'landmarks', emoji: '🏟️', desc: 'Ancient amphitheatre — one of the greatest ever built.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/400px-Colosseo_2020.jpg' },
+    { name: 'Vatican Museums',             type: 'landmarks', emoji: '🏛️', desc: 'Vast papal collection leading to the Sistine Chapel.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Vatican_Museums_2013.jpg/400px-Vatican_Museums_2013.jpg' },
+    { name: "St. Peter's Basilica",        type: 'landmarks', emoji: '⛪', desc: 'Renaissance masterpiece with free entry and dome views.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Basilica_di_San_Pietro_in_Vaticano_September_2015-1a.jpg/400px-Basilica_di_San_Pietro_in_Vaticano_September_2015-1a.jpg' },
+    { name: 'Trevi Fountain',              type: 'landmarks', emoji: '⛲', desc: "Toss a coin in the world's most famous Baroque fountain.",     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Trevi_fountain%2C_Rome%2C_Italy_2.jpg/400px-Trevi_fountain%2C_Rome%2C_Italy_2.jpg' },
+    { name: "Castel Sant'Angelo",          type: 'landmarks', emoji: '🏰', desc: 'Former papal fortress with rooftop views over the Tiber.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Castel_sant%27angelo_2013.jpg/400px-Castel_sant%27angelo_2013.jpg' },
+    { name: 'Pantheon',                    type: 'history',   emoji: '🏛️', desc: 'Almost perfectly preserved ancient Roman temple.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Pantheon_Rome.jpg/400px-Pantheon_Rome.jpg' },
+    { name: 'Roman Forum',                 type: 'history',   emoji: '🏺', desc: 'Heart of ancient Rome — ruins of temples and government.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Forum_Romanum_Rom.jpg/400px-Forum_Romanum_Rom.jpg' },
+    { name: 'Palatine Hill',               type: 'history',   emoji: '🌿', desc: 'The oldest part of Rome with sweeping Forum views.',          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Palatine_Hill_Rome.jpg/400px-Palatine_Hill_Rome.jpg' },
+    { name: 'Borghese Gallery',            type: 'history',   emoji: '🎨', desc: 'Bernini sculptures and Caravaggio paintings in a villa.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Galleria_borghese_facade.jpg/400px-Galleria_borghese_facade.jpg' },
+    { name: 'Day Trip: Pompeii',           type: 'history',   emoji: '🌋', desc: 'Preserved Roman city buried by Vesuvius (~2.5 hrs by train).',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Pompeii_Ruins_2014.jpg/400px-Pompeii_Ruins_2014.jpg' },
+    { name: 'Piazza Navona',               type: 'scenic',    emoji: '🏙️', desc: 'Baroque oval piazza with three monumental fountains.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Piazza_Navona_at_night_2.jpg/400px-Piazza_Navona_at_night_2.jpg' },
+    { name: 'Pincio Hill Terrace',         type: 'scenic',    emoji: '🌅', desc: 'Best panoramic viewpoint over Rome — stunning at sunset.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Rome_from_Pincio.jpg/400px-Rome_from_Pincio.jpg' },
+    { name: 'Trastevere Walk',             type: 'scenic',    emoji: '🌿', desc: 'Medieval streets lit by lanterns — magical in the evening.',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Trastevere_street_Rome.jpg/400px-Trastevere_street_Rome.jpg' },
+    { name: "Campo de' Fiori Market",      type: 'food',      emoji: '🥗', desc: 'Vibrant morning market and lively evening piazza.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Campo_de%27_Fiori_Rome.jpg/400px-Campo_de%27_Fiori_Rome.jpg' },
+    { name: 'Testaccio Market',            type: 'food',      emoji: '🍝', desc: "Rome's best indoor food market — try supplì and porchetta.",   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Mercato_Testaccio_Roma.jpg/400px-Mercato_Testaccio_Roma.jpg' },
+    { name: 'Trastevere Dining',           type: 'food',      emoji: '🍷', desc: 'Cobblestone neighbourhood packed with trattorias.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Trastevere_street_Rome.jpg/400px-Trastevere_street_Rome.jpg' },
+    { name: 'Gelato Tour',                 type: 'food',      emoji: '🍦', desc: 'Hunt for the best artisan gelato in the old town.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Italian_ice_cream_Rome.jpg/400px-Italian_ice_cream_Rome.jpg' },
+    { name: 'Bioparco Rome Zoo',           type: 'fun',       emoji: '🦁', desc: 'Family-friendly zoo inside the Villa Borghese gardens.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Bioparco_Roma.jpg/400px-Bioparco_Roma.jpg' },
+    { name: 'Piazza Venezia',              type: 'fun',       emoji: '🎭', desc: 'Central hub — great for people-watching and street life.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Piazza_Venezia_Rome_2014.jpg/400px-Piazza_Venezia_Rome_2014.jpg' },
   ]
 };
 
@@ -742,9 +801,18 @@ const activeFilter = { london: 'all', ams: 'all', cdg: 'all', fco: 'all' };
 const TYPE_LABELS = { landmarks:'Landmark', history:'History', food:'Food & Drink', fun:'Fun', scenic:'Scenic', hp:'Harry Potter' };
 const TAG_CLASS   = { landmarks:'tag-landmarks', history:'tag-history', food:'tag-food', fun:'tag-fun', scenic:'tag-scenic', hp:'tag-hp' };
 
-/* Unsplash Source — free keyword images, no API key needed */
-function imgUrl(keyword) {
-  return `https://source.unsplash.com/400x300/?${keyword}`;
+/* Direct Wikimedia Commons image URLs — reliable, no API key needed.
+   Each place has its own curated URL stored in the SIGHTS data.
+   For user-added custom places we fall back to a city-themed placeholder. */
+const CITY_FALLBACK = {
+  london:  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/400px-London_Skyline_%28125508655%29.jpeg',
+  ams:     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Herengracht_386_-_386A.jpg/400px-Herengracht_386_-_386A.jpg',
+  cdg:     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/400px-Tour_Eiffel_Wikimedia_Commons.jpg',
+  fco:     'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/400px-Colosseo_2020.jpg',
+};
+/* Use the place's img field directly as the full URL */
+function imgUrl(place, city) {
+  return place.img || CITY_FALLBACK[city] || '';
 }
 
 /* ── 1. SHOW + INIT TILE GRID ── */
@@ -770,7 +838,7 @@ function initGrid(city) {
            onclick="togglePlace('${city}','${safeName}',this)"
            data-type="${place.type}" data-name="${place.name.replace(/"/g,'&quot;')}">
         <div class="place-img-wrap">
-          <img class="place-img" src="${imgUrl(place.img)}" alt="${place.name}" loading="lazy" onerror="this.style.display='none'">
+          <img class="place-img" src="${imgUrl(place, city)}" alt="${place.name}" loading="lazy" onerror="this.style.display='none'">
         </div>
         <div class="place-tile-top">
           <span class="place-emoji">${place.emoji}</span>
@@ -779,6 +847,23 @@ function initGrid(city) {
         <div class="place-name">${place.name}</div>
         <div class="place-desc">${place.desc}</div>
         <span class="place-tag ${TAG_CLASS[place.type] || 'tag-landmarks'}">${TYPE_LABELS[place.type] || place.type}</span>
+      </div>`);
+  });
+  /* Append any user-added custom places below the built-in grid */
+  customPlaces[city].forEach(place => {
+    const isChosen = chosen[city].has(place.name);
+    const safeName = place.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    grid.insertAdjacentHTML('beforeend', `
+      <div class="place-tile${isChosen ? ' chosen' : ''}"
+           onclick="togglePlace('${city}','${safeName}',this)"
+           data-type="custom" data-name="${place.name.replace(/"/g,'&quot;')}">
+        <div class="place-tile-top">
+          <span class="place-emoji">📍</span>
+          <div class="place-check">${isChosen ? '✓' : ''}</div>
+        </div>
+        <div class="place-name">${place.name}</div>
+        <div class="place-desc">Your own addition</div>
+        <span class="place-tag tag-food" style="background:#E1F5EE;color:#0F6E56">Your pick</span>
       </div>`);
   });
   updateCount(city);
@@ -849,7 +934,8 @@ function buildItinerary(city) {
     itinEl.innerHTML = '<div class="sight-need-days">Please select the number of days above first.</div>';
     return;
   }
-  const pool = SIGHTS[city].filter(p => chosen[city].has(p.name));
+  const allPlaces = [...SIGHTS[city], ...customPlaces[city]];
+  const pool = allPlaces.filter(p => chosen[city].has(p.name));
   if (!pool.length) {
     itinEl.innerHTML = '<p class="sight-empty">No places selected — tap some above first.</p>';
     return;
@@ -865,7 +951,7 @@ function renderItinerary(city) {
   const days   = picks[city];
   const itinEl = document.getElementById('itin-' + city);
   const nameMap = {};
-  SIGHTS[city].forEach(p => nameMap[p.name] = p);
+  [...SIGHTS[city], ...customPlaces[city]].forEach(p => nameMap[p.name] = p);
   const pool = itinState[city].map(n => nameMap[n]).filter(Boolean);
 
   const perDay = Math.floor(pool.length / days);
@@ -897,7 +983,7 @@ function renderItinerary(city) {
           <div class="drag-handle" title="Drag to reorder">
             <span></span><span></span><span></span>
           </div>
-          <img class="sched-img" src="${imgUrl(p.img)}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+          <img class="sched-img" src="${imgUrl(p, city)}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
           <div class="sched-body">
             <div class="sched-name">${p.name}
               <span class="place-tag ${TAG_CLASS[p.type] || 'tag-landmarks'}" style="margin-left:4px">${TYPE_LABELS[p.type]}</span>
@@ -972,6 +1058,59 @@ function onDragEnd(e) {
   });
   dragSrcCity = null;
   dragSrcIdx  = null;
+}
+
+/* ── CUSTOM PLACE HANDLING ──
+   Users can type any place not in our list. Custom places are stored in
+   customPlaces[city] as objects with name, type:'custom', emoji:'📍', img:''.
+   They appear as green tiles in the place grid and are treated exactly like
+   built-in places for selection, realism check, and itinerary building.
+*/
+const customPlaces = { london: [], ams: [], cdg: [], fco: [] };
+
+function addCustomPlace(city) {
+  const input = document.getElementById('custom-input-' + city);
+  const name  = (input.value || '').trim();
+  if (!name) return;
+  /* Prevent duplicates */
+  const already = SIGHTS[city].some(p => p.name.toLowerCase() === name.toLowerCase())
+                  || customPlaces[city].some(p => p.name.toLowerCase() === name.toLowerCase());
+  if (already) {
+    input.value = '';
+    input.placeholder = 'Already on the list!';
+    setTimeout(() => { input.placeholder = 'e.g. Kew Gardens, Oxford Street…'; }, 2000);
+    return;
+  }
+  const place = { name, type: 'custom', emoji: '📍', img: '', desc: 'Your own addition.' };
+  customPlaces[city].push(place);
+  chosen[city].add(name);
+  input.value = '';
+  renderCustomList(city);
+  /* Re-render grid to show the new tile (appended at bottom) */
+  initGrid(city);
+  checkRealism(city);
+  document.getElementById('itin-' + city).innerHTML = '';
+}
+
+function removeCustomPlace(city, name) {
+  customPlaces[city] = customPlaces[city].filter(p => p.name !== name);
+  chosen[city].delete(name);
+  renderCustomList(city);
+  initGrid(city);
+  checkRealism(city);
+  document.getElementById('itin-' + city).innerHTML = '';
+}
+
+function renderCustomList(city) {
+  const list = document.getElementById('custom-list-' + city);
+  if (!list) return;
+  if (!customPlaces[city].length) { list.innerHTML = ''; return; }
+  list.innerHTML = customPlaces[city].map(p => `
+    <div class="custom-tile">
+      <span>📍</span>
+      <span class="custom-tile-name">${p.name}</span>
+      <button class="custom-tile-remove" onclick="removeCustomPlace('${city}','${p.name.replace(/'/g,"\'")}')">×</button>
+    </div>`).join('');
 }
 </script>
 </body>
