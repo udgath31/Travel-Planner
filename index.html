@@ -261,9 +261,59 @@
     -webkit-tap-highlight-color: transparent;
   }
   .custom-tile-remove:hover { opacity: 1; }
+
+  /* Send selections card */
+  .send-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 22px 22px 18px; margin-top: 24px; display: none; }
+  .send-card.visible { display: block; }
+  .send-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .send-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
+  .send-name-row { margin-bottom: 12px; }
+  .send-name-input {
+    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
+    padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--border);
+    background: var(--white); color: var(--text); outline: none; transition: border-color .15s;
+  }
+  .send-name-input:focus { border-color: var(--purple); }
+  .send-btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
+  .send-btn {
+    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+    padding: 10px 18px; border-radius: 10px; cursor: pointer;
+    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: all .15s;
+    flex: 1; min-width: 120px;
+  }
+  .send-btn-primary { background: var(--purple); color: var(--white); border: none; }
+  .send-btn-primary:hover { background: var(--purple-dark); }
+  .send-btn-secondary { background: var(--white); color: var(--text); border: 1.5px solid var(--border); }
+  .send-btn-secondary:hover { border-color: var(--purple); color: var(--purple); }
+  .send-note { font-size: 11px; color: var(--text-faint); line-height: 1.5; }
+  #send-status { font-size: 13px; margin-bottom: 10px; min-height: 18px; }
+  .send-ok  { color: var(--green-dark); }
+  .send-err { color: #A32D2D; }
+
+  /* Neighborhood pill on place tiles */
+  .place-hood { font-size: 10px; color: var(--text-faint); margin-top: 1px; }
+
+  /* Walk-time connector between itinerary cards */
+  .walk-connector { display: flex; align-items: center; gap: 6px; padding: 2px 0 2px 12px; margin-bottom: 4px; }
+  .walk-line { flex: 1; height: 1px; background: var(--border); }
+  .walk-badge { font-size: 10px; color: var(--text-faint); background: var(--gray-light); padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
 </style>
 </head>
 <body>
+
+
+<!-- Netlify hidden form — receives selections silently in background -->
+<form name="trip-selections" netlify netlify-honeypot="bot-field" hidden>
+  <input type="hidden" name="form-name" value="trip-selections">
+  <input name="bot-field">
+  <input name="name">
+  <input name="days_summary">
+  <input name="london_places">
+  <input name="amsterdam_places">
+  <input name="paris_places">
+  <input name="rome_places">
+  <input name="custom_places">
+</form>
 
 <div class="header">
   <h1>Your trip<br><em>at a glance</em></h1>
@@ -559,6 +609,22 @@
     <div class="stop-dates">Return: <span class="date-computed" id="atl-return-val">after Rome stay</span></div>
   </div>
 
+
+  <!-- SEND SELECTIONS -->
+  <div class="send-card" id="send-card">
+    <div class="send-title">Share your selections</div>
+    <p class="send-sub">Let us know your name so we can put together some options for you.</p>
+    <div class="send-name-row">
+      <input class="send-name-input" id="send-name" type="text" placeholder="Your name (e.g. Tony & Dawn)">
+    </div>
+    <div id="send-status"></div>
+    <div class="send-btn-row">
+      <button class="send-btn send-btn-primary" onclick="sendSelections()">Send to us</button>
+      <button class="send-btn send-btn-secondary" onclick="mailtoSelections()">Open in mail app</button>
+    </div>
+    <p class="send-note">Tapping "Send to us" submits your selections directly. "Open in mail app" opens your email with everything pre-filled so you can send it yourself.</p>
+  </div>
+
   <!-- SUMMARY -->
   <div class="summary" id="summary">
     <div class="summary-title">Here's the full picture</div>
@@ -846,6 +912,7 @@ function initGrid(city) {
         </div>
         <div class="place-name">${place.name}</div>
         <div class="place-desc">${place.desc}</div>
+        ${HOOD[place.name] ? `<div class="place-hood">${HOOD[place.name]}</div>` : ''}
         <span class="place-tag ${TAG_CLASS[place.type] || 'tag-landmarks'}">${TYPE_LABELS[place.type] || place.type}</span>
       </div>`);
   });
@@ -863,6 +930,7 @@ function initGrid(city) {
         </div>
         <div class="place-name">${place.name}</div>
         <div class="place-desc">Your own addition</div>
+        <div class="place-hood">Custom addition</div>
         <span class="place-tag tag-food" style="background:#E1F5EE;color:#0F6E56">Your pick</span>
       </div>`);
   });
@@ -971,6 +1039,14 @@ function renderItinerary(city) {
       </div>`);
 
     slice.forEach((p, i) => {
+      /* Walk-time connector between consecutive places */
+      if (i > 0) {
+        const prev = slice[i - 1];
+        const wt = getWalk(prev.name, p.name);
+        if (wt) {
+          html.push(`<div class="walk-connector"><div class="walk-line"></div><span class="walk-badge">🚶 ${wt}</span><div class="walk-line"></div></div>`);
+        }
+      }
       /* Global index in pool for move operations */
       const globalIdx = itinState[city].indexOf(p.name);
       html.push(`
@@ -987,6 +1063,7 @@ function renderItinerary(city) {
           <div class="sched-body">
             <div class="sched-name">${p.name}
               <span class="place-tag ${TAG_CLASS[p.type] || 'tag-landmarks'}" style="margin-left:4px">${TYPE_LABELS[p.type]}</span>
+              ${HOOD[p.name] ? `<span class="place-hood" style="font-size:10px;margin-left:4px">📍 ${HOOD[p.name]}</span>` : ''}
             </div>
             <div class="sched-desc">${p.desc}</div>
           </div>
@@ -1112,6 +1189,331 @@ function renderCustomList(city) {
       <button class="custom-tile-remove" onclick="removeCustomPlace('${city}','${p.name.replace(/'/g,"\'")}')">×</button>
     </div>`).join('');
 }
+
+/* ═══════════════════════════════════════════════════════
+   NEIGHBOURHOOD DATA
+   Each place belongs to a neighbourhood string shown on
+   its tile so users can cluster nearby attractions.
+═══════════════════════════════════════════════════════ */
+const HOOD = {
+  // London
+  'Tower of London':            'South Bank / Tower',
+  'Buckingham Palace':          'Westminster',
+  'Tower Bridge':               'South Bank / Tower',
+  'Big Ben & Parliament':       'Westminster',
+  "St. Paul's Cathedral":       'City of London',
+  'The British Museum':         'Bloomsbury',
+  'Westminster Abbey':          'Westminster',
+  'Churchill War Rooms':        'Westminster',
+  'National Portrait Gallery':  'Trafalgar / Covent Garden',
+  'Borough Market':             'Southwark',
+  'Covent Garden':              'Trafalgar / Covent Garden',
+  'Brick Lane':                 'East London',
+  'Portobello Road Market':     'Notting Hill',
+  'Hyde Park':                  'Kensington',
+  'Greenwich Park':             'Greenwich',
+  'River Thames Cruise':        'South Bank',
+  'London Eye':                 'South Bank',
+  'Natural History Museum':     'Kensington',
+  'Science Museum':             'Kensington',
+  "Platform 9¾ (King's Cross)": 'King\'s Cross',
+  'Warner Bros. Studio Tour':   'Watford (day trip)',
+  'Leadenhall Market':          'City of London',
+  'Christ Church, Oxford':      'Oxford (day trip)',
+  'The Elephant House, Edinburgh': 'Edinburgh (day trip)',
+  // Amsterdam
+  'Rijksmuseum':                'Museum Quarter',
+  'Van Gogh Museum':            'Museum Quarter',
+  'Royal Palace (Dam Square)':  'Dam Square',
+  'Westerkerk Tower':           'Jordaan',
+  'Anne Frank House':           'Jordaan',
+  'Jewish Historical Museum':   'Jewish Quarter',
+  'Stedelijk Museum':           'Museum Quarter',
+  'Canal Ring Cruise':          'City Centre',
+  'Jordaan Neighbourhood':      'Jordaan',
+  'Vondelpark':                 'Museum Quarter',
+  'Albert Cuyp Market':         'De Pijp',
+  'Foodhallen':                 'West Amsterdam',
+  'Dutch Cheese Tasting':       'City Centre',
+  'Heineken Experience':        'De Pijp',
+  'NEMO Science Museum':        'Waterfront',
+  'City Cycling Tour':          'City-wide',
+  // Paris
+  'Eiffel Tower':               'Champ de Mars',
+  'The Louvre':                 'Louvre / Palais Royal',
+  'Notre-Dame Cathedral':       'Île de la Cité',
+  'Arc de Triomphe':            'Champs-Élysées',
+  'Sacré-Cœur Basilica':       'Montmartre',
+  'Palace of Versailles':       'Versailles (day trip)',
+  "Musée d'Orsay":             'Saint-Germain',
+  'Sainte-Chapelle':            'Île de la Cité',
+  'Catacombs of Paris':         'Montparnasse',
+  'Montmartre Quarter':         'Montmartre',
+  'Seine River Cruise':         'City Centre',
+  'Luxembourg Gardens':         'Saint-Germain',
+  'Champs-Élysées':            'Champs-Élysées',
+  'Le Marais':                  'Le Marais',
+  'French Patisserie Walk':     'Saint-Germain',
+  'Café de Flore':              'Saint-Germain',
+  'Centre Pompidou':            'Le Marais',
+  'Disneyland Paris':           'Marne-la-Vallée (day trip)',
+  // Rome
+  'Colosseum':                  'Ancient Rome',
+  'Vatican Museums':            'Vatican',
+  "St. Peter's Basilica":       'Vatican',
+  'Trevi Fountain':             'Trevi / Quirinale',
+  "Castel Sant'Angelo":         'Prati',
+  'Pantheon':                   'Pantheon / Navona',
+  'Roman Forum':                'Ancient Rome',
+  'Palatine Hill':              'Ancient Rome',
+  'Borghese Gallery':           'Villa Borghese',
+  'Day Trip: Pompeii':          'Pompeii (day trip)',
+  'Piazza Navona':              'Pantheon / Navona',
+  'Pincio Hill Terrace':        'Villa Borghese',
+  'Trastevere Walk':            'Trastevere',
+  "Campo de' Fiori Market":     'Campo de\' Fiori',
+  'Testaccio Market':           'Testaccio',
+  'Trastevere Dining':          'Trastevere',
+  'Gelato Tour':                'City-wide',
+  'Bioparco Rome Zoo':          'Villa Borghese',
+  'Piazza Venezia':             'Piazza Venezia',
+};
+
+/* ═══════════════════════════════════════════════════════
+   APPROXIMATE WALKING TIMES (minutes) between pairs of
+   places within the same city. Symmetric — stored once.
+   Key format: "PlaceA|||PlaceB" (alphabetical order).
+═══════════════════════════════════════════════════════ */
+function walkKey(a, b) {
+  return [a, b].sort().join('|||');
+}
+const WALK = {
+  // London
+  [walkKey('Tower of London','Tower Bridge')]:              '5 min walk',
+  [walkKey('Tower Bridge',"St. Paul's Cathedral")]:         '20 min walk',
+  [walkKey("St. Paul's Cathedral",'The British Museum')]:   '20 min walk',
+  [walkKey('The British Museum','Covent Garden')]:           '8 min walk',
+  [walkKey('Covent Garden','National Portrait Gallery')]:    '5 min walk',
+  [walkKey('Westminster Abbey','Big Ben & Parliament')]:     '3 min walk',
+  [walkKey('Big Ben & Parliament','Buckingham Palace')]:     '12 min walk',
+  [walkKey('Buckingham Palace','Hyde Park')]:                '5 min walk',
+  [walkKey('Hyde Park','Natural History Museum')]:           '12 min walk',
+  [walkKey('Natural History Museum','Science Museum')]:      '3 min walk',
+  [walkKey('Borough Market','London Eye')]:                  '15 min walk',
+  [walkKey('London Eye','Westminster Abbey')]:               '12 min walk',
+  // Amsterdam
+  [walkKey('Rijksmuseum','Van Gogh Museum')]:                '3 min walk',
+  [walkKey('Van Gogh Museum','Vondelpark')]:                 '5 min walk',
+  [walkKey('Rijksmuseum','Stedelijk Museum')]:               '3 min walk',
+  [walkKey('Royal Palace (Dam Square)','Westerkerk Tower')]: '10 min walk',
+  [walkKey('Westerkerk Tower','Anne Frank House')]:          '3 min walk',
+  [walkKey('Albert Cuyp Market','Heineken Experience')]:     '8 min walk',
+  [walkKey('NEMO Science Museum','Waterfront')]:             '2 min walk',
+  // Paris
+  [walkKey('Eiffel Tower',"Musée d'Orsay")]:                '20 min walk',
+  [walkKey("Musée d'Orsay",'The Louvre')]:                  '15 min walk',
+  [walkKey('The Louvre','Sainte-Chapelle')]:                 '15 min walk',
+  [walkKey('Sainte-Chapelle','Notre-Dame Cathedral')]:       '5 min walk',
+  [walkKey('Notre-Dame Cathedral','Centre Pompidou')]:       '15 min walk',
+  [walkKey('Centre Pompidou','Le Marais')]:                  '5 min walk',
+  [walkKey('Arc de Triomphe','Champs-Élysées')]:            '2 min walk',
+  [walkKey('Sacré-Cœur Basilica','Montmartre Quarter')]:    '3 min walk',
+  [walkKey('Luxembourg Gardens','Café de Flore')]:           '3 min walk',
+  [walkKey('Luxembourg Gardens','French Patisserie Walk')]:  '5 min walk',
+  // Rome
+  [walkKey('Colosseum','Roman Forum')]:                      '5 min walk',
+  [walkKey('Roman Forum','Palatine Hill')]:                  '5 min walk',
+  [walkKey('Colosseum','Palatine Hill')]:                    '8 min walk',
+  [walkKey('Trevi Fountain','Pantheon')]:                    '10 min walk',
+  [walkKey('Pantheon','Piazza Navona')]:                     '5 min walk',
+  [walkKey("Campo de' Fiori Market",'Piazza Navona')]:       '5 min walk',
+  [walkKey("Castel Sant'Angelo","St. Peter's Basilica")]:    '15 min walk',
+  [walkKey("St. Peter's Basilica",'Vatican Museums')]:       '5 min walk',
+  [walkKey('Borghese Gallery','Pincio Hill Terrace')]:       '10 min walk',
+  [walkKey('Borghese Gallery','Bioparco Rome Zoo')]:         '5 min walk',
+  [walkKey('Trastevere Walk','Trastevere Dining')]:          '2 min walk',
+  [walkKey('Testaccio Market',"Campo de' Fiori Market")]:    '12 min walk',
+};
+
+function getWalk(a, b) {
+  return WALK[walkKey(a, b)] || null;
+}
+
+/* ═══════════════════════════════════════════════════════
+   localStorage AUTO-SAVE / RESTORE
+   Saves picks + chosen + customPlaces every time state changes.
+   Restores on page load automatically.
+═══════════════════════════════════════════════════════ */
+const LS_KEY = 'tripPlanner_v1';
+
+function saveState() {
+  try {
+    const state = {
+      picks,
+      chosen: {
+        london: [...chosen.london],
+        ams:    [...chosen.ams],
+        cdg:    [...chosen.cdg],
+        fco:    [...chosen.fco],
+      },
+      customPlaces,
+    };
+    localStorage.setItem(LS_KEY, JSON.stringify(state));
+  } catch(e) { /* private browsing — fail silently */ }
+}
+
+function restoreState() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return;
+    const state = JSON.parse(raw);
+
+    /* Restore picks */
+    ['london','ams','cdg','fco'].forEach(city => {
+      if (state.picks && state.picks[city]) {
+        picks[city] = state.picks[city];
+        /* Highlight the correct day button */
+        const btns = document.querySelectorAll(`#${city}-picker .day-btn`);
+        btns.forEach(b => { if (parseInt(b.textContent) === picks[city]) b.classList.add('selected'); });
+        recalc();
+        showSightseeing(city);
+      }
+    });
+
+    /* Restore chosen sets */
+    if (state.chosen) {
+      ['london','ams','cdg','fco'].forEach(city => {
+        if (Array.isArray(state.chosen[city])) {
+          state.chosen[city].forEach(name => chosen[city].add(name));
+        }
+      });
+    }
+
+    /* Restore custom places */
+    if (state.customPlaces) {
+      ['london','ams','cdg','fco'].forEach(city => {
+        if (Array.isArray(state.customPlaces[city])) {
+          customPlaces[city] = state.customPlaces[city];
+          state.customPlaces[city].forEach(p => chosen[city].add(p.name));
+          renderCustomList(city);
+        }
+      });
+    }
+
+    /* Refresh grids with restored selections */
+    ['london','ams','cdg','fco'].forEach(city => {
+      if (picks[city]) {
+        initGrid(city);
+        updateCount(city);
+        checkRealism(city);
+      }
+    });
+  } catch(e) { /* corrupt data — start fresh */ }
+}
+
+/* Call saveState whenever state changes — patch into existing functions */
+const _origToggle = togglePlace;
+togglePlace = function(city, name, tile) {
+  _origToggle(city, name, tile);
+  saveState();
+};
+
+const _origPick = pick;
+pick = function(city, days, btn) {
+  _origPick(city, days, btn);
+  saveState();
+};
+
+/* ═══════════════════════════════════════════════════════
+   SEND SELECTIONS — Netlify Forms + mailto
+═══════════════════════════════════════════════════════ */
+
+/* Show the send card once all four cities have at least 1 selection */
+function maybeShowSendCard() {
+  const anySelected = ['london','ams','cdg','fco'].some(c => chosen[c].size > 0);
+  document.getElementById('send-card').classList.toggle('visible', anySelected);
+}
+
+function buildSelectionText(name) {
+  const { london, ams, cdg, fco } = picks;
+  const lines = [];
+  lines.push(`Name: ${name || 'Not provided'}`);
+  lines.push('');
+  lines.push('--- Trip dates ---');
+  if (london) {
+    const lhrArrive = addDays(new Date('2024-11-09'), -london);
+    lines.push(`Depart Atlanta: ${fmt(addDays(lhrArrive, -1))}`);
+    lines.push(`London: ${london} night${london>1?'s':''} (${fmt(lhrArrive)} – Nov 9)`);
+  }
+  lines.push(`Hyderabad: 5 nights – Nov 11–16 (fixed)`);
+  if (ams) { const d = addDays(HYD_DEPART, ams); lines.push(`Amsterdam: ${ams} night${ams>1?'s':''} (Nov 16 – ${fmt(d)})`); }
+  if (cdg && ams) {
+    const pa = addDays(HYD_DEPART, ams);
+    const pd = addDays(pa, cdg);
+    lines.push(`Paris: ${cdg} night${cdg>1?'s':''} (${fmt(pa)} – ${fmt(pd)})`);
+    if (fco) { const rd = addDays(pd, fco); lines.push(`Rome: ${fco} night${fco>1?'s':''} (${fmt(pd)} – ${fmt(rd)})`); }
+  }
+  lines.push('');
+  lines.push('--- Sightseeing picks ---');
+  ['london','ams','cdg','fco'].forEach(city => {
+    const label = {london:'London',ams:'Amsterdam',cdg:'Paris',fco:'Rome'}[city];
+    const all = [...SIGHTS[city], ...customPlaces[city]].filter(p => chosen[city].has(p.name));
+    if (all.length) lines.push(`${label}: ${all.map(p=>p.name).join(', ')}`);
+  });
+  return lines.join('\n');
+}
+
+async function sendSelections() {
+  const name = (document.getElementById('send-name').value || '').trim();
+  const status = document.getElementById('send-status');
+  const text = buildSelectionText(name);
+  status.textContent = 'Sending…';
+  status.className = '';
+
+  try {
+    const formData = new FormData();
+    formData.append('form-name', 'trip-selections');
+    formData.append('name', name);
+    formData.append('days_summary', text.split('--- Sightseeing')[0].trim());
+    formData.append('london_places',    [...chosen.london].join(', '));
+    formData.append('amsterdam_places', [...chosen.ams].join(', '));
+    formData.append('paris_places',     [...chosen.cdg].join(', '));
+    formData.append('rome_places',      [...chosen.fco].join(', '));
+    formData.append('custom_places',    ['london','ams','cdg','fco'].flatMap(c => customPlaces[c].map(p=>p.name)).join(', '));
+
+    const res = await fetch('/', { method: 'POST', body: formData });
+    if (res.ok) {
+      status.textContent = 'Sent! We\'ll be in touch shortly.';
+      status.className = 'send-ok';
+    } else {
+      throw new Error('Network error');
+    }
+  } catch(e) {
+    status.textContent = 'Could not send — please use "Open in mail app" instead.';
+    status.className = 'send-err';
+  }
+}
+
+function mailtoSelections() {
+  const name = (document.getElementById('send-name').value || '').trim();
+  const text = buildSelectionText(name);
+  const subject = encodeURIComponent('Trip selections — India & Europe');
+  const body    = encodeURIComponent(text);
+  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+}
+
+/* ═══════════════════════════════════════════════════════
+   PATCH updateCount to also show/hide the send card
+═══════════════════════════════════════════════════════ */
+const _origUpdateCount = updateCount;
+updateCount = function(city) {
+  _origUpdateCount(city);
+  maybeShowSendCard();
+  saveState();
+};
+
+/* ── RESTORE ON LOAD ── */
+document.addEventListener("DOMContentLoaded", restoreState);
 </script>
 </body>
 </html>
