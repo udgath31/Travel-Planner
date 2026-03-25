@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trip route — let us know what you think</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --green: #1D9E75;
+    --green-light: #E1F5EE;
+    --green-dark: #0F6E56;
+    --purple: #7F77DD;
+    --purple-light: #EEEDFE;
+    --purple-dark: #534AB7;
+    --gray: #888780;
+    --gray-light: #F4F3EF;
+    --amber: #BA7517;
+    --amber-light: #FAEEDA;
+    --text: #1a1a18;
+    --text-muted: #6b6b67;
+    --text-faint: #9b9b96;
+    --border: #e2e1dc;
+    --white: #ffffff;
+    --bg: #faf9f6;
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    min-height: 100vh;
+    padding: 0;
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--text);
+    color: var(--white);
+    padding: 36px 24px 32px;
+    text-align: center;
+  }
+  .header-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: #9b9b96;
+    margin-bottom: 10px;
+  }
+  .header h1 {
+    font-family: 'Lora', serif;
+    font-size: clamp(26px, 5vw, 38px);
+    font-weight: 400;
+    line-height: 1.2;
+    margin-bottom: 12px;
+  }
+  .header h1 em { font-style: italic; color: #a8c4ba; }
+  .header-sub {
+    font-size: 14px;
+    color: #9b9b96;
+    max-width: 380px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  /* ROUTE BAR */
+  .route-bar {
+    background: var(--white);
+    border-bottom: 1px solid var(--border);
+    padding: 14px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    flex-wrap: wrap;
+    font-size: 12px;
+    color: var(--text-muted);
+    font-weight: 500;
+  }
+  .route-city { color: var(--text); font-weight: 500; }
+  .route-arrow { color: var(--border); font-size: 10px; }
+
+  /* MAIN */
+  .main { max-width: 560px; margin: 0 auto; padding: 28px 16px 60px; }
+
+  /* INTRO CARD */
+  .intro-card {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin-bottom: 28px;
+    font-size: 14px;
+    color: var(--text-muted);
+    line-height: 1.7;
+  }
+  .intro-card strong { color: var(--text); }
+
+  /* STOP CARD */
+  .stop {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .stop-header {
+    padding: 16px 20px 14px;
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+  }
+  .stop-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .stop-icon.home { background: #F1EFE8; }
+  .stop-icon.fixed { background: var(--green-light); }
+  .stop-icon.flex { background: var(--purple-light); }
+  .stop-icon.drive { background: var(--amber-light); }
+
+  .stop-info { flex: 1; }
+  .stop-city {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text);
+    line-height: 1.2;
+    margin-bottom: 2px;
+  }
+  .stop-airport { font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
+  .stop-badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 2px 9px;
+    border-radius: 20px;
+  }
+  .badge-fixed { background: var(--green-light); color: var(--green-dark); }
+  .badge-flex  { background: var(--purple-light); color: var(--purple-dark); }
+  .badge-home  { background: #F1EFE8; color: #5F5E5A; }
+  .badge-drive { background: var(--amber-light); color: var(--amber); }
+
+  .stop-dates {
+    padding: 0 20px 14px 74px;
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.6;
+  }
+  .date-fixed { color: var(--green-dark); font-weight: 500; }
+  .date-computed { color: var(--purple-dark); font-weight: 500; }
+
+  /* PREFERENCE ROW */
+  .pref-section {
+    border-top: 1px solid var(--gray-light);
+    padding: 14px 20px;
+    background: #fdfcfa;
+  }
+  .pref-question {
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+  .day-picker {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+  .day-btn {
+    width: 44px;
+    height: 44px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: all 0.15s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .day-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
+  .day-btn.selected { border-color: var(--purple); background: var(--purple); color: var(--white); }
+  .day-btn.selected-green { border-color: var(--green); background: var(--green); color: var(--white); }
+
+  /* CONNECTOR */
+  .connector {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    padding: 4px 0;
+    position: relative;
+  }
+  .conn-line { width: 1.5px; height: 16px; background: var(--border); }
+  .conn-pill {
+    font-size: 11px;
+    font-weight: 500;
+    padding: 4px 12px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--white);
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .conn-pill.drive { border-color: #EF9F27; color: var(--amber); background: var(--amber-light); }
+
+  /* SUMMARY */
+  .summary {
+    margin-top: 28px;
+    background: var(--text);
+    border-radius: 16px;
+    padding: 24px 22px;
+    display: none;
+  }
+  .summary.visible { display: block; }
+  .summary-title {
+    font-family: 'Lora', serif;
+    font-size: 18px;
+    color: var(--white);
+    margin-bottom: 16px;
+  }
+  .summary-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid #2c2c2a;
+    font-size: 13px;
+  }
+  .summary-row:last-of-type { border-bottom: none; }
+  .sum-label { color: #9b9b96; }
+  .sum-val { color: var(--white); font-weight: 500; }
+  .sum-val.fixed { color: #5DCAA5; }
+  .sum-val.flex { color: #AFA9EC; }
+
+  .copy-btn {
+    width: 100%;
+    margin-top: 16px;
+    padding: 13px;
+    border-radius: 10px;
+    border: none;
+    background: var(--purple);
+    color: var(--white);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .copy-btn:hover { background: var(--purple-dark); }
+  .copy-btn.copied { background: var(--green); }
+
+  /* TOTAL COUNTER */
+  .total-bar {
+    position: sticky;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    border-top: 1px solid var(--border);
+    padding: 12px 20px;
+    display: none;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 13px;
+    z-index: 10;
+  }
+  .total-bar.visible { display: flex; }
+  .total-label { color: var(--text-muted); }
+  .total-val { font-weight: 500; color: var(--text); font-size: 15px; }
+
+  .note { font-size: 11px; color: var(--text-faint); margin-top: 6px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Your trip<br><em>at a glance</em></h1>
+  <p class="header-sub">We put together a possible route below. All flights are direct with no layovers, which we thought would make things a little easier. If you could let us know how many days feel right at each stop, we'll use that to put together some flight options for you. And if you're open to layovers for more flexibility or lower fares, we're happy to rework the route around that as well.</p>
+</div>
+
+<div class="route-bar">
+  <span class="route-city">Atlanta</span>
+  <span class="route-arrow">›</span>
+  <span class="route-city">London</span>
+  <span class="route-arrow">›</span>
+  <span class="route-city">Hyderabad</span>
+  <span class="route-arrow">›</span>
+  <span class="route-city">Amsterdam</span>
+  <span class="route-arrow">›</span>
+  <span class="route-city">Paris</span>
+  <span class="route-arrow">›</span>
+  <span class="route-city">Rome</span>
+  <span class="route-arrow">›</span>
+  <span class="route-city">Atlanta</span>
+</div>
+
+<div class="main">
+
+  <div class="intro-card">
+    Tony and Dawn, please take a look at the route and tap how many days you'd want at each stop. We'll use that to pull together some flight options for you.
+  </div>
+
+  <!-- ATL DEPART -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon home">🏠</div>
+      <div class="stop-info">
+        <div class="stop-city">Atlanta, Georgia</div>
+        <div class="stop-airport">Hartsfield-Jackson · ATL</div>
+        <span class="stop-badge badge-home">Departure</span>
+      </div>
+    </div>
+    <div class="stop-dates" id="atl-depart-dates">
+      Depart date: <span class="date-computed" id="atl-depart-val">pick London days below to calculate</span>
+    </div>
+  </div>
+
+  <!-- CONNECTOR ATL → LHR -->
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-pill">✈ Non-stop · ATL → LHR · ~9.5 hrs</div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- LONDON -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon flex">🇬🇧</div>
+      <div class="stop-info">
+        <div class="stop-city">London, UK</div>
+        <div class="stop-airport">Heathrow Airport · LHR</div>
+        <span class="stop-badge badge-flex">Your choice</span>
+      </div>
+    </div>
+    <div class="stop-dates">
+      Must depart by <span class="date-fixed">Nov 9 evening</span> to arrive Hyderabad on time.
+    </div>
+    <div class="pref-section">
+      <div class="pref-question">How many days would you like in London?</div>
+      <div class="day-picker" id="london-picker">
+        <button class="day-btn" onclick="pick('london', 2, this)">2</button>
+        <button class="day-btn" onclick="pick('london', 3, this)">3</button>
+        <button class="day-btn" onclick="pick('london', 4, this)">4</button>
+        <button class="day-btn" onclick="pick('london', 5, this)">5</button>
+        <button class="day-btn" onclick="pick('london', 6, this)">6</button>
+        <button class="day-btn" onclick="pick('london', 7, this)">7</button>
+      </div>
+      <p class="note">This tells us when to fly out of Atlanta.</p>
+    </div>
+  </div>
+
+  <!-- CONNECTOR LHR → HYD -->
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-pill">✈ Non-stop · LHR → HYD · ~10 hrs</div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- HYDERABAD -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon fixed">🇮🇳</div>
+      <div class="stop-info">
+        <div class="stop-city">Hyderabad, India</div>
+        <div class="stop-airport">Rajiv Gandhi International · HYD</div>
+        <span class="stop-badge badge-fixed">Nov 11 – 16</span>
+      </div>
+    </div>
+    <div class="stop-dates">
+      Arrive <span class="date-fixed">Nov 11</span> · Depart <span class="date-fixed">Nov 16</span> · 5 nights
+    </div>
+  </div>
+
+  <!-- CONNECTOR HYD → AMS -->
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-pill">✈ Non-stop · HYD → AMS · ~11 hrs</div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- AMSTERDAM -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon flex">🇳🇱</div>
+      <div class="stop-info">
+        <div class="stop-city">Amsterdam, Netherlands</div>
+        <div class="stop-airport">Schiphol Airport · AMS</div>
+        <span class="stop-badge badge-flex">Your choice</span>
+      </div>
+    </div>
+    <div class="stop-dates">
+      Arrive <span class="date-fixed">Nov 16</span> · Depart: <span class="date-computed" id="ams-depart-val">pick days below</span>
+    </div>
+    <div class="pref-section">
+      <div class="pref-question">How many days in Amsterdam?</div>
+      <div class="day-picker" id="ams-picker">
+        <button class="day-btn" onclick="pick('ams', 2, this)">2</button>
+        <button class="day-btn" onclick="pick('ams', 3, this)">3</button>
+        <button class="day-btn" onclick="pick('ams', 4, this)">4</button>
+        <button class="day-btn" onclick="pick('ams', 5, this)">5</button>
+      </div>
+      <div style="margin-top:12px; padding:10px 12px; background:var(--amber-light); border-radius:10px; border:1px solid #EF9F27;">
+        <p style="font-size:12px; font-weight:500; color:var(--amber); margin-bottom:3px;">Rental car · Pickup in Amsterdam</p>
+        <p style="font-size:12px; color:#6b4e10; line-height:1.6;">You would pick up a rental car at Schiphol Airport on arrival and drive to Paris — about 4 hours. The car gets returned in Paris. If you'd prefer to fly this leg instead, just let us know and we can rework this part of the route.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONNECTOR AMS → CDG (DRIVE) -->
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-pill drive">🚗 Drive · Amsterdam → Paris · ~4 hrs</div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- PARIS -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon flex">🇫🇷</div>
+      <div class="stop-info">
+        <div class="stop-city">Paris, France</div>
+        <div class="stop-airport">Charles de Gaulle · CDG</div>
+        <span class="stop-badge badge-flex">Your choice</span>
+      </div>
+    </div>
+    <div class="stop-dates">
+      Arrive: <span class="date-computed" id="paris-arrive-val">after Amsterdam</span> · Depart: <span class="date-computed" id="paris-depart-val">pick days below</span>
+    </div>
+    <div class="pref-section">
+      <div class="pref-question">How many days in Paris?</div>
+      <div class="day-picker" id="cdg-picker">
+        <button class="day-btn" onclick="pick('cdg', 2, this)">2</button>
+        <button class="day-btn" onclick="pick('cdg', 3, this)">3</button>
+        <button class="day-btn" onclick="pick('cdg', 4, this)">4</button>
+        <button class="day-btn" onclick="pick('cdg', 5, this)">5</button>
+        <button class="day-btn" onclick="pick('cdg', 6, this)">6</button>
+      </div>
+      <div style="margin-top:12px; padding:10px 12px; background:var(--amber-light); border-radius:10px; border:1px solid #EF9F27;">
+        <p style="font-size:12px; font-weight:500; color:var(--amber); margin-bottom:3px;">Rental car · Return in Paris</p>
+        <p style="font-size:12px; color:#6b4e10; line-height:1.6;">The rental car would be returned at Charles de Gaulle Airport before flying to Rome. No need to worry about driving in Rome — we'd suggest flying there and getting around the city without a car.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONNECTOR CDG → FCO -->
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-pill">✈ Non-stop · CDG → FCO · ~2.5 hrs</div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- ROME -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon flex">🇮🇹</div>
+      <div class="stop-info">
+        <div class="stop-city">Rome, Italy</div>
+        <div class="stop-airport">Fiumicino · FCO</div>
+        <span class="stop-badge badge-flex">Your choice</span>
+      </div>
+    </div>
+    <div class="stop-dates">
+      Arrive: <span class="date-computed" id="rome-arrive-val">after Paris</span> · Depart: <span class="date-computed" id="rome-depart-val">pick days below</span>
+    </div>
+    <div class="pref-section">
+      <div class="pref-question">How many days in Rome?</div>
+      <div class="day-picker" id="fco-picker">
+        <button class="day-btn" onclick="pick('fco', 2, this)">2</button>
+        <button class="day-btn" onclick="pick('fco', 3, this)">3</button>
+        <button class="day-btn" onclick="pick('fco', 4, this)">4</button>
+        <button class="day-btn" onclick="pick('fco', 5, this)">5</button>
+        <button class="day-btn" onclick="pick('fco', 6, this)">6</button>
+      </div>
+      <div style="margin-top:12px; padding:10px 12px; background:var(--amber-light); border-radius:10px; border:1px solid #EF9F27;">
+        <p style="font-size:12px; font-weight:500; color:var(--amber); margin-bottom:3px;">Rental car · Optional in Rome</p>
+        <p style="font-size:12px; color:#6b4e10; line-height:1.6;">If you'd like, you can rent a car at Fiumicino Airport on arrival and return it there before your flight back to Atlanta. Rome's city center is very walkable, but a car can be helpful for day trips outside the city. We can check with Deena about her experience in Italy to help figure out whether renting a car or sticking to public transport makes more sense for you.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONNECTOR FCO → ATL -->
+  <div class="connector">
+    <div class="conn-line"></div>
+    <div class="conn-pill">✈ Non-stop · FCO → ATL · ~12 hrs</div>
+    <div class="conn-line"></div>
+  </div>
+
+  <!-- ATL RETURN -->
+  <div class="stop">
+    <div class="stop-header">
+      <div class="stop-icon home">🏠</div>
+      <div class="stop-info">
+        <div class="stop-city">Atlanta, Georgia</div>
+        <div class="stop-airport">Hartsfield-Jackson · ATL</div>
+        <span class="stop-badge badge-home">Home</span>
+      </div>
+    </div>
+    <div class="stop-dates">
+      Return: <span class="date-computed" id="atl-return-val">after Rome stay</span>
+    </div>
+  </div>
+
+  <!-- SUMMARY -->
+  <div class="summary" id="summary">
+    <div class="summary-title">Here's the full picture</div>
+    <div class="summary-row">
+      <span class="sum-label">Depart Atlanta</span>
+      <span class="sum-val flex" id="sum-atl-depart">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">London</span>
+      <span class="sum-val flex" id="sum-london">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">Hyderabad</span>
+      <span class="sum-val fixed">Nov 11 – Nov 16 · 5 nights</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">Amsterdam</span>
+      <span class="sum-val flex" id="sum-ams">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">Paris</span>
+      <span class="sum-val flex" id="sum-cdg">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">Rome</span>
+      <span class="sum-val flex" id="sum-fco">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">Return Atlanta</span>
+      <span class="sum-val flex" id="sum-atl-return">—</span>
+    </div>
+    <div class="summary-row">
+      <span class="sum-label">Total trip length</span>
+      <span class="sum-val" id="sum-total">—</span>
+    </div>
+    <button class="copy-btn" id="copy-btn" onclick="copyResult()">Copy my preferences to share</button>
+  </div>
+
+</div>
+
+<!-- STICKY TOTAL BAR -->
+<div class="total-bar" id="total-bar">
+  <span class="total-label">Trip so far</span>
+  <span class="total-val" id="total-val">— days</span>
+</div>
+
+<script>
+const picks = { london: null, ams: null, cdg: null, fco: null };
+
+const HYD_DEPART = new Date('2024-11-16');
+
+function addDays(date, n) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + n);
+  return d;
+}
+
+function fmt(date) {
+  return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+}
+
+function pick(city, days, btn) {
+  picks[city] = days;
+  const picker = document.getElementById(city + '-picker');
+  picker.querySelectorAll('.day-btn').forEach(b => {
+    b.classList.remove('selected', 'selected-green');
+  });
+  btn.classList.add('selected');
+  recalc();
+}
+
+function recalc() {
+  const { london, ams, cdg, fco } = picks;
+
+  // ATL depart (back-calculate from LHR departure Nov 9 evening)
+  const lhrDepart = new Date('2024-11-09');
+  if (london) {
+    const lhrArrive = new Date(lhrDepart);
+    lhrArrive.setDate(lhrArrive.getDate() - london);
+    const atlDepart = new Date(lhrArrive);
+    atlDepart.setDate(atlDepart.getDate() - 1);
+    document.getElementById('atl-depart-val').textContent =
+      fmt(atlDepart) + ' (arrive London ' + fmt(lhrArrive) + ')';
+    document.getElementById('sum-atl-depart').textContent = fmt(atlDepart);
+    document.getElementById('sum-london').textContent =
+      fmt(lhrArrive) + ' – Nov 9 · ' + london + ' night' + (london > 1 ? 's' : '');
+  } else {
+    document.getElementById('atl-depart-val').textContent = 'pick London days to calculate';
+    document.getElementById('sum-atl-depart').textContent = '—';
+    document.getElementById('sum-london').textContent = '—';
+  }
+
+  // AMS depart
+  let amsDepart = null;
+  if (ams) {
+    amsDepart = addDays(HYD_DEPART, ams);
+    document.getElementById('ams-depart-val').textContent = fmt(amsDepart);
+    document.getElementById('sum-ams').textContent =
+      'Nov 16 – ' + fmt(amsDepart) + ' · ' + ams + ' night' + (ams > 1 ? 's' : '');
+  } else {
+    document.getElementById('ams-depart-val').textContent = 'pick days below';
+    document.getElementById('sum-ams').textContent = '—';
+  }
+
+  // Paris arrive + depart
+  let parisArrive = amsDepart;
+  let parisDepart = null;
+  if (parisArrive) {
+    document.getElementById('paris-arrive-val').textContent = fmt(parisArrive);
+    if (cdg) {
+      parisDepart = addDays(parisArrive, cdg);
+      document.getElementById('paris-depart-val').textContent = fmt(parisDepart);
+      document.getElementById('sum-cdg').textContent =
+        fmt(parisArrive) + ' – ' + fmt(parisDepart) + ' · ' + cdg + ' night' + (cdg > 1 ? 's' : '');
+    } else {
+      document.getElementById('paris-depart-val').textContent = 'pick days below';
+      document.getElementById('sum-cdg').textContent = '—';
+    }
+  } else {
+    document.getElementById('paris-arrive-val').textContent = 'after Amsterdam';
+    document.getElementById('paris-depart-val').textContent = '—';
+    document.getElementById('sum-cdg').textContent = '—';
+  }
+
+  // Rome arrive + depart
+  let romeArrive = parisDepart;
+  let romeDepart = null;
+  if (romeArrive) {
+    document.getElementById('rome-arrive-val').textContent = fmt(romeArrive);
+    if (fco) {
+      romeDepart = addDays(romeArrive, fco);
+      document.getElementById('rome-depart-val').textContent = fmt(romeDepart);
+      document.getElementById('atl-return-val').textContent = fmt(addDays(romeDepart, 1));
+      document.getElementById('sum-fco').textContent =
+        fmt(romeArrive) + ' – ' + fmt(romeDepart) + ' · ' + fco + ' night' + (fco > 1 ? 's' : '');
+      document.getElementById('sum-atl-return').textContent = fmt(addDays(romeDepart, 1));
+    } else {
+      document.getElementById('rome-depart-val').textContent = 'pick days below';
+      document.getElementById('sum-fco').textContent = '—';
+    }
+  } else {
+    document.getElementById('rome-arrive-val').textContent = 'after Paris';
+    document.getElementById('rome-depart-val').textContent = '—';
+    document.getElementById('sum-fco').textContent = '—';
+  }
+
+  // Total counter
+  const filled = [london, ams, cdg, fco].filter(Boolean);
+  const runningTotal = (london || 0) + 5 + (ams || 0) + (cdg || 0) + (fco || 0);
+  if (filled.length > 0) {
+    document.getElementById('total-bar').classList.add('visible');
+    document.getElementById('total-val').textContent = runningTotal + ' days total';
+  }
+  document.getElementById('sum-total').textContent = runningTotal + ' days';
+
+  // Show summary when all picked
+  const allDone = london && ams && cdg && fco;
+  document.getElementById('summary').classList.toggle('visible', !!allDone);
+}
+
+function copyResult() {
+  const { london, ams, cdg, fco } = picks;
+  const lhrDepart = new Date('2024-11-09');
+  const lhrArrive = addDays(lhrDepart, -london);
+  const atlDepart = addDays(lhrArrive, -1);
+  const amsDepart = addDays(HYD_DEPART, ams);
+  const parisDepart = addDays(amsDepart, cdg);
+  const romeDepart = addDays(parisDepart, fco);
+  const atlReturn = addDays(romeDepart, 1);
+
+  const text =
+    `My travel preferences:\n` +
+    `- Depart Atlanta: ${fmt(atlDepart)}\n` +
+    `- London (LHR): ${london} nights (${fmt(lhrArrive)} – Nov 9)\n` +
+    `- Hyderabad (HYD): 5 nights — Nov 11–16 (fixed)\n` +
+    `- Amsterdam (AMS): ${ams} nights (Nov 16 – ${fmt(amsDepart)})\n` +
+    `- Paris (CDG): ${cdg} nights (${fmt(amsDepart)} – ${fmt(parisDepart)})\n` +
+    `- Rome (FCO): ${fco} nights (${fmt(parisDepart)} – ${fmt(romeDepart)})\n` +
+    `- Return to Atlanta: ${fmt(atlReturn)}\n` +
+    `- Total trip: ${london + 5 + ams + cdg + fco} days`;
+
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.getElementById('copy-btn');
+    btn.textContent = 'Copied!';
+    btn.classList.add('copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy my preferences to share';
+      btn.classList.remove('copied');
+    }, 2500);
+  });
+}
+</script>
+</body>
+</html>
