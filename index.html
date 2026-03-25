@@ -524,18 +524,15 @@ const HYD_DEPART = new Date('2024-11-16');
 function addDays(date, n) { const d = new Date(date); d.setDate(d.getDate() + n); return d; }
 function fmt(date) { return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
 
-const scrollOrder = { london: 'ams-picker', ams: 'cdg-picker', cdg: 'fco-picker' };
-
 function pick(city, days, btn) {
   picks[city] = days;
   document.getElementById(city + '-picker').querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
   btn.classList.add('selected');
   recalc();
-  /* Show sightseeing picker (or refresh grid if already open) */
+  /* Show place-picker section and scroll to it */
   showSightseeing(city);
-  /* Auto-scroll to next city's day picker */
-  const nextId = scrollOrder[city];
-  if (nextId) setTimeout(() => { const el = document.getElementById(nextId); if (el) el.scrollIntoView({ behavior: 'smooth', block: 'center' }); }, 320);
+  /* Re-run realism check in case days changed with existing selections */
+  checkRealism(city);
 }
 
 function recalc() {
@@ -659,70 +656,70 @@ const SIGHTS = {
     { name: 'The Elephant House, Edinburgh',type: 'hp',        emoji: '☕', img: 'elephant+house+edinburgh',    desc: 'Café where J.K. Rowling wrote early Harry Potter chapters.' },
   ],
   ams: [
-    { name: 'Rijksmuseum',                  type: 'landmarks', emoji: '🏛️', desc: 'Dutch national museum with Rembrandt and Vermeer.' },
-    { name: 'Van Gogh Museum',              type: 'landmarks', emoji: '🌻', desc: 'Largest collection of Van Gogh\'s paintings in the world.' },
-    { name: 'Royal Palace (Dam Square)',    type: 'landmarks', emoji: '👑', desc: 'Magnificent 17th-century palace at the heart of the city.' },
-    { name: 'Tulip Museum',                 type: 'landmarks', emoji: '🌷', desc: 'The world\'s only museum dedicated to the tulip.' },
-    { name: 'Westerkerk Tower',             type: 'landmarks', emoji: '🗼', desc: 'Climb the tower for the best views over the canal ring.' },
-    { name: 'Anne Frank House',             type: 'history',   emoji: '📖', desc: 'The hiding place where Anne Frank wrote her diary.' },
-    { name: 'Jewish Historical Museum',     type: 'history',   emoji: '✡️', desc: 'Tells the story of Jewish life in the Netherlands.' },
-    { name: 'Amsterdam Museum',             type: 'history',   emoji: '🏙️', desc: 'From fishing village to global city — 700 years of history.' },
-    { name: 'Stedelijk Museum',             type: 'history',   emoji: '🎨', desc: 'Modern art including Mondrian, Warhol and Basquiat.' },
-    { name: 'Canal Ring Cruise',            type: 'scenic',    emoji: '🛶', desc: 'Glide through UNESCO-listed golden-age canals by boat.' },
-    { name: 'Jordaan Neighbourhood',        type: 'scenic',    emoji: '🌷', desc: 'Charming streets, houseboats and independent boutiques.' },
-    { name: 'Vondelpark',                   type: 'scenic',    emoji: '🌳', desc: 'Amsterdam\'s most beloved green space for a morning walk.' },
-    { name: 'Keukenhof Gardens (day trip)', type: 'scenic',    emoji: '🌸', desc: 'World\'s largest flower garden — nearby easy day trip.' },
-    { name: 'Albert Cuyp Market',           type: 'food',      emoji: '🧀', desc: 'Longest street market in the Netherlands — try stroopwafels.' },
-    { name: 'Foodhallen',                   type: 'food',      emoji: '🍽️', desc: 'Indoor food hall with diverse street food stalls.' },
-    { name: 'Dutch Cheese Tasting',         type: 'food',      emoji: '🧀', desc: 'Sample Gouda and Edam at traditional cheese shops.' },
-    { name: 'Heineken Experience',          type: 'fun',       emoji: '🍺', desc: 'Interactive brewery tour in the original Heineken factory.' },
-    { name: 'NEMO Science Museum',          type: 'fun',       emoji: '🔬', desc: 'Hands-on science for families — great rooftop views too.' },
-    { name: 'Amsterdam Dungeon',            type: 'fun',       emoji: '👻', desc: 'Theatrical walk-through of Amsterdam\'s dark history.' },
-    { name: 'City Cycling Tour',            type: 'fun',       emoji: '🚲', desc: 'Rent a bike and explore the city exactly like a local.' },
+    { name: 'Rijksmuseum',                  type: 'landmarks', emoji: '🏛️', img: 'rijksmuseum+amsterdam',          desc: 'Dutch national museum with Rembrandt and Vermeer.' },
+    { name: 'Van Gogh Museum',              type: 'landmarks', emoji: '🌻', img: 'van+gogh+museum+amsterdam',      desc: 'Largest collection of Van Gogh\'s paintings in the world.' },
+    { name: 'Royal Palace (Dam Square)',    type: 'landmarks', emoji: '👑', img: 'royal+palace+dam+square+amsterdam', desc: 'Magnificent 17th-century palace at the heart of the city.' },
+    { name: 'Tulip Museum',                 type: 'landmarks', emoji: '🌷', img: 'tulip+amsterdam',                 desc: 'The world\'s only museum dedicated to the tulip.' },
+    { name: 'Westerkerk Tower',             type: 'landmarks', emoji: '🗼', img: 'westerkerk+amsterdam',            desc: 'Climb the tower for the best views over the canal ring.' },
+    { name: 'Anne Frank House',             type: 'history',   emoji: '📖', img: 'anne+frank+house+amsterdam',     desc: 'The hiding place where Anne Frank wrote her diary.' },
+    { name: 'Jewish Historical Museum',     type: 'history',   emoji: '✡️', img: 'jewish+historical+museum+amsterdam', desc: 'Tells the story of Jewish life in the Netherlands.' },
+    { name: 'Amsterdam Museum',             type: 'history',   emoji: '🏙️', img: 'amsterdam+museum',               desc: 'From fishing village to global city — 700 years of history.' },
+    { name: 'Stedelijk Museum',             type: 'history',   emoji: '🎨', img: 'stedelijk+museum+amsterdam',     desc: 'Modern art including Mondrian, Warhol and Basquiat.' },
+    { name: 'Canal Ring Cruise',            type: 'scenic',    emoji: '🛶', img: 'amsterdam+canal+cruise',          desc: 'Glide through UNESCO-listed golden-age canals by boat.' },
+    { name: 'Jordaan Neighbourhood',        type: 'scenic',    emoji: '🌷', img: 'jordaan+amsterdam',              desc: 'Charming streets, houseboats and independent boutiques.' },
+    { name: 'Vondelpark',                   type: 'scenic',    emoji: '🌳', img: 'vondelpark+amsterdam',            desc: 'Amsterdam\'s most beloved green space for a morning walk.' },
+    { name: 'Keukenhof Gardens (day trip)', type: 'scenic',    emoji: '🌸', img: 'keukenhof+gardens+netherlands',  desc: 'World\'s largest flower garden — nearby easy day trip.' },
+    { name: 'Albert Cuyp Market',           type: 'food',      emoji: '🧀', img: 'albert+cuyp+market+amsterdam',   desc: 'Longest street market in the Netherlands — try stroopwafels.' },
+    { name: 'Foodhallen',                   type: 'food',      emoji: '🍽️', img: 'foodhallen+amsterdam',           desc: 'Indoor food hall with diverse street food stalls.' },
+    { name: 'Dutch Cheese Tasting',         type: 'food',      emoji: '🧀', img: 'dutch+cheese+gouda',             desc: 'Sample Gouda and Edam at traditional cheese shops.' },
+    { name: 'Heineken Experience',          type: 'fun',       emoji: '🍺', img: 'heineken+experience+amsterdam',  desc: 'Interactive brewery tour in the original Heineken factory.' },
+    { name: 'NEMO Science Museum',          type: 'fun',       emoji: '🔬', img: 'nemo+science+museum+amsterdam',  desc: 'Hands-on science for families — great rooftop views too.' },
+    { name: 'Amsterdam Dungeon',            type: 'fun',       emoji: '👻', img: 'amsterdam+dungeon',              desc: 'Theatrical walk-through of Amsterdam\'s dark history.' },
+    { name: 'City Cycling Tour',            type: 'fun',       emoji: '🚲', img: 'cycling+amsterdam+canal',        desc: 'Rent a bike and explore the city exactly like a local.' },
   ],
   cdg: [
-    { name: 'Eiffel Tower',                 type: 'landmarks', emoji: '🗼', desc: 'Paris\'s most iconic landmark — book tickets in advance.' },
-    { name: 'The Louvre',                   type: 'landmarks', emoji: '🏛️', desc: 'World\'s largest art museum and home of the Mona Lisa.' },
-    { name: 'Notre-Dame Cathedral',         type: 'landmarks', emoji: '⛪', desc: 'Gothic masterpiece — stunning exterior views.' },
-    { name: 'Arc de Triomphe',              type: 'landmarks', emoji: '🏛️', desc: 'Monumental arch at the centre of the Champs-Élysées.' },
-    { name: 'Sacré-Cœur Basilica',         type: 'landmarks', emoji: '🕌', desc: 'White basilica on Montmartre hill with city panoramas.' },
-    { name: 'Palace of Versailles',         type: 'history',   emoji: '👑', desc: 'Royal château with the Hall of Mirrors (30 min from Paris).' },
-    { name: 'Musée d\'Orsay',              type: 'history',   emoji: '🎨', desc: 'Impressionist masterpieces by Monet, Renoir and Degas.' },
-    { name: 'Sainte-Chapelle',              type: 'history',   emoji: '🌈', desc: 'Medieval chapel with breathtaking stained glass windows.' },
-    { name: 'Catacombs of Paris',           type: 'history',   emoji: '💀', desc: 'Underground ossuary holding remains of six million people.' },
-    { name: 'Conciergerie',                 type: 'history',   emoji: '⚔️', desc: 'Former royal palace and prison from the French Revolution.' },
-    { name: 'Montmartre Quarter',           type: 'scenic',    emoji: '🎨', desc: 'Artists\' village with cobblestone streets and vineyard views.' },
-    { name: 'Seine River Cruise',           type: 'scenic',    emoji: '⛵', desc: 'See Paris monuments illuminated at dusk from the water.' },
-    { name: 'Luxembourg Gardens',           type: 'scenic',    emoji: '🌳', desc: 'Formal French gardens — perfect for a morning coffee stroll.' },
-    { name: 'Champs-Élysées',              type: 'scenic',    emoji: '🛍️', desc: 'The world\'s most famous boulevard.' },
-    { name: 'Le Marais',                    type: 'food',      emoji: '🥐', desc: 'Historic quarter packed with bakeries and bistros.' },
-    { name: 'French Patisserie Walk',       type: 'food',      emoji: '🥖', desc: 'Sample croissants, macarons and eclairs across the 6th.' },
-    { name: 'Rue Cler Market',              type: 'food',      emoji: '🧺', desc: 'Charming pedestrian street market beloved by locals.' },
-    { name: 'Café de Flore',                type: 'food',      emoji: '☕', desc: 'One of Paris\'s oldest and most famous literary cafes.' },
-    { name: 'Centre Pompidou',              type: 'fun',       emoji: '🎭', desc: 'Bold inside-out architecture and modern art collections.' },
-    { name: 'Disneyland Paris',             type: 'fun',       emoji: '🎡', desc: 'Full day at the magical park — 45 min from central Paris.' },
+    { name: 'Eiffel Tower',                 type: 'landmarks', emoji: '🗼', img: 'eiffel+tower+paris',             desc: 'Paris\'s most iconic landmark — book tickets in advance.' },
+    { name: 'The Louvre',                   type: 'landmarks', emoji: '🏛️', img: 'louvre+museum+paris',            desc: 'World\'s largest art museum and home of the Mona Lisa.' },
+    { name: 'Notre-Dame Cathedral',         type: 'landmarks', emoji: '⛪', img: 'notre+dame+cathedral+paris',     desc: 'Gothic masterpiece — stunning exterior views.' },
+    { name: 'Arc de Triomphe',              type: 'landmarks', emoji: '🏛️', img: 'arc+de+triomphe+paris',          desc: 'Monumental arch at the centre of the Champs-Élysées.' },
+    { name: 'Sacré-Cœur Basilica',         type: 'landmarks', emoji: '🕌', img: 'sacre+coeur+paris+montmartre',   desc: 'White basilica on Montmartre hill with city panoramas.' },
+    { name: 'Palace of Versailles',         type: 'history',   emoji: '👑', img: 'palace+of+versailles',           desc: 'Royal château with the Hall of Mirrors (30 min from Paris).' },
+    { name: 'Musée d\'Orsay',              type: 'history',   emoji: '🎨', img: 'musee+d+orsay+paris',            desc: 'Impressionist masterpieces by Monet, Renoir and Degas.' },
+    { name: 'Sainte-Chapelle',              type: 'history',   emoji: '🌈', img: 'sainte+chapelle+paris',          desc: 'Medieval chapel with breathtaking stained glass windows.' },
+    { name: 'Catacombs of Paris',           type: 'history',   emoji: '💀', img: 'paris+catacombs',                desc: 'Underground ossuary holding remains of six million people.' },
+    { name: 'Conciergerie',                 type: 'history',   emoji: '⚔️', img: 'conciergerie+paris',             desc: 'Former royal palace and prison from the French Revolution.' },
+    { name: 'Montmartre Quarter',           type: 'scenic',    emoji: '🎨', img: 'montmartre+paris',               desc: 'Artists\' village with cobblestone streets and vineyard views.' },
+    { name: 'Seine River Cruise',           type: 'scenic',    emoji: '⛵', img: 'seine+river+paris+cruise',       desc: 'See Paris monuments illuminated at dusk from the water.' },
+    { name: 'Luxembourg Gardens',           type: 'scenic',    emoji: '🌳', img: 'luxembourg+gardens+paris',       desc: 'Formal French gardens — perfect for a morning coffee stroll.' },
+    { name: 'Champs-Élysées',              type: 'scenic',    emoji: '🛍️', img: 'champs+elysees+paris',           desc: 'The world\'s most famous boulevard.' },
+    { name: 'Le Marais',                    type: 'food',      emoji: '🥐', img: 'le+marais+paris',                desc: 'Historic quarter packed with bakeries and bistros.' },
+    { name: 'French Patisserie Walk',       type: 'food',      emoji: '🥖', img: 'paris+patisserie+bakery',        desc: 'Sample croissants, macarons and eclairs across the 6th.' },
+    { name: 'Rue Cler Market',              type: 'food',      emoji: '🧺', img: 'rue+cler+market+paris',          desc: 'Charming pedestrian street market beloved by locals.' },
+    { name: 'Café de Flore',                type: 'food',      emoji: '☕', img: 'cafe+de+flore+paris',            desc: 'One of Paris\'s oldest and most famous literary cafes.' },
+    { name: 'Centre Pompidou',              type: 'fun',       emoji: '🎭', img: 'centre+pompidou+paris',          desc: 'Bold inside-out architecture and modern art collections.' },
+    { name: 'Disneyland Paris',             type: 'fun',       emoji: '🎡', img: 'disneyland+paris',               desc: 'Full day at the magical park — 45 min from central Paris.' },
   ],
   fco: [
-    { name: 'Colosseum',                    type: 'landmarks', emoji: '🏟️', desc: 'Ancient amphitheatre — one of the greatest ever built.' },
-    { name: 'Vatican Museums',              type: 'landmarks', emoji: '🏛️', desc: 'Vast papal collection leading to the Sistine Chapel.' },
-    { name: 'St. Peter\'s Basilica',        type: 'landmarks', emoji: '⛪', desc: 'Renaissance masterpiece with free entry and dome views.' },
-    { name: 'Trevi Fountain',               type: 'landmarks', emoji: '⛲', desc: 'Toss a coin in the world\'s most famous Baroque fountain.' },
-    { name: 'Castel Sant\'Angelo',          type: 'landmarks', emoji: '🏰', desc: 'Former papal fortress with rooftop views over the Tiber.' },
-    { name: 'Pantheon',                     type: 'history',   emoji: '🏛️', desc: 'Almost perfectly preserved ancient Roman temple.' },
-    { name: 'Roman Forum',                  type: 'history',   emoji: '🏺', desc: 'Heart of ancient Rome — ruins of temples and government.' },
-    { name: 'Palatine Hill',                type: 'history',   emoji: '🌿', desc: 'The oldest part of Rome with sweeping Forum views.' },
-    { name: 'Borghese Gallery',             type: 'history',   emoji: '🎨', desc: 'Bernini sculptures and Caravaggio paintings in a villa.' },
-    { name: 'Day Trip: Pompeii',            type: 'history',   emoji: '🌋', desc: 'Preserved Roman city buried by Vesuvius (~2.5 hrs by train).' },
-    { name: 'Piazza Navona',                type: 'scenic',    emoji: '🏙️', desc: 'Baroque oval piazza with three monumental fountains.' },
-    { name: 'Pincio Hill Terrace',          type: 'scenic',    emoji: '🌅', desc: 'Best panoramic viewpoint over Rome — stunning at sunset.' },
-    { name: 'Trastevere Walk',              type: 'scenic',    emoji: '🌿', desc: 'Medieval streets lit by lanterns — magical in the evening.' },
-    { name: 'Gianicolo Hill',               type: 'scenic',    emoji: '🌄', desc: 'Second-best view in Rome — a favourite local picnic spot.' },
-    { name: 'Campo de\' Fiori Market',      type: 'food',      emoji: '🥗', desc: 'Vibrant morning market and lively evening piazza.' },
-    { name: 'Testaccio Market',             type: 'food',      emoji: '🍝', desc: 'Rome\'s best indoor food market — try supplì and porchetta.' },
-    { name: 'Trastevere Dining',            type: 'food',      emoji: '🍷', desc: 'Cobblestone neighbourhood packed with trattorias.' },
-    { name: 'Gelato Tour',                  type: 'food',      emoji: '🍦', desc: 'Hunt for the best artisan gelato in the old town.' },
-    { name: 'Bioparco Rome Zoo',            type: 'fun',       emoji: '🦁', desc: 'Family-friendly zoo inside the Villa Borghese gardens.' },
-    { name: 'Piazza Venezia',               type: 'fun',       emoji: '🎭', desc: 'Central hub — great for people-watching and street life.' },
+    { name: 'Colosseum',                    type: 'landmarks', emoji: '🏟️', img: 'colosseum+rome',                 desc: 'Ancient amphitheatre — one of the greatest ever built.' },
+    { name: 'Vatican Museums',              type: 'landmarks', emoji: '🏛️', img: 'vatican+museums+rome',           desc: 'Vast papal collection leading to the Sistine Chapel.' },
+    { name: 'St. Peter\'s Basilica',        type: 'landmarks', emoji: '⛪', img: 'st+peters+basilica+rome',        desc: 'Renaissance masterpiece with free entry and dome views.' },
+    { name: 'Trevi Fountain',               type: 'landmarks', emoji: '⛲', img: 'trevi+fountain+rome',             desc: 'Toss a coin in the world\'s most famous Baroque fountain.' },
+    { name: 'Castel Sant\'Angelo',          type: 'landmarks', emoji: '🏰', img: 'castel+sant+angelo+rome',        desc: 'Former papal fortress with rooftop views over the Tiber.' },
+    { name: 'Pantheon',                     type: 'history',   emoji: '🏛️', img: 'pantheon+rome',                  desc: 'Almost perfectly preserved ancient Roman temple.' },
+    { name: 'Roman Forum',                  type: 'history',   emoji: '🏺', img: 'roman+forum',                    desc: 'Heart of ancient Rome — ruins of temples and government.' },
+    { name: 'Palatine Hill',                type: 'history',   emoji: '🌿', img: 'palatine+hill+rome',             desc: 'The oldest part of Rome with sweeping Forum views.' },
+    { name: 'Borghese Gallery',             type: 'history',   emoji: '🎨', img: 'borghese+gallery+rome',          desc: 'Bernini sculptures and Caravaggio paintings in a villa.' },
+    { name: 'Day Trip: Pompeii',            type: 'history',   emoji: '🌋', img: 'pompeii+ruins',                  desc: 'Preserved Roman city buried by Vesuvius (~2.5 hrs by train).' },
+    { name: 'Piazza Navona',                type: 'scenic',    emoji: '🏙️', img: 'piazza+navona+rome',             desc: 'Baroque oval piazza with three monumental fountains.' },
+    { name: 'Pincio Hill Terrace',          type: 'scenic',    emoji: '🌅', img: 'pincio+hill+terrace+rome',       desc: 'Best panoramic viewpoint over Rome — stunning at sunset.' },
+    { name: 'Trastevere Walk',              type: 'scenic',    emoji: '🌿', img: 'trastevere+rome',                desc: 'Medieval streets lit by lanterns — magical in the evening.' },
+    { name: 'Gianicolo Hill',               type: 'scenic',    emoji: '🌄', img: 'gianicolo+hill+rome',            desc: 'Second-best view in Rome — a favourite local picnic spot.' },
+    { name: 'Campo de\' Fiori Market',      type: 'food',      emoji: '🥗', img: 'campo+de+fiori+rome',            desc: 'Vibrant morning market and lively evening piazza.' },
+    { name: 'Testaccio Market',             type: 'food',      emoji: '🍝', img: 'testaccio+market+rome',          desc: 'Rome\'s best indoor food market — try supplì and porchetta.' },
+    { name: 'Trastevere Dining',            type: 'food',      emoji: '🍷', img: 'trastevere+dining+rome',         desc: 'Cobblestone neighbourhood packed with trattorias.' },
+    { name: 'Gelato Tour',                  type: 'food',      emoji: '🍦', img: 'gelato+rome',                    desc: 'Hunt for the best artisan gelato in the old town.' },
+    { name: 'Bioparco Rome Zoo',            type: 'fun',       emoji: '🦁', img: 'bioparco+rome+zoo',              desc: 'Family-friendly zoo inside the Villa Borghese gardens.' },
+    { name: 'Piazza Venezia',               type: 'fun',       emoji: '🎭', img: 'piazza+venezia+rome',            desc: 'Central hub — great for people-watching and street life.' },
   ]
 };
 
@@ -730,23 +727,36 @@ const SIGHTS = {
    SIGHTSEEING ENGINE — "pick first, schedule second"
 
    Flow per city:
-   1. initGrid(city)       — renders all place tiles when days are selected
-   2. filterTiles(city, type, btn) — shows/hides tiles by category tab
-   3. togglePlace(city, name) — marks/unmarks a tile as chosen
-   4. buildItinerary(city) — takes chosen places, distributes across days,
-                              renders the day-by-day scheduled output
+   1. showSightseeing(city)  — reveals section, builds tile grid
+   2. filterTiles(city,type) — shows/hides tiles by category tab
+   3. togglePlace(city,name) — marks/unmarks a tile; checks realism
+   4. buildItinerary(city)   — distributes chosen places across days,
+                                renders day-by-day with drag+move reorder
 ───────────────────────────────────────── */
 
-/* Tracks which place names are selected per city */
+/* Tracks selected place names per city */
 const chosen = { london: new Set(), ams: new Set(), cdg: new Set(), fco: new Set() };
-
-/* Active category filter per city */
+/* Active category tab per city */
 const activeFilter = { london: 'all', ams: 'all', cdg: 'all', fco: 'all' };
 
 const TYPE_LABELS = { landmarks:'Landmark', history:'History', food:'Food & Drink', fun:'Fun', scenic:'Scenic', hp:'Harry Potter' };
 const TAG_CLASS   = { landmarks:'tag-landmarks', history:'tag-history', food:'tag-food', fun:'tag-fun', scenic:'tag-scenic', hp:'tag-hp' };
 
-/* ── 1. BUILD THE PLACE PICKER GRID ── */
+/* Unsplash Source — free keyword images, no API key needed */
+function imgUrl(keyword) {
+  return `https://source.unsplash.com/400x300/?${keyword}`;
+}
+
+/* ── 1. SHOW + INIT TILE GRID ── */
+function showSightseeing(city) {
+  const section = document.getElementById('sight-' + city);
+  if (!section) return;
+  section.classList.add('visible');
+  initGrid(city);
+  /* Scroll to the sightseeing section (NOT to the next city) */
+  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
+}
+
 function initGrid(city) {
   const grid = document.getElementById('grid-' + city);
   if (!grid) return;
@@ -754,10 +764,14 @@ function initGrid(city) {
   SIGHTS[city].forEach(place => {
     const isChosen = chosen[city].has(place.name);
     const hidden   = (activeFilter[city] !== 'all' && place.type !== activeFilter[city]) ? 'style="display:none"' : '';
+    const safeName = place.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
     grid.insertAdjacentHTML('beforeend', `
       <div class="place-tile${isChosen ? ' chosen' : ''}" ${hidden}
-           onclick="togglePlace('${city}','${place.name.replace(/'/g,"\\'")}',this)"
-           data-type="${place.type}">
+           onclick="togglePlace('${city}','${safeName}',this)"
+           data-type="${place.type}" data-name="${place.name.replace(/"/g,'&quot;')}">
+        <div class="place-img-wrap">
+          <img class="place-img" src="${imgUrl(place.img)}" alt="${place.name}" loading="lazy" onerror="this.style.display='none'">
+        </div>
         <div class="place-tile-top">
           <span class="place-emoji">${place.emoji}</span>
           <div class="place-check">${isChosen ? '✓' : ''}</div>
@@ -773,16 +787,14 @@ function initGrid(city) {
 /* ── 2. FILTER TILES BY CATEGORY TAB ── */
 function filterTiles(city, type, btn) {
   activeFilter[city] = type;
-  /* Update active tab */
   document.getElementById('tabs-' + city).querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
   btn.classList.add('active');
-  /* Show / hide tiles */
   document.querySelectorAll('#grid-' + city + ' .place-tile').forEach(tile => {
     tile.style.display = (type === 'all' || tile.dataset.type === type) ? '' : 'none';
   });
 }
 
-/* ── 3. TOGGLE A PLACE ON/OFF ── */
+/* ── 3. TOGGLE A PLACE + REALISM CHECK ── */
 function togglePlace(city, name, tile) {
   if (chosen[city].has(name)) {
     chosen[city].delete(name);
@@ -794,87 +806,172 @@ function togglePlace(city, name, tile) {
     tile.querySelector('.place-check').textContent = '✓';
   }
   updateCount(city);
-  /* Clear any existing itinerary so user knows they need to rebuild */
+  checkRealism(city);
+  /* Clear stale itinerary */
   document.getElementById('itin-' + city).innerHTML = '';
 }
 
-/* Update the "X selected" counter and enable/disable build button */
 function updateCount(city) {
   const n = chosen[city].size;
   document.getElementById('count-' + city).innerHTML = `<strong>${n}</strong> place${n !== 1 ? 's' : ''} selected`;
   document.getElementById('build-' + city).disabled = (n === 0);
 }
 
-/* ── 4. BUILD THE DAY-BY-DAY ITINERARY ── */
-function buildItinerary(city) {
-  const days    = picks[city];
-  const itinEl  = document.getElementById('itin-' + city);
+/* Realism thresholds: comfortable = ≤3/day, busy = ≤5/day, over = >5/day */
+function checkRealism(city) {
+  const days = picks[city];
+  const n    = chosen[city].size;
+  const warn = document.getElementById('warn-' + city);
+  if (!warn) return;
+  if (!days || n === 0) { warn.className = 'realism-warn'; return; }
+  const perDay = n / days;
+  if (perDay > 5) {
+    warn.className = 'realism-warn over';
+    warn.textContent = `⚠ That's about ${Math.ceil(perDay)} places per day — quite a lot. Consider removing a few or adding more days for a relaxed pace.`;
+  } else if (perDay > 3) {
+    warn.className = 'realism-warn caution';
+    warn.textContent = `That's roughly ${Math.ceil(perDay)} places per day — doable but busy. You may want to trim a couple for a more comfortable pace.`;
+  } else {
+    warn.className = 'realism-warn';
+  }
+}
 
-  /* Guard: need days to be selected first */
+/* ── 4. BUILD DAY-BY-DAY ITINERARY ── */
+
+/* Stores current scheduled order per city so drag/move can mutate it */
+const itinState = { london: [], ams: [], cdg: [], fco: [] };
+
+function buildItinerary(city) {
+  const days   = picks[city];
+  const itinEl = document.getElementById('itin-' + city);
+
   if (!days) {
-    itinEl.innerHTML = '<div class="sight-need-days">Please select the number of days above first, then we can schedule your places.</div>';
+    itinEl.innerHTML = '<div class="sight-need-days">Please select the number of days above first.</div>';
     return;
   }
-
-  /* Get ordered selection (preserving SIGHTS order, not click order) */
   const pool = SIGHTS[city].filter(p => chosen[city].has(p.name));
-
   if (!pool.length) {
     itinEl.innerHTML = '<p class="sight-empty">No places selected — tap some above first.</p>';
     return;
   }
 
-  /* Distribute evenly across days — spread remainder across early days */
-  const perDay  = Math.floor(pool.length / days);
-  const extra   = pool.length % days; /* first `extra` days get one more */
-  const html    = ['<div class="sight-step-label" style="margin-bottom:12px">Your itinerary</div>'];
-  let   idx     = 0;
+  /* Store initial ordered list for reorder operations */
+  itinState[city] = pool.map(p => p.name);
+  renderItinerary(city);
+}
+
+/* Renders from itinState — called both initially and after any reorder */
+function renderItinerary(city) {
+  const days   = picks[city];
+  const itinEl = document.getElementById('itin-' + city);
+  const nameMap = {};
+  SIGHTS[city].forEach(p => nameMap[p.name] = p);
+  const pool = itinState[city].map(n => nameMap[n]).filter(Boolean);
+
+  const perDay = Math.floor(pool.length / days);
+  const extra  = pool.length % days;
+  const html   = ['<div class="sight-step-label" style="margin-bottom:12px">Your itinerary — drag or use arrows to rearrange</div>'];
+  let idx = 0;
 
   for (let d = 0; d < days; d++) {
     const count = perDay + (d < extra ? 1 : 0);
-    if (count === 0) break; /* no more places — fewer days than needed */
+    if (count === 0) break;
     const slice = pool.slice(idx, idx + count);
     idx += count;
 
-    html.push(`<div class="day-group">
+    html.push(`<div class="day-group" data-city="${city}" data-day="${d}">
       <div class="day-label">Day ${d + 1}
         <span class="day-count-pill">${slice.length} place${slice.length !== 1 ? 's' : ''}</span>
       </div>`);
 
-    slice.forEach(p => {
-      html.push(`<div class="sched-card">
-        <div class="sched-emoji">${p.emoji}</div>
-        <div class="sched-body">
-          <div class="sched-name">${p.name}
-            <span class="place-tag ${TAG_CLASS[p.type] || 'tag-landmarks'}" style="margin-left:4px">${TYPE_LABELS[p.type]}</span>
+    slice.forEach((p, i) => {
+      /* Global index in pool for move operations */
+      const globalIdx = itinState[city].indexOf(p.name);
+      html.push(`
+        <div class="sched-card" draggable="true"
+             data-city="${city}" data-idx="${globalIdx}"
+             ondragstart="onDragStart(event)"
+             ondragover="onDragOver(event)"
+             ondrop="onDrop(event,this)"
+             ondragend="onDragEnd(event)">
+          <div class="drag-handle" title="Drag to reorder">
+            <span></span><span></span><span></span>
           </div>
-          <div class="sched-desc">${p.desc}</div>
-        </div>
-      </div>`);
+          <img class="sched-img" src="${imgUrl(p.img)}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
+          <div class="sched-body">
+            <div class="sched-name">${p.name}
+              <span class="place-tag ${TAG_CLASS[p.type] || 'tag-landmarks'}" style="margin-left:4px">${TYPE_LABELS[p.type]}</span>
+            </div>
+            <div class="sched-desc">${p.desc}</div>
+          </div>
+          <div class="move-btns">
+            <button class="move-btn" title="Move up"
+              onclick="movePlace('${city}',${globalIdx},-1)"
+              ${globalIdx === 0 ? 'disabled' : ''}>▲</button>
+            <button class="move-btn" title="Move down"
+              onclick="movePlace('${city}',${globalIdx},+1)"
+              ${globalIdx === itinState[city].length - 1 ? 'disabled' : ''}>▼</button>
+          </div>
+        </div>`);
     });
     html.push('</div>');
   }
 
-  /* If they picked more places than days*3 can hold, note the overflow */
   if (idx < pool.length) {
-    const leftover = pool.length - idx;
-    html.push(`<p class="sight-empty" style="font-size:11px;padding:8px 0">
-      ${leftover} more place${leftover > 1 ? 's' : ''} selected than days allow — consider adding a day or trimming your list.
-    </p>`);
+    const left = pool.length - idx;
+    html.push(`<p class="sight-empty" style="font-size:11px;padding:6px 0">${left} more place${left > 1 ? 's' : ''} couldn't fit — consider adding a day or removing some.</p>`);
   }
 
   itinEl.innerHTML = html.join('');
-  /* Smooth scroll to the itinerary */
   setTimeout(() => itinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
 }
 
-/* ── SHOW SIGHTSEEING SECTION WHEN DAYS ARE PICKED ── */
-function showSightseeing(city) {
-  const section = document.getElementById('sight-' + city);
-  if (!section) return;
-  section.classList.add('visible');
-  /* Build grid fresh (preserves existing selections) */
-  initGrid(city);
+/* ── MOVE BUTTONS (mobile-friendly reorder) ── */
+function movePlace(city, idx, dir) {
+  const arr  = itinState[city];
+  const newIdx = idx + dir;
+  if (newIdx < 0 || newIdx >= arr.length) return;
+  /* Swap */
+  [arr[idx], arr[newIdx]] = [arr[newIdx], arr[idx]];
+  renderItinerary(city);
+}
+
+/* ── DRAG AND DROP REORDER ── */
+let dragSrcCity = null;
+let dragSrcIdx  = null;
+
+function onDragStart(e) {
+  dragSrcCity = e.currentTarget.dataset.city;
+  dragSrcIdx  = parseInt(e.currentTarget.dataset.idx);
+  e.currentTarget.classList.add('dragging');
+  e.dataTransfer.effectAllowed = 'move';
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  document.querySelectorAll('.sched-card.drag-over').forEach(el => el.classList.remove('drag-over'));
+  e.currentTarget.classList.add('drag-over');
+}
+
+function onDrop(e, target) {
+  e.preventDefault();
+  const targetCity = target.dataset.city;
+  const targetIdx  = parseInt(target.dataset.idx);
+  if (dragSrcCity !== targetCity || dragSrcIdx === targetIdx) return;
+  const arr = itinState[targetCity];
+  /* Remove src, insert at target position */
+  const [moved] = arr.splice(dragSrcIdx, 1);
+  arr.splice(targetIdx, 0, moved);
+  renderItinerary(targetCity);
+}
+
+function onDragEnd(e) {
+  document.querySelectorAll('.sched-card').forEach(el => {
+    el.classList.remove('dragging', 'drag-over');
+  });
+  dragSrcCity = null;
+  dragSrcIdx  = null;
 }
 </script>
 </body>
