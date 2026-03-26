@@ -7,317 +7,202 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-  :root {
-    --green: #1D9E75;
-    --green-light: #E1F5EE;
-    --green-dark: #0F6E56;
-    --purple: #7F77DD;
-    --purple-light: #EEEDFE;
-    --purple-dark: #534AB7;
-    --gray: #888780;
-    --gray-light: #F4F3EF;
-    --amber: #BA7517;
-    --amber-light: #FAEEDA;
-    --text: #1a1a18;
-    --text-muted: #6b6b67;
-    --text-faint: #9b9b96;
-    --border: #e2e1dc;
-    --white: #ffffff;
-    --bg: #faf9f6;
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --green:#1D9E75;--green-light:#E1F5EE;--green-dark:#0F6E56;
+    --purple:#7F77DD;--purple-light:#EEEDFE;--purple-dark:#534AB7;
+    --gray:#888780;--gray-light:#F4F3EF;
+    --amber:#BA7517;--amber-light:#FAEEDA;
+    --text:#1a1a18;--text-muted:#6b6b67;--text-faint:#9b9b96;
+    --border:#e2e1dc;--white:#ffffff;--bg:#faf9f6;
   }
-
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text); min-height: 100vh; padding: 0; }
-
+  body{font-family:"DM Sans",sans-serif;background:var(--bg);color:var(--text);min-height:100vh}
   /* HEADER */
-  .header { background: var(--text); color: var(--white); padding: 36px 24px 32px; text-align: center; }
-  .header h1 { font-family: 'Lora', serif; font-size: clamp(26px, 5vw, 38px); font-weight: 400; line-height: 1.2; margin-bottom: 12px; }
-  .header h1 em { font-style: italic; color: #a8c4ba; }
-  .header-sub { font-size: 14px; color: #9b9b96; max-width: 380px; margin: 0 auto; line-height: 1.6; }
-
+  .header{background:var(--text);color:var(--white);padding:36px 24px 32px;text-align:center}
+  .header h1{font-family:"Lora",serif;font-size:clamp(26px,5vw,38px);font-weight:400;line-height:1.2;margin-bottom:12px}
+  .header h1 em{font-style:italic;color:#a8c4ba}
+  .header-sub{font-size:14px;color:#9b9b96;max-width:400px;margin:0 auto;line-height:1.6}
   /* ROUTE BAR */
-  .route-bar { background: var(--white); border-bottom: 1px solid var(--border); padding: 14px 20px; display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; font-size: 12px; color: var(--text-muted); font-weight: 500; }
-  .route-city { color: var(--text); font-weight: 500; }
-  .route-arrow { color: var(--border); font-size: 10px; }
-
+  .route-bar{background:var(--white);border-bottom:1px solid var(--border);padding:14px 20px;display:flex;align-items:center;justify-content:center;gap:6px;flex-wrap:wrap;font-size:12px;color:var(--text-muted);font-weight:500}
+  .route-city{color:var(--text);font-weight:500}
+  .route-arrow{color:var(--border);font-size:10px}
   /* MAIN */
-  .main { max-width: 560px; margin: 0 auto; padding: 28px 16px 60px; }
-
-  /* INTRO CARD */
-  .intro-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 20px 22px; margin-bottom: 28px; font-size: 14px; color: var(--text-muted); line-height: 1.7; }
-  .intro-card strong { color: var(--text); }
-
-  /* STOP CARD */
-  .stop { background: var(--white); border: 1px solid var(--border); border-radius: 16px; overflow: hidden; margin-bottom: 8px; }
-  .stop-header { padding: 16px 20px 14px; display: flex; align-items: flex-start; gap: 14px; }
-  .stop-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0; margin-top: 1px; }
-  .stop-icon.home  { background: #F1EFE8; }
-  .stop-icon.fixed { background: var(--green-light); }
-  .stop-icon.flex  { background: var(--purple-light); }
-  .stop-info { flex: 1; }
-  .stop-city { font-family: 'Lora', serif; font-size: 18px; font-weight: 600; color: var(--text); line-height: 1.2; margin-bottom: 2px; }
-  .stop-airport { font-size: 12px; color: var(--text-faint); margin-bottom: 4px; }
-  .stop-badge { display: inline-block; font-size: 11px; font-weight: 500; padding: 2px 9px; border-radius: 20px; }
-  .badge-fixed { background: var(--green-light); color: var(--green-dark); }
-  .badge-flex  { background: var(--purple-light); color: var(--purple-dark); }
-  .badge-home  { background: #F1EFE8; color: #5F5E5A; }
-  .stop-dates { padding: 0 20px 14px 74px; font-size: 13px; color: var(--text-muted); line-height: 1.6; }
-  .date-fixed    { color: var(--green-dark); font-weight: 500; }
-  .date-computed { color: var(--purple-dark); font-weight: 500; }
-
-  /* PREF SECTION */
-  .pref-section { border-top: 1px solid var(--gray-light); padding: 14px 20px; background: #fdfcfa; }
-  .pref-question { font-size: 13px; font-weight: 500; color: var(--text); margin-bottom: 10px; }
-  .day-picker { display: flex; gap: 8px; flex-wrap: wrap; }
-  .day-btn {
-    width: 44px; height: 44px; border-radius: 10px; border: 1.5px solid var(--border);
-    background: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500;
-    color: var(--text-muted); cursor: pointer; transition: all 0.15s ease;
-    display: flex; align-items: center; justify-content: center;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
-  }
-  .day-btn:hover { border-color: var(--purple); color: var(--purple); background: var(--purple-light); }
-  .day-btn:active { transform: scale(0.92); }
-  .day-btn.selected { border-color: var(--purple); background: var(--purple); color: var(--white); transform: scale(1.1); }
-  .note { font-size: 11px; color: var(--text-faint); margin-top: 6px; }
-
+  .main{max-width:560px;margin:0 auto;padding:28px 16px 80px}
+  /* INTRO */
+  .intro-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:20px 22px;margin-bottom:28px;font-size:14px;color:var(--text-muted);line-height:1.7}
+  /* STOP */
+  .stop{background:var(--white);border:1px solid var(--border);border-radius:16px;overflow:hidden;margin-bottom:8px}
+  .stop-header{padding:16px 20px 14px;display:flex;align-items:flex-start;gap:14px}
+  .stop-icon{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;flex-shrink:0;margin-top:1px}
+  .stop-icon.home{background:#F1EFE8}.stop-icon.fixed{background:var(--green-light)}.stop-icon.flex{background:var(--purple-light)}
+  .stop-info{flex:1}
+  .stop-city{font-family:"Lora",serif;font-size:18px;font-weight:600;color:var(--text);line-height:1.2;margin-bottom:2px}
+  .stop-airport{font-size:12px;color:var(--text-faint);margin-bottom:4px}
+  .stop-badge{display:inline-block;font-size:11px;font-weight:500;padding:2px 9px;border-radius:20px}
+  .badge-fixed{background:var(--green-light);color:var(--green-dark)}
+  .badge-flex{background:var(--purple-light);color:var(--purple-dark)}
+  .badge-home{background:#F1EFE8;color:#5F5E5A}
+  .stop-dates{padding:0 20px 14px 74px;font-size:13px;color:var(--text-muted);line-height:1.6}
+  .date-fixed{color:var(--green-dark);font-weight:500}
+  .date-computed{color:var(--purple-dark);font-weight:500}
+  /* PREF */
+  .pref-section{border-top:1px solid var(--gray-light);padding:14px 20px;background:#fdfcfa}
+  .pref-question{font-size:13px;font-weight:500;color:var(--text);margin-bottom:10px}
+  .day-picker{display:flex;gap:8px;flex-wrap:wrap}
+  .day-btn{width:44px;height:44px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;color:var(--text-muted);cursor:pointer;transition:all .15s ease;display:flex;align-items:center;justify-content:center;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none}
+  .day-btn:hover{border-color:var(--purple);color:var(--purple);background:var(--purple-light)}
+  .day-btn:active{transform:scale(.92)}
+  .day-btn.selected{border-color:var(--purple);background:var(--purple);color:var(--white);transform:scale(1.1)}
+  .note{font-size:11px;color:var(--text-faint);margin-top:6px}
   /* CONNECTOR */
-  .connector { display: flex; flex-direction: column; align-items: center; padding: 4px 0; }
-  .conn-line { width: 1.5px; height: 16px; background: var(--border); }
-  .conn-pill { font-size: 11px; font-weight: 500; padding: 4px 12px; border-radius: 20px; border: 1px solid var(--border); background: var(--white); color: var(--text-muted); display: flex; align-items: center; gap: 5px; }
-  .conn-pill.drive { border-color: #EF9F27; color: var(--amber); background: var(--amber-light); }
-
+  .connector{display:flex;flex-direction:column;align-items:center;padding:4px 0}
+  .conn-line{width:1.5px;height:16px;background:var(--border)}
+  .conn-pill{font-size:11px;font-weight:500;padding:4px 12px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--text-muted);display:flex;align-items:center;gap:5px}
+  .conn-pill.drive{border-color:#EF9F27;color:var(--amber);background:var(--amber-light)}
   /* SUMMARY */
-  .summary { margin-top: 28px; background: var(--text); border-radius: 16px; padding: 24px 22px; display: none; }
-  .summary.visible { display: block; }
-  .summary-title { font-family: 'Lora', serif; font-size: 18px; color: var(--white); margin-bottom: 16px; }
-  .summary-row { display: flex; justify-content: space-between; align-items: center; padding: 8px 0; border-bottom: 1px solid #2c2c2a; font-size: 13px; }
-  .summary-row:last-of-type { border-bottom: none; }
-  .sum-label { color: #9b9b96; }
-  .sum-val { color: var(--white); font-weight: 500; }
-  .sum-val.fixed { color: #5DCAA5; }
-  .sum-val.flex  { color: #AFA9EC; }
-  .copy-btn { width: 100%; margin-top: 16px; padding: 13px; border-radius: 10px; border: none; background: var(--purple); color: var(--white); font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: background 0.15s; }
-  .copy-btn:hover { background: var(--purple-dark); }
-  .copy-btn.copied { background: var(--green); }
-
+  .summary{margin-top:28px;background:var(--text);border-radius:16px;padding:24px 22px;display:none}
+  .summary.visible{display:block}
+  .summary-title{font-family:"Lora",serif;font-size:18px;color:var(--white);margin-bottom:16px}
+  .summary-row{display:flex;justify-content:space-between;align-items:center;padding:8px 0;border-bottom:1px solid #2c2c2a;font-size:13px}
+  .summary-row:last-of-type{border-bottom:none}
+  .sum-label{color:#9b9b96}.sum-val{color:var(--white);font-weight:500}
+  .sum-val.fixed{color:#5DCAA5}.sum-val.flex{color:#AFA9EC}
+  .copy-btn{width:100%;margin-top:16px;padding:13px;border-radius:10px;border:none;background:var(--purple);color:var(--white);font-family:"DM Sans",sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:background .15s}
+  .copy-btn:hover{background:var(--purple-dark)}.copy-btn.copied{background:var(--green)}
   /* TOTAL BAR */
-  .total-bar { position: sticky; bottom: 0; background: var(--white); border-top: 1px solid var(--border); padding: 12px 20px; display: none; justify-content: space-between; align-items: center; font-size: 13px; z-index: 10; }
-  .total-bar.visible { display: flex; }
-  .total-label { color: var(--text-muted); }
-  .total-val { font-weight: 500; color: var(--text); font-size: 15px; }
+  .total-bar{position:sticky;bottom:0;background:var(--white);border-top:1px solid var(--border);padding:12px 20px;display:none;justify-content:space-between;align-items:center;font-size:13px;z-index:10}
+  .total-bar.visible{display:flex}
+  .total-label{color:var(--text-muted)}.total-val{font-weight:500;color:var(--text);font-size:15px}
 
-  /* ── SIGHTSEEING ────────────────────────── */
-  .sightseeing-section { border-top: 1px solid var(--gray-light); padding: 16px 20px 20px; background: #f8f7f4; display: none; }
-  .sightseeing-section.visible { display: block; }
-
-  /* Step labels */
-  .sight-step-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); margin-bottom: 10px; }
-
-  /* Category filter tabs */
-  .cat-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 14px; }
-  .cat-tab {
-    font-size: 11px; font-weight: 500; padding: 4px 10px; border-radius: 20px;
-    border: 1px solid var(--border); background: var(--white); color: var(--text-muted);
-    cursor: pointer; transition: all 0.12s ease;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-  }
-  .cat-tab:hover { border-color: var(--purple); color: var(--purple); }
-  .cat-tab.active { background: var(--purple); border-color: var(--purple); color: var(--white); }
-
-  /* Place picker grid — tappable checkbox-style cards */
-  .place-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
-  .place-tile {
-    background: var(--white); border: 1.5px solid var(--border); border-radius: 12px;
-    padding: 10px 10px 8px; cursor: pointer; transition: all 0.15s ease;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation; user-select: none;
-    display: flex; flex-direction: column; gap: 4px;
-  }
-  .place-tile:hover { border-color: var(--purple-dark); }
-  .place-tile.chosen { border-color: var(--purple); background: var(--purple-light); }
-  .place-tile-top { display: flex; align-items: center; gap: 6px; }
-  .place-emoji { font-size: 20px; line-height: 1; flex-shrink: 0; }
-  .place-check {
-    margin-left: auto; width: 18px; height: 18px; border-radius: 5px;
-    border: 1.5px solid var(--border); background: var(--white);
-    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
-    font-size: 11px; transition: all 0.12s ease;
-  }
-  .place-tile.chosen .place-check { background: var(--purple); border-color: var(--purple); color: var(--white); }
-  .place-name { font-size: 12px; font-weight: 500; color: var(--text); line-height: 1.3; }
-  .place-tile.chosen .place-name { color: var(--purple-dark); }
-  .place-desc { font-size: 11px; color: var(--text-faint); line-height: 1.4; }
-  .place-tag { display: inline-block; font-size: 10px; font-weight: 500; padding: 1px 6px; border-radius: 20px; margin-top: 2px; }
-
-  /* Tag colours */
-  .tag-landmarks { background: #E8EEFB; color: #3B5BAD; }
-  .tag-history   { background: #FDF3E7; color: #8B5A1A; }
-  .tag-food      { background: #E6F4EE; color: #1D6B45; }
-  .tag-fun       { background: #EDE8FD; color: #5A3BAD; }
-  .tag-scenic    { background: #E4F2FA; color: #1A6B8B; }
-  .tag-hp        { background: #F0E8FD; color: #6B1A9B; }
-
-  /* Selection counter + build button */
-  .sight-action-bar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 16px; gap: 8px; }
-  .sight-count { font-size: 12px; color: var(--text-muted); }
-  .sight-count strong { color: var(--purple-dark); }
-  .build-btn {
-    font-family: 'DM Sans', sans-serif; font-size: 12px; font-weight: 500;
-    padding: 7px 14px; border-radius: 8px; border: none;
-    background: var(--purple); color: var(--white); cursor: pointer;
-    transition: background 0.15s; -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-    white-space: nowrap;
-  }
-  .build-btn:hover { background: var(--purple-dark); }
-  .build-btn:disabled { background: var(--border); color: var(--text-faint); cursor: default; }
-
+  /* ══ SIGHTSEEING ══════════════════════════════════ */
+  .sightseeing-section{border-top:1px solid var(--gray-light);padding:16px 20px 20px;background:#f8f7f4;display:none}
+  .sightseeing-section.visible{display:block}
+  .sight-step-label{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:10px}
+  /* Category tabs */
+  .cat-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:14px}
+  .cat-tab{font-size:11px;font-weight:500;padding:4px 10px;border-radius:20px;border:1px solid var(--border);background:var(--white);color:var(--text-muted);cursor:pointer;transition:all .12s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation}
+  .cat-tab:hover{border-color:var(--purple);color:var(--purple)}
+  .cat-tab.active{background:var(--purple);border-color:var(--purple);color:var(--white)}
+  /* Place grid */
+  .place-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:16px}
+  .place-tile{background:var(--white);border:1.5px solid var(--border);border-radius:12px;overflow:hidden;cursor:pointer;transition:all .15s ease;-webkit-tap-highlight-color:transparent;touch-action:manipulation;user-select:none;display:flex;flex-direction:column}
+  .place-tile:hover{border-color:var(--purple-dark)}
+  .place-tile.chosen{border-color:var(--purple);background:var(--purple-light)}
+  .place-img-wrap{width:100%;height:88px;overflow:hidden;flex-shrink:0;position:relative;background:var(--gray-light)}
+  .place-img{width:100%;height:100%;object-fit:cover;display:block;transition:opacity .3s}
+  .place-img.loaded{opacity:1}.place-img:not(.loaded){opacity:0}
+  .place-img-fallback{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:28px;background:var(--gray-light)}
+  .place-body{padding:8px 10px 8px;flex:1;display:flex;flex-direction:column;gap:3px}
+  .place-tile-top{display:flex;align-items:center;gap:5px}
+  .place-check{margin-left:auto;width:18px;height:18px;border-radius:5px;border:1.5px solid var(--border);background:var(--white);display:flex;align-items:center;justify-content:center;flex-shrink:0;font-size:11px;transition:all .12s ease}
+  .place-tile.chosen .place-check{background:var(--purple);border-color:var(--purple);color:var(--white)}
+  .place-name{font-size:12px;font-weight:500;color:var(--text);line-height:1.3}
+  .place-tile.chosen .place-name{color:var(--purple-dark)}
+  .place-meta{font-size:10px;color:var(--text-faint);display:flex;gap:6px;align-items:center;flex-wrap:wrap}
+  .place-hood{background:var(--gray-light);padding:1px 5px;border-radius:10px}
+  .place-visit{color:var(--green-dark)}
+  .place-tag{display:inline-block;font-size:10px;font-weight:500;padding:1px 6px;border-radius:20px;margin-top:1px}
+  .tag-landmarks{background:#E8EEFB;color:#3B5BAD}
+  .tag-history{background:#FDF3E7;color:#8B5A1A}
+  .tag-food{background:#E6F4EE;color:#1D6B45}
+  .tag-fun{background:#EDE8FD;color:#5A3BAD}
+  .tag-scenic{background:#E4F2FA;color:#1A6B8B}
+  .tag-hp{background:#F0E8FD;color:#6B1A9B}
+  .tag-custom{background:#E1F5EE;color:#0F6E56}
+  /* Action bar */
+  .sight-action-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px;gap:8px}
+  .sight-count{font-size:12px;color:var(--text-muted)}.sight-count strong{color:var(--purple-dark)}
+  .sight-btn-row{display:flex;gap:8px;align-items:center}
+  .build-btn{font-family:"DM Sans",sans-serif;font-size:12px;font-weight:500;padding:7px 14px;border-radius:8px;border:none;background:var(--purple);color:var(--white);cursor:pointer;transition:background .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;white-space:nowrap}
+  .build-btn:hover{background:var(--purple-dark)}.build-btn:disabled{background:var(--border);color:var(--text-faint);cursor:default}
+  .optimize-btn{font-family:"DM Sans",sans-serif;font-size:12px;font-weight:500;padding:7px 12px;border-radius:8px;border:1.5px solid var(--green);background:var(--white);color:var(--green-dark);cursor:pointer;transition:all .15s;-webkit-tap-highlight-color:transparent;touch-action:manipulation;white-space:nowrap;display:none}
+  .optimize-btn.visible{display:block}.optimize-btn:hover{background:var(--green-light)}
+  /* Realism */
+  .realism-warn{font-size:12px;padding:8px 12px;border-radius:8px;margin-bottom:10px;display:none;line-height:1.5}
+  .realism-warn.caution{display:block;background:var(--amber-light);color:#7a4a0a;border:1px solid #EF9F27}
+  .realism-warn.over{display:block;background:#FCEBEB;color:#7a1a1a;border:1px solid #F09595}
+  /* Custom place */
+  .custom-place-row{display:flex;gap:8px;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);align-items:center;flex-wrap:wrap}
+  .custom-place-label{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);width:100%;margin-bottom:2px}
+  .custom-place-input{flex:1;min-width:140px;font-family:"DM Sans",sans-serif;font-size:13px;padding:9px 12px;border-radius:9px;border:1.5px solid var(--border);background:var(--white);color:var(--text);outline:none;transition:border-color .15s}
+  .custom-place-input:focus{border-color:var(--purple)}
+  .custom-place-input::placeholder{color:var(--text-faint)}
+  .custom-place-add-btn{font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;padding:9px 14px;border-radius:9px;border:none;background:var(--green);color:var(--white);cursor:pointer;white-space:nowrap;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:background .15s}
+  .custom-place-add-btn:hover{background:var(--green-dark)}
+  .custom-tiles-list{display:flex;flex-direction:column;gap:6px;margin-top:10px;width:100%}
+  .custom-tile{display:flex;align-items:center;gap:10px;background:var(--green-light);border:1.5px solid var(--green);border-radius:10px;padding:8px 12px;font-size:13px}
+  .custom-tile-name{flex:1;font-weight:500;color:var(--green-dark)}
+  .custom-tile-remove{background:none;border:none;cursor:pointer;color:var(--green-dark);font-size:18px;line-height:1;padding:0;opacity:.5;-webkit-tap-highlight-color:transparent}
+  .custom-tile-remove:hover{opacity:1}
   /* Itinerary output */
-  .itinerary-out { margin-top: 4px; }
-  .day-group { margin-bottom: 18px; }
-  .day-label {
-    font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase;
-    color: var(--text-faint); margin-bottom: 8px; padding-bottom: 5px; border-bottom: 1px solid var(--border);
-    display: flex; align-items: center; justify-content: space-between;
-  }
-  .day-count-pill { font-size: 10px; background: var(--gray-light); color: var(--gray); padding: 1px 7px; border-radius: 20px; letter-spacing: 0; text-transform: none; font-weight: 400; }
-
-  /* Place tile image */
-  .place-img { width: 100%; height: 90px; object-fit: cover; border-radius: 8px 8px 0 0; display: block; background: var(--gray-light); }
-  .place-img-wrap { margin: -10px -10px 8px -10px; border-radius: 8px 8px 0 0; overflow: hidden; }
-
-  /* Realism warning banner */
-  .realism-warn {
-    font-size: 12px; padding: 8px 12px; border-radius: 8px; margin-bottom: 12px;
-    display: none; line-height: 1.5;
-  }
-  .realism-warn.caution { display: block; background: var(--amber-light); color: #7a4a0a; border: 1px solid #EF9F27; }
-  .realism-warn.over    { display: block; background: #FCEBEB; color: #7a1a1a; border: 1px solid #F09595; }
-
-  /* Scheduled card with drag support */
-  .sched-card {
-    display: flex; align-items: flex-start; gap: 10px;
-    background: var(--white); border: 1px solid var(--border); border-radius: 10px;
-    padding: 10px 12px; margin-bottom: 7px;
-    cursor: grab; transition: box-shadow 0.15s, opacity 0.15s;
-    position: relative;
-  }
-  .sched-card:active { cursor: grabbing; }
-  .sched-card.dragging { opacity: 0.4; box-shadow: 0 4px 16px rgba(0,0,0,0.12); }
-  .sched-card.drag-over { border-color: var(--purple); background: var(--purple-light); }
-
-  /* Drag handle */
-  .drag-handle {
-    display: flex; flex-direction: column; gap: 3px; padding: 4px 2px;
-    flex-shrink: 0; opacity: 0.3; cursor: grab; align-self: center;
-  }
-  .drag-handle span { display: block; width: 14px; height: 2px; background: var(--text); border-radius: 1px; }
-
-  /* Move up/down buttons for mobile */
-  .move-btns { display: flex; flex-direction: column; gap: 2px; flex-shrink: 0; align-self: center; }
-  .move-btn {
-    width: 22px; height: 22px; border-radius: 5px; border: 1px solid var(--border);
-    background: var(--white); font-size: 10px; cursor: pointer; display: flex;
-    align-items: center; justify-content: center; color: var(--text-muted);
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation;
-    transition: all 0.1s;
-  }
-  .move-btn:hover { background: var(--purple-light); border-color: var(--purple); color: var(--purple); }
-  .move-btn:disabled { opacity: 0.25; cursor: default; }
-
-  /* Sched image */
-  .sched-img { width: 52px; height: 52px; border-radius: 8px; object-fit: cover; flex-shrink: 0; background: var(--gray-light); }
-
-  .sight-empty { font-size: 13px; color: var(--text-faint); text-align: center; padding: 20px 0; }
-  .sight-need-days { font-size: 12px; color: var(--amber); background: var(--amber-light); border-radius: 8px; padding: 8px 12px; margin-bottom: 12px; }
-
-  /* Custom place add row */
-  .custom-place-row { display: flex; gap: 8px; margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--border); align-items: center; flex-wrap: wrap; }
-  .custom-place-label { font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; color: var(--text-faint); width: 100%; margin-bottom: 2px; }
-  .custom-place-input {
-    flex: 1; min-width: 140px; font-family: 'DM Sans', sans-serif; font-size: 13px;
-    padding: 9px 12px; border-radius: 9px; border: 1.5px solid var(--border);
-    background: var(--white); color: var(--text); outline: none; transition: border-color 0.15s;
-  }
-  .custom-place-input:focus { border-color: var(--purple); }
-  .custom-place-input::placeholder { color: var(--text-faint); }
-  .custom-place-add-btn {
-    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-    padding: 9px 14px; border-radius: 9px; border: none;
-    background: var(--green); color: var(--white); cursor: pointer; white-space: nowrap;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: background 0.15s;
-  }
-  .custom-place-add-btn:hover { background: var(--green-dark); }
-  .custom-tiles-list { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; width: 100%; }
-  .custom-tile {
-    display: flex; align-items: center; gap: 10px;
-    background: var(--green-light); border: 1.5px solid var(--green); border-radius: 10px;
-    padding: 8px 12px; font-size: 13px;
-  }
-  .custom-tile-name { flex: 1; font-weight: 500; color: var(--green-dark); }
-  .custom-tile-remove {
-    background: none; border: none; cursor: pointer; color: var(--green-dark);
-    font-size: 18px; line-height: 1; padding: 0; opacity: 0.5;
-    -webkit-tap-highlight-color: transparent;
-  }
-  .custom-tile-remove:hover { opacity: 1; }
-
-  /* Send selections card */
-  .send-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 22px 22px 18px; margin-top: 24px; display: none; }
-  .send-card.visible { display: block; }
-  .send-title { font-family: 'Lora', serif; font-size: 17px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
-  .send-sub { font-size: 13px; color: var(--text-muted); margin-bottom: 14px; line-height: 1.5; }
-  .send-name-row { margin-bottom: 12px; }
-  .send-name-input {
-    width: 100%; font-family: 'DM Sans', sans-serif; font-size: 14px;
-    padding: 10px 14px; border-radius: 10px; border: 1.5px solid var(--border);
-    background: var(--white); color: var(--text); outline: none; transition: border-color .15s;
-  }
-  .send-name-input:focus { border-color: var(--purple); }
-  .send-btn-row { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 10px; }
-  .send-btn {
-    font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
-    padding: 10px 18px; border-radius: 10px; cursor: pointer;
-    -webkit-tap-highlight-color: transparent; touch-action: manipulation; transition: all .15s;
-    flex: 1; min-width: 120px;
-  }
-  .send-btn-primary { background: var(--purple); color: var(--white); border: none; }
-  .send-btn-primary:hover { background: var(--purple-dark); }
-  .send-btn-secondary { background: var(--white); color: var(--text); border: 1.5px solid var(--border); }
-  .send-btn-secondary:hover { border-color: var(--purple); color: var(--purple); }
-  .send-note { font-size: 11px; color: var(--text-faint); line-height: 1.5; }
-  #send-status { font-size: 13px; margin-bottom: 10px; min-height: 18px; }
-  .send-ok  { color: var(--green-dark); }
-  .send-err { color: #A32D2D; }
-
-  /* Neighborhood pill on place tiles */
-  .place-hood { font-size: 10px; color: var(--text-faint); margin-top: 1px; }
-
-  /* Walk-time connector between itinerary cards */
-  .walk-connector { display: flex; align-items: center; gap: 6px; padding: 2px 0 2px 12px; margin-bottom: 4px; }
-  .walk-line { flex: 1; height: 1px; background: var(--border); }
-  .walk-badge { font-size: 10px; color: var(--text-faint); background: var(--gray-light); padding: 2px 8px; border-radius: 20px; white-space: nowrap; flex-shrink: 0; }
+  .itinerary-out{margin-top:4px}
+  .itin-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+  .itin-title{font-size:12px;font-weight:500;color:var(--text)}
+  .itin-email-btn{font-family:"DM Sans",sans-serif;font-size:11px;font-weight:500;padding:5px 12px;border-radius:8px;border:1.5px solid var(--purple);background:var(--white);color:var(--purple-dark);cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .15s}
+  .itin-email-btn:hover{background:var(--purple-light)}
+  .day-group{margin-bottom:20px}
+  .day-label{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--text-faint);margin-bottom:8px;padding-bottom:5px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between}
+  .day-count-pill{font-size:10px;background:var(--gray-light);color:var(--gray);padding:1px 7px;border-radius:20px;letter-spacing:0;text-transform:none;font-weight:400}
+  /* Scheduled card */
+  .sched-card{display:flex;align-items:flex-start;gap:10px;background:var(--white);border:1px solid var(--border);border-radius:10px;padding:10px 10px 10px 12px;margin-bottom:6px;cursor:grab;transition:box-shadow .15s,opacity .15s;position:relative}
+  .sched-card:active{cursor:grabbing}
+  .sched-card.dragging{opacity:.4;box-shadow:0 4px 16px rgba(0,0,0,.12)}
+  .sched-card.drag-over{border-color:var(--purple);background:var(--purple-light)}
+  .drag-handle{display:flex;flex-direction:column;gap:3px;padding:4px 2px;flex-shrink:0;opacity:.3;cursor:grab;align-self:center}
+  .drag-handle span{display:block;width:14px;height:2px;background:var(--text);border-radius:1px}
+  .sched-img{width:56px;height:56px;border-radius:8px;object-fit:cover;flex-shrink:0;background:var(--gray-light);position:relative}
+  .sched-img-wrap{width:56px;height:56px;border-radius:8px;flex-shrink:0;overflow:hidden;background:var(--gray-light);display:flex;align-items:center;justify-content:center;font-size:22px}
+  .sched-body{flex:1;min-width:0}
+  .sched-name{font-size:13px;font-weight:500;color:var(--text);margin-bottom:2px;display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+  .sched-meta{font-size:11px;color:var(--text-faint);line-height:1.5}
+  .sched-hood{font-size:10px;color:var(--text-faint);background:var(--gray-light);padding:1px 5px;border-radius:10px}
+  .move-btns{display:flex;flex-direction:column;gap:2px;flex-shrink:0;align-self:center}
+  .move-btn{width:22px;height:22px;border-radius:5px;border:1px solid var(--border);background:var(--white);font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;color:var(--text-muted);-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .1s}
+  .move-btn:hover{background:var(--purple-light);border-color:var(--purple);color:var(--purple)}
+  .move-btn:disabled{opacity:.25;cursor:default}
+  /* Travel connector */
+  .travel-connector{background:var(--gray-light);border-radius:8px;padding:7px 10px;margin:4px 0 6px 68px;font-size:11px;color:var(--text-muted)}
+  .travel-row{display:flex;align-items:center;gap:8px;padding:1px 0}
+  .travel-icon{width:16px;text-align:center;flex-shrink:0}
+  .travel-time{font-weight:500;color:var(--text)}
+  .travel-label{color:var(--text-faint)}
+  /* Misc */
+  .sight-empty{font-size:13px;color:var(--text-faint);text-align:center;padding:20px 0}
+  .sight-need-days{font-size:12px;color:var(--amber);background:var(--amber-light);border-radius:8px;padding:8px 12px;margin-bottom:12px}
+  /* Send card */
+  .send-card{background:var(--white);border:1px solid var(--border);border-radius:16px;padding:22px 22px 18px;margin-top:24px;display:none}
+  .send-card.visible{display:block}
+  .send-title{font-family:"Lora",serif;font-size:17px;font-weight:600;color:var(--text);margin-bottom:6px}
+  .send-sub{font-size:13px;color:var(--text-muted);margin-bottom:14px;line-height:1.5}
+  .send-name-row{margin-bottom:12px}
+  .send-name-input{width:100%;font-family:"DM Sans",sans-serif;font-size:14px;padding:10px 14px;border-radius:10px;border:1.5px solid var(--border);background:var(--white);color:var(--text);outline:none;transition:border-color .15s}
+  .send-name-input:focus{border-color:var(--purple)}
+  .send-btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:10px}
+  .send-btn{font-family:"DM Sans",sans-serif;font-size:13px;font-weight:500;padding:10px 18px;border-radius:10px;cursor:pointer;-webkit-tap-highlight-color:transparent;touch-action:manipulation;transition:all .15s;flex:1;min-width:120px}
+  .send-btn-primary{background:var(--purple);color:var(--white);border:none}
+  .send-btn-primary:hover{background:var(--purple-dark)}
+  .send-btn-secondary{background:var(--white);color:var(--text);border:1.5px solid var(--border)}
+  .send-btn-secondary:hover{border-color:var(--purple);color:var(--purple)}
+  .send-note{font-size:11px;color:var(--text-faint);line-height:1.5}
+  #send-status{font-size:13px;margin-bottom:10px;min-height:18px}
+  .send-ok{color:var(--green-dark)}.send-err{color:#A32D2D}
+  /* Optimize banner */
+  .optimize-banner{background:var(--green-light);border:1px solid var(--green);border-radius:8px;padding:8px 12px;margin-bottom:10px;font-size:12px;color:var(--green-dark);display:none}
+  .optimize-banner.visible{display:block}
 </style>
 </head>
 <body>
 
-
-<!-- Netlify hidden form — receives selections silently in background -->
 <form name="trip-selections" netlify netlify-honeypot="bot-field" hidden>
   <input type="hidden" name="form-name" value="trip-selections">
-  <input name="bot-field">
-  <input name="name">
-  <input name="days_summary">
-  <input name="london_places">
-  <input name="amsterdam_places">
-  <input name="paris_places">
-  <input name="rome_places">
-  <input name="custom_places">
+  <input name="bot-field"><input name="name"><input name="days_summary">
+  <input name="london_places"><input name="amsterdam_places">
+  <input name="paris_places"><input name="rome_places"><input name="custom_places">
 </form>
 
 <div class="header">
   <h1>Your trip<br><em>at a glance</em></h1>
-  <p class="header-sub">We put together a possible route below. All flights are direct with no layovers, which we thought would make things a little easier. If you could let us know how many days feel right at each stop, we'll use that to put together some flight options for you. And if you're open to layovers for more flexibility or lower fares, we're happy to rework the route around that as well.</p>
+  <p class="header-sub">We put together a possible route below — all direct flights, no layovers. Let us know how many days feel right at each stop and which places interest you. We'll use that to pull together some flight options and a day-by-day plan.</p>
 </div>
 
 <div class="route-bar">
@@ -333,7 +218,7 @@
 <div class="main">
 
   <div class="intro-card">
-    Tony and Dawn, please take a look at the route and tap how many days you'd want at each stop. We'll use that to pull together some flight options for you.
+    Tony and Dawn, take a look at the route below. Pick how many days you want at each stop, then choose the places you're interested in visiting — we'll build a day-by-day itinerary with travel times for you.
   </div>
 
   <!-- ATL DEPART -->
@@ -361,9 +246,9 @@
         <span class="stop-badge badge-flex">Your choice</span>
       </div>
     </div>
-    <div class="stop-dates">Must depart by <span class="date-fixed">Nov 9 evening</span> to arrive Hyderabad on time.</div>
+    <div class="stop-dates">Must depart by <span class="date-fixed">Nov 9 evening</span> to reach Hyderabad on time.</div>
     <div class="pref-section">
-      <div class="pref-question">How many days would you like in London?</div>
+      <div class="pref-question">How many days in London?</div>
       <div class="day-picker" id="london-picker">
         <button class="day-btn" onclick="pick('london',2,this)">2</button>
         <button class="day-btn" onclick="pick('london',3,this)">3</button>
@@ -375,7 +260,6 @@
       <p class="note">This tells us when to fly out of Atlanta.</p>
     </div>
     <div class="sightseeing-section" id="sight-london">
-      <!-- Step 1: filter by category -->
       <div class="sight-step-label">Step 1 — Browse by interest</div>
       <div class="cat-tabs" id="tabs-london">
         <button class="cat-tab active" onclick="filterTiles('london','all',this)">All</button>
@@ -386,32 +270,30 @@
         <button class="cat-tab" onclick="filterTiles('london','scenic',this)">Scenic</button>
         <button class="cat-tab" onclick="filterTiles('london','hp',this)">⚡ Harry Potter</button>
       </div>
-      <!-- Step 2: tap to choose places -->
-      <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
+      <div class="sight-step-label">Step 2 — Tap places you want to visit</div>
       <div class="place-grid" id="grid-london"></div>
-      <!-- Action bar -->
-      <!-- Custom place input -->
       <div class="custom-place-row">
-        <div class="custom-place-label">Add a place that's not listed</div>
-        <input class="custom-place-input" id="custom-input-london" type="text"
-               placeholder="e.g. Kew Gardens, Oxford Street…"
-               onkeydown="if(event.key==='Enter')addCustomPlace('london')">
+        <div class="custom-place-label">Add a place not listed</div>
+        <input class="custom-place-input" id="custom-input-london" type="text" placeholder="e.g. Kew Gardens…" onkeydown="if(event.key==='Enter')addCustomPlace('london')">
         <button class="custom-place-add-btn" onclick="addCustomPlace('london')">+ Add</button>
         <div class="custom-tiles-list" id="custom-list-london"></div>
       </div>
       <div class="realism-warn" id="warn-london"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-london"><strong>0</strong> selected</span>
-        <button class="build-btn" id="build-london" onclick="buildItinerary('london')" disabled>Build my itinerary</button>
+        <div class="sight-btn-row">
+          <button class="optimize-btn" id="opt-london" onclick="optimizeAndBuild('london')">✦ Optimize route</button>
+          <button class="build-btn" id="build-london" onclick="buildItinerary('london')" disabled>Build itinerary</button>
+        </div>
       </div>
-      <!-- Step 3: day-by-day output -->
+      <div class="optimize-banner" id="opt-banner-london"></div>
       <div class="itinerary-out" id="itin-london"></div>
     </div>
   </div>
 
   <div class="connector"><div class="conn-line"></div><div class="conn-pill">✈ Non-stop · LHR → HYD · ~10 hrs</div><div class="conn-line"></div></div>
 
-  <!-- HYDERABAD (fixed, no sightseeing section) -->
+  <!-- HYDERABAD -->
   <div class="stop">
     <div class="stop-header">
       <div class="stop-icon fixed">🇮🇳</div>
@@ -445,9 +327,9 @@
         <button class="day-btn" onclick="pick('ams',4,this)">4</button>
         <button class="day-btn" onclick="pick('ams',5,this)">5</button>
       </div>
-      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-light);border-radius:10px;border:1px solid #EF9F27;">
-        <p style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:3px;">Rental car · Pickup in Amsterdam</p>
-        <p style="font-size:12px;color:#6b4e10;line-height:1.6;">You would pick up a rental car at Schiphol Airport on arrival and drive to Paris — about 4 hours. The car gets returned in Paris. If you'd prefer to fly this leg instead, just let us know and we can rework this part of the route.</p>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-light);border-radius:10px;border:1px solid #EF9F27">
+        <p style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:3px">Rental car · Pickup in Amsterdam</p>
+        <p style="font-size:12px;color:#6b4e10;line-height:1.6">Pick up a rental car at Schiphol on arrival and drive to Paris (~4 hrs). Return the car at CDG. If you'd prefer to fly this leg instead, just let us know.</p>
       </div>
     </div>
     <div class="sightseeing-section" id="sight-ams">
@@ -460,22 +342,23 @@
         <button class="cat-tab" onclick="filterTiles('ams','fun',this)">Fun</button>
         <button class="cat-tab" onclick="filterTiles('ams','scenic',this)">Scenic</button>
       </div>
-      <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
+      <div class="sight-step-label">Step 2 — Tap places you want to visit</div>
       <div class="place-grid" id="grid-ams"></div>
-      <!-- Custom place input -->
       <div class="custom-place-row">
-        <div class="custom-place-label">Add a place that's not listed</div>
-        <input class="custom-place-input" id="custom-input-ams" type="text"
-               placeholder="e.g. Kew Gardens, Oxford Street…"
-               onkeydown="if(event.key==='Enter')addCustomPlace('ams')">
+        <div class="custom-place-label">Add a place not listed</div>
+        <input class="custom-place-input" id="custom-input-ams" type="text" placeholder="e.g. Artis Zoo…" onkeydown="if(event.key==='Enter')addCustomPlace('ams')">
         <button class="custom-place-add-btn" onclick="addCustomPlace('ams')">+ Add</button>
         <div class="custom-tiles-list" id="custom-list-ams"></div>
       </div>
       <div class="realism-warn" id="warn-ams"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-ams"><strong>0</strong> selected</span>
-        <button class="build-btn" id="build-ams" onclick="buildItinerary('ams')" disabled>Build my itinerary</button>
+        <div class="sight-btn-row">
+          <button class="optimize-btn" id="opt-ams" onclick="optimizeAndBuild('ams')">✦ Optimize route</button>
+          <button class="build-btn" id="build-ams" onclick="buildItinerary('ams')" disabled>Build itinerary</button>
+        </div>
       </div>
+      <div class="optimize-banner" id="opt-banner-ams"></div>
       <div class="itinerary-out" id="itin-ams"></div>
     </div>
   </div>
@@ -502,9 +385,9 @@
         <button class="day-btn" onclick="pick('cdg',5,this)">5</button>
         <button class="day-btn" onclick="pick('cdg',6,this)">6</button>
       </div>
-      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-light);border-radius:10px;border:1px solid #EF9F27;">
-        <p style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:3px;">Rental car · Return in Paris</p>
-        <p style="font-size:12px;color:#6b4e10;line-height:1.6;">The rental car would be returned at Charles de Gaulle Airport before flying to Rome. No need to worry about driving in Rome — we'd suggest flying there and getting around the city without a car.</p>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-light);border-radius:10px;border:1px solid #EF9F27">
+        <p style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:3px">Rental car · Return in Paris</p>
+        <p style="font-size:12px;color:#6b4e10;line-height:1.6">Return the rental car at CDG before flying to Rome. No car needed in Rome — the city is very walkable.</p>
       </div>
     </div>
     <div class="sightseeing-section" id="sight-cdg">
@@ -517,22 +400,23 @@
         <button class="cat-tab" onclick="filterTiles('cdg','fun',this)">Fun</button>
         <button class="cat-tab" onclick="filterTiles('cdg','scenic',this)">Scenic</button>
       </div>
-      <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
+      <div class="sight-step-label">Step 2 — Tap places you want to visit</div>
       <div class="place-grid" id="grid-cdg"></div>
-      <!-- Custom place input -->
       <div class="custom-place-row">
-        <div class="custom-place-label">Add a place that's not listed</div>
-        <input class="custom-place-input" id="custom-input-cdg" type="text"
-               placeholder="e.g. Kew Gardens, Oxford Street…"
-               onkeydown="if(event.key==='Enter')addCustomPlace('cdg')">
+        <div class="custom-place-label">Add a place not listed</div>
+        <input class="custom-place-input" id="custom-input-cdg" type="text" placeholder="e.g. Palais Royal…" onkeydown="if(event.key==='Enter')addCustomPlace('cdg')">
         <button class="custom-place-add-btn" onclick="addCustomPlace('cdg')">+ Add</button>
         <div class="custom-tiles-list" id="custom-list-cdg"></div>
       </div>
       <div class="realism-warn" id="warn-cdg"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-cdg"><strong>0</strong> selected</span>
-        <button class="build-btn" id="build-cdg" onclick="buildItinerary('cdg')" disabled>Build my itinerary</button>
+        <div class="sight-btn-row">
+          <button class="optimize-btn" id="opt-cdg" onclick="optimizeAndBuild('cdg')">✦ Optimize route</button>
+          <button class="build-btn" id="build-cdg" onclick="buildItinerary('cdg')" disabled>Build itinerary</button>
+        </div>
       </div>
+      <div class="optimize-banner" id="opt-banner-cdg"></div>
       <div class="itinerary-out" id="itin-cdg"></div>
     </div>
   </div>
@@ -559,9 +443,9 @@
         <button class="day-btn" onclick="pick('fco',5,this)">5</button>
         <button class="day-btn" onclick="pick('fco',6,this)">6</button>
       </div>
-      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-light);border-radius:10px;border:1px solid #EF9F27;">
-        <p style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:3px;">Rental car · Optional in Rome</p>
-        <p style="font-size:12px;color:#6b4e10;line-height:1.6;">If you'd like, you can rent a car at Fiumicino Airport on arrival and return it there before your flight back to Atlanta. Rome's city center is very walkable, but a car can be helpful for day trips outside the city. We can check with Deena about her experience in Italy to help figure out whether renting a car or sticking to public transport makes more sense for you.</p>
+      <div style="margin-top:12px;padding:10px 12px;background:var(--amber-light);border-radius:10px;border:1px solid #EF9F27">
+        <p style="font-size:12px;font-weight:500;color:var(--amber);margin-bottom:3px">Rental car · Optional in Rome</p>
+        <p style="font-size:12px;color:#6b4e10;line-height:1.6">You can pick up a car at FCO and return it before your flight home. Rome's centre is very walkable — a car mainly helps for day trips. We can check with Deena about her Italy experience to help decide.</p>
       </div>
     </div>
     <div class="sightseeing-section" id="sight-fco">
@@ -574,22 +458,23 @@
         <button class="cat-tab" onclick="filterTiles('fco','fun',this)">Fun</button>
         <button class="cat-tab" onclick="filterTiles('fco','scenic',this)">Scenic</button>
       </div>
-      <div class="sight-step-label">Step 2 — Tap the places you'd like to visit</div>
+      <div class="sight-step-label">Step 2 — Tap places you want to visit</div>
       <div class="place-grid" id="grid-fco"></div>
-      <!-- Custom place input -->
       <div class="custom-place-row">
-        <div class="custom-place-label">Add a place that's not listed</div>
-        <input class="custom-place-input" id="custom-input-fco" type="text"
-               placeholder="e.g. Kew Gardens, Oxford Street…"
-               onkeydown="if(event.key==='Enter')addCustomPlace('fco')">
+        <div class="custom-place-label">Add a place not listed</div>
+        <input class="custom-place-input" id="custom-input-fco" type="text" placeholder="e.g. Baths of Caracalla…" onkeydown="if(event.key==='Enter')addCustomPlace('fco')">
         <button class="custom-place-add-btn" onclick="addCustomPlace('fco')">+ Add</button>
         <div class="custom-tiles-list" id="custom-list-fco"></div>
       </div>
       <div class="realism-warn" id="warn-fco"></div>
       <div class="sight-action-bar">
         <span class="sight-count" id="count-fco"><strong>0</strong> selected</span>
-        <button class="build-btn" id="build-fco" onclick="buildItinerary('fco')" disabled>Build my itinerary</button>
+        <div class="sight-btn-row">
+          <button class="optimize-btn" id="opt-fco" onclick="optimizeAndBuild('fco')">✦ Optimize route</button>
+          <button class="build-btn" id="build-fco" onclick="buildItinerary('fco')" disabled>Build itinerary</button>
+        </div>
       </div>
+      <div class="optimize-banner" id="opt-banner-fco"></div>
       <div class="itinerary-out" id="itin-fco"></div>
     </div>
   </div>
@@ -609,20 +494,19 @@
     <div class="stop-dates">Return: <span class="date-computed" id="atl-return-val">after Rome stay</span></div>
   </div>
 
-
-  <!-- SEND SELECTIONS -->
+  <!-- SEND CARD -->
   <div class="send-card" id="send-card">
     <div class="send-title">Share your selections</div>
-    <p class="send-sub">Let us know your name so we can put together some options for you.</p>
+    <p class="send-sub">Enter your name and we'll put together some flight and itinerary options for you.</p>
     <div class="send-name-row">
-      <input class="send-name-input" id="send-name" type="text" placeholder="Your name (e.g. Tony & Dawn)">
+      <input class="send-name-input" id="send-name" type="text" placeholder="Your name (e.g. Tony &amp; Dawn)">
     </div>
     <div id="send-status"></div>
     <div class="send-btn-row">
       <button class="send-btn send-btn-primary" onclick="sendSelections()">Send to us</button>
       <button class="send-btn send-btn-secondary" onclick="mailtoSelections()">Open in mail app</button>
     </div>
-    <p class="send-note">Tapping "Send to us" submits your selections directly. "Open in mail app" opens your email with everything pre-filled so you can send it yourself.</p>
+    <p class="send-note">"Send to us" submits directly. "Open in mail app" opens your email with everything pre-filled so you can send it yourself.</p>
   </div>
 
   <!-- SUMMARY -->
@@ -635,7 +519,7 @@
     <div class="summary-row"><span class="sum-label">Paris</span><span class="sum-val flex" id="sum-cdg">—</span></div>
     <div class="summary-row"><span class="sum-label">Rome</span><span class="sum-val flex" id="sum-fco">—</span></div>
     <div class="summary-row"><span class="sum-label">Return Atlanta</span><span class="sum-val flex" id="sum-atl-return">—</span></div>
-    <div class="summary-row"><span class="sum-label">Total trip length</span><span class="sum-val" id="sum-total">—</span></div>
+    <div class="summary-row"><span class="sum-label">Total trip</span><span class="sum-val" id="sum-total">—</span></div>
     <button class="copy-btn" id="copy-btn" onclick="copyResult()">Copy my preferences to share</button>
   </div>
 
@@ -646,874 +530,648 @@
   <span class="total-label">Trip so far</span>
   <span class="total-val" id="total-val">— days</span>
 </div>
-
 <script>
-/* ─────────────────────────────────────────
-   ORIGINAL FLIGHT PLANNER LOGIC (unchanged)
-───────────────────────────────────────── */
-const picks = { london: null, ams: null, cdg: null, fco: null };
+/* ═══════════════════════════════════════════════════════════════
+   FLIGHT PLANNER — date calculations (unchanged logic)
+═══════════════════════════════════════════════════════════════ */
+const picks = { london:null, ams:null, cdg:null, fco:null };
 const HYD_DEPART = new Date('2024-11-16');
+function addDays(d,n){const r=new Date(d);r.setDate(r.getDate()+n);return r;}
+function fmt(d){return d.toLocaleDateString('en-US',{month:'short',day:'numeric'});}
 
-function addDays(date, n) { const d = new Date(date); d.setDate(d.getDate() + n); return d; }
-function fmt(date) { return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' }); }
-
-function pick(city, days, btn) {
-  picks[city] = days;
-  document.getElementById(city + '-picker').querySelectorAll('.day-btn').forEach(b => b.classList.remove('selected'));
+function pick(city,days,btn){
+  picks[city]=days;
+  document.getElementById(city+'-picker').querySelectorAll('.day-btn').forEach(b=>b.classList.remove('selected'));
   btn.classList.add('selected');
   recalc();
-  /* Show place-picker section and scroll to it */
   showSightseeing(city);
-  /* Re-run realism check in case days changed with existing selections */
   checkRealism(city);
+  saveState();
 }
 
-function recalc() {
-  const { london, ams, cdg, fco } = picks;
-  const lhrDepart = new Date('2024-11-09');
-
-  if (london) {
-    const lhrArrive = addDays(lhrDepart, -london);
-    const atlDepart = addDays(lhrArrive, -1);
-    document.getElementById('atl-depart-val').textContent = fmt(atlDepart) + ' (arrive London ' + fmt(lhrArrive) + ')';
-    document.getElementById('sum-atl-depart').textContent = fmt(atlDepart);
-    document.getElementById('sum-london').textContent = fmt(lhrArrive) + ' – Nov 9 · ' + london + ' night' + (london > 1 ? 's' : '');
+function recalc(){
+  const {london,ams,cdg,fco}=picks;
+  const lhrDep=new Date('2024-11-09');
+  if(london){
+    const la=addDays(lhrDep,-london),ad=addDays(la,-1);
+    document.getElementById('atl-depart-val').textContent=fmt(ad)+' (arrive London '+fmt(la)+')';
+    document.getElementById('sum-atl-depart').textContent=fmt(ad);
+    document.getElementById('sum-london').textContent=fmt(la)+' – Nov 9 · '+london+' night'+(london>1?'s':'');
   } else {
-    document.getElementById('atl-depart-val').textContent = 'pick London days to calculate';
-    document.getElementById('sum-atl-depart').textContent = '—';
-    document.getElementById('sum-london').textContent = '—';
+    document.getElementById('atl-depart-val').textContent='pick London days to calculate';
+    document.getElementById('sum-atl-depart').textContent='—';
+    document.getElementById('sum-london').textContent='—';
   }
-
-  let amsDepart = null;
-  if (ams) {
-    amsDepart = addDays(HYD_DEPART, ams);
-    document.getElementById('ams-depart-val').textContent = fmt(amsDepart);
-    document.getElementById('sum-ams').textContent = 'Nov 16 – ' + fmt(amsDepart) + ' · ' + ams + ' night' + (ams > 1 ? 's' : '');
-  } else {
-    document.getElementById('ams-depart-val').textContent = 'pick days below';
-    document.getElementById('sum-ams').textContent = '—';
-  }
-
-  let parisArrive = amsDepart, parisDepart = null;
-  if (parisArrive) {
-    document.getElementById('paris-arrive-val').textContent = fmt(parisArrive);
-    if (cdg) {
-      parisDepart = addDays(parisArrive, cdg);
-      document.getElementById('paris-depart-val').textContent = fmt(parisDepart);
-      document.getElementById('sum-cdg').textContent = fmt(parisArrive) + ' – ' + fmt(parisDepart) + ' · ' + cdg + ' night' + (cdg > 1 ? 's' : '');
-    } else {
-      document.getElementById('paris-depart-val').textContent = 'pick days below';
-      document.getElementById('sum-cdg').textContent = '—';
-    }
-  } else {
-    document.getElementById('paris-arrive-val').textContent = 'after Amsterdam';
-    document.getElementById('paris-depart-val').textContent = '—';
-    document.getElementById('sum-cdg').textContent = '—';
-  }
-
-  let romeArrive = parisDepart, romeDepart = null;
-  if (romeArrive) {
-    document.getElementById('rome-arrive-val').textContent = fmt(romeArrive);
-    if (fco) {
-      romeDepart = addDays(romeArrive, fco);
-      document.getElementById('rome-depart-val').textContent = fmt(romeDepart);
-      document.getElementById('atl-return-val').textContent = fmt(addDays(romeDepart, 1));
-      document.getElementById('sum-fco').textContent = fmt(romeArrive) + ' – ' + fmt(romeDepart) + ' · ' + fco + ' night' + (fco > 1 ? 's' : '');
-      document.getElementById('sum-atl-return').textContent = fmt(addDays(romeDepart, 1));
-    } else {
-      document.getElementById('rome-depart-val').textContent = 'pick days below';
-      document.getElementById('sum-fco').textContent = '—';
-    }
-  } else {
-    document.getElementById('rome-arrive-val').textContent = 'after Paris';
-    document.getElementById('rome-depart-val').textContent = '—';
-    document.getElementById('sum-fco').textContent = '—';
-  }
-
-  const runningTotal = (london || 0) + 5 + (ams || 0) + (cdg || 0) + (fco || 0);
-  if ([london, ams, cdg, fco].some(Boolean)) {
-    document.getElementById('total-bar').classList.add('visible');
-    document.getElementById('total-val').textContent = runningTotal + ' days total';
-  }
-  document.getElementById('sum-total').textContent = runningTotal + ' days';
-  document.getElementById('summary').classList.toggle('visible', !!(london && ams && cdg && fco));
+  let amsD=null;
+  if(ams){amsD=addDays(HYD_DEPART,ams);document.getElementById('ams-depart-val').textContent=fmt(amsD);document.getElementById('sum-ams').textContent='Nov 16 – '+fmt(amsD)+' · '+ams+' night'+(ams>1?'s':'');}
+  else{document.getElementById('ams-depart-val').textContent='pick days below';document.getElementById('sum-ams').textContent='—';}
+  let parisA=amsD,parisD=null;
+  if(parisA){
+    document.getElementById('paris-arrive-val').textContent=fmt(parisA);
+    if(cdg){parisD=addDays(parisA,cdg);document.getElementById('paris-depart-val').textContent=fmt(parisD);document.getElementById('sum-cdg').textContent=fmt(parisA)+' – '+fmt(parisD)+' · '+cdg+' night'+(cdg>1?'s':'');}
+    else{document.getElementById('paris-depart-val').textContent='pick days below';document.getElementById('sum-cdg').textContent='—';}
+  } else {document.getElementById('paris-arrive-val').textContent='after Amsterdam';document.getElementById('paris-depart-val').textContent='—';document.getElementById('sum-cdg').textContent='—';}
+  let romeA=parisD,romeD=null;
+  if(romeA){
+    document.getElementById('rome-arrive-val').textContent=fmt(romeA);
+    if(fco){romeD=addDays(romeA,fco);document.getElementById('rome-depart-val').textContent=fmt(romeD);document.getElementById('atl-return-val').textContent=fmt(addDays(romeD,1));document.getElementById('sum-fco').textContent=fmt(romeA)+' – '+fmt(romeD)+' · '+fco+' night'+(fco>1?'s':'');document.getElementById('sum-atl-return').textContent=fmt(addDays(romeD,1));}
+    else{document.getElementById('rome-depart-val').textContent='pick days below';document.getElementById('sum-fco').textContent='—';}
+  } else {document.getElementById('rome-arrive-val').textContent='after Paris';document.getElementById('rome-depart-val').textContent='—';document.getElementById('sum-fco').textContent='—';}
+  const total=(london||0)+5+(ams||0)+(cdg||0)+(fco||0);
+  if([london,ams,cdg,fco].some(Boolean)){document.getElementById('total-bar').classList.add('visible');document.getElementById('total-val').textContent=total+' days total';}
+  document.getElementById('sum-total').textContent=total+' days';
+  document.getElementById('summary').classList.toggle('visible',!!(london&&ams&&cdg&&fco));
 }
 
-function copyResult() {
-  const { london, ams, cdg, fco } = picks;
-  const lhrArrive  = addDays(new Date('2024-11-09'), -london);
-  const atlDepart  = addDays(lhrArrive, -1);
-  const amsDepart  = addDays(HYD_DEPART, ams);
-  const parisDepart = addDays(amsDepart, cdg);
-  const romeDepart  = addDays(parisDepart, fco);
-  const atlReturn   = addDays(romeDepart, 1);
-  const text = `My travel preferences:\n- Depart Atlanta: ${fmt(atlDepart)}\n- London (LHR): ${london} nights (${fmt(lhrArrive)} – Nov 9)\n- Hyderabad (HYD): 5 nights — Nov 11–16 (fixed)\n- Amsterdam (AMS): ${ams} nights (Nov 16 – ${fmt(amsDepart)})\n- Paris (CDG): ${cdg} nights (${fmt(amsDepart)} – ${fmt(parisDepart)})\n- Rome (FCO): ${fco} nights (${fmt(parisDepart)} – ${fmt(romeDepart)})\n- Return to Atlanta: ${fmt(atlReturn)}\n- Total trip: ${london + 5 + ams + cdg + fco} days`;
-  navigator.clipboard.writeText(text).then(() => {
-    const btn = document.getElementById('copy-btn');
-    btn.textContent = 'Copied!'; btn.classList.add('copied');
-    setTimeout(() => { btn.textContent = 'Copy my preferences to share'; btn.classList.remove('copied'); }, 2500);
-  });
+function copyResult(){
+  const {london,ams,cdg,fco}=picks;
+  const la=addDays(new Date('2024-11-09'),-london),ad=addDays(la,-1);
+  const amsd=addDays(HYD_DEPART,ams),pd=addDays(amsd,cdg),rd=addDays(pd,fco);
+  const text=`My travel preferences:\n- Depart Atlanta: ${fmt(ad)}\n- London: ${london} nights (${fmt(la)} – Nov 9)\n- Hyderabad: 5 nights — Nov 11–16 (fixed)\n- Amsterdam: ${ams} nights (Nov 16 – ${fmt(amsd)})\n- Paris: ${cdg} nights (${fmt(amsd)} – ${fmt(pd)})\n- Rome: ${fco} nights (${fmt(pd)} – ${fmt(rd)})\n- Return Atlanta: ${fmt(addDays(rd,1))}\n- Total: ${london+5+ams+cdg+fco} days`;
+  navigator.clipboard.writeText(text).then(()=>{const b=document.getElementById('copy-btn');b.textContent='Copied!';b.classList.add('copied');setTimeout(()=>{b.textContent='Copy my preferences to share';b.classList.remove('copied');},2500);});
 }
+</script>
 
-/* ─────────────────────────────────────────
+<script>
+/* ═══════════════════════════════════════════════════════════════
    SIGHTSEEING DATA
-   Fields: name, type, emoji, desc
-   Types: landmarks | history | food | fun | scenic | hp (Harry Potter, London only)
-───────────────────────────────────────── */
+   img: Picsum Photos by curated seed ID — always loads, no API key
+   visit: typical visit duration string
+   hood: neighbourhood
+   Types: landmarks | history | food | fun | scenic | hp
+═══════════════════════════════════════════════════════════════ */
 const SIGHTS = {
-  london: [
-    { name: 'Tower of London',             type: 'landmarks', emoji: '🏰', desc: 'Historic castle and home of the Crown Jewels.',                   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2b/Tower_of_London_viewed_from_the_River_Thames.jpg/400px-Tower_of_London_viewed_from_the_River_Thames.jpg' },
-    { name: 'Buckingham Palace',           type: 'landmarks', emoji: '👑', desc: 'Official London residence of the King.',                          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b4/Buckingham_Palace%2C_London_-_April_2009.jpg/400px-Buckingham_Palace%2C_London_-_April_2009.jpg' },
-    { name: 'Tower Bridge',                type: 'landmarks', emoji: '🌉', desc: 'Iconic Victorian bascule bridge over the Thames.',                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Tower_bridge_from_the_south_bank.jpg/400px-Tower_bridge_from_the_south_bank.jpg' },
-    { name: 'Big Ben & Parliament',        type: 'landmarks', emoji: '🕰️', desc: 'The famous clock tower and Houses of Parliament.',               img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/92/Westminster_Bridge_and_the_Houses_of_Parliament.jpg/400px-Westminster_Bridge_and_the_Houses_of_Parliament.jpg' },
-    { name: "St. Paul's Cathedral",        type: 'landmarks', emoji: '🔔', desc: "Wren's masterpiece — climb the dome for city views.",            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/91/St_Pauls_Cathedral_from_the_southwest.jpg/400px-St_Pauls_Cathedral_from_the_southwest.jpg' },
-    { name: 'The British Museum',          type: 'history',   emoji: '🏛️', desc: 'World-class collection spanning 2 million years.',              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3a/British_Museum_from_NE_2.JPG/400px-British_Museum_from_NE_2.JPG' },
-    { name: 'Westminster Abbey',           type: 'history',   emoji: '⛪', desc: 'Gothic coronation church of British monarchs.',                  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/98/Westminster_Abbey_-_geograph.org.uk_-_413920.jpg/400px-Westminster_Abbey_-_geograph.org.uk_-_413920.jpg' },
-    { name: 'Churchill War Rooms',         type: 'history',   emoji: '🗺️', desc: 'Underground WWII bunker used by Churchill.',                     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c9/Churchill_War_Rooms_entrance.jpg/400px-Churchill_War_Rooms_entrance.jpg' },
-    { name: 'National Portrait Gallery',   type: 'history',   emoji: '🖼️', desc: 'Portraits of kings, scientists and artists across centuries.',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/42/National_Portrait_Gallery%2C_London_2014.jpg/400px-National_Portrait_Gallery%2C_London_2014.jpg' },
-    { name: 'Borough Market',              type: 'food',      emoji: '🥩', desc: "London's oldest food market — great street food.",              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/11/Borough_Market_-_geograph.org.uk_-_1176832.jpg/400px-Borough_Market_-_geograph.org.uk_-_1176832.jpg' },
-    { name: 'Covent Garden',               type: 'food',      emoji: '🍽️', desc: 'Lively piazza with restaurants and street performers.',         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Covent_Garden_2013.jpg/400px-Covent_Garden_2013.jpg' },
-    { name: 'Brick Lane',                  type: 'food',      emoji: '🍛', desc: 'Famous for Bengali curry houses and street art.',                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d3/Brick_Lane_E1_-_geograph.org.uk_-_1176698.jpg/400px-Brick_Lane_E1_-_geograph.org.uk_-_1176698.jpg' },
-    { name: 'Portobello Road Market',      type: 'food',      emoji: '🧆', desc: 'Weekend antiques and street food in Notting Hill.',              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/22/Portobello_Road_Market.jpg/400px-Portobello_Road_Market.jpg' },
-    { name: 'Hyde Park',                   type: 'scenic',    emoji: '🌳', desc: 'Royal park with the Serpentine lake — great for a stroll.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bb/Hyde_Park%2C_London_-_Aug_2009.jpg/400px-Hyde_Park%2C_London_-_Aug_2009.jpg' },
-    { name: 'Greenwich Park',              type: 'scenic',    emoji: '🌅', desc: 'Hilltop views over London and the Prime Meridian.',              img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Greenwich_Park_and_Isle_of_Dogs.jpg/400px-Greenwich_Park_and_Isle_of_Dogs.jpg' },
-    { name: 'River Thames Cruise',         type: 'scenic',    emoji: '⛵', desc: "See London's skyline from the water.",                          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/400px-London_Skyline_%28125508655%29.jpeg' },
-    { name: 'London Eye',                  type: 'fun',       emoji: '🎡', desc: 'Giant observation wheel with views stretching 25 miles.',       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/London_Eye_Twilight_April_2006.jpg/400px-London_Eye_Twilight_April_2006.jpg' },
-    { name: 'Natural History Museum',      type: 'fun',       emoji: '🦕', desc: 'Free museum — dinosaurs, gems and the famous blue whale.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/10/Natural_History_Museum_London_Jan_2006.jpg/400px-Natural_History_Museum_London_Jan_2006.jpg' },
-    { name: 'Science Museum',              type: 'fun',       emoji: '🚀', desc: 'Interactive exhibits for all ages including space gallery.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/23/Science_Museum_London_-_entrance_2013.jpg/400px-Science_Museum_London_-_entrance_2013.jpg' },
-    { name: "Platform 9¾ (King's Cross)",  type: 'hp',        emoji: '🧙', desc: 'The iconic Harry Potter departure platform photo spot.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d1/London_Kings_Cross_station_2.jpg/400px-London_Kings_Cross_station_2.jpg' },
-    { name: 'Warner Bros. Studio Tour',    type: 'hp',        emoji: '⚡', desc: 'Walk through original HP sets, costumes and props.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b5/WB_Studio_Tour_-_The_Making_of_Harry_Potter_-_geograph.org.uk_-_3533245.jpg/400px-WB_Studio_Tour_-_The_Making_of_Harry_Potter_-_geograph.org.uk_-_3533245.jpg' },
-    { name: 'Leadenhall Market',           type: 'hp',        emoji: '🏮', desc: 'The real-world filming location for Diagon Alley.',             img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e7/Leadenhall_Market%2C_London_%28geograph_3753354%29.jpg/400px-Leadenhall_Market%2C_London_%28geograph_3753354%29.jpg' },
-    { name: 'Christ Church, Oxford',       type: 'hp',        emoji: '🏫', desc: 'Inspiration for Hogwarts — the Great Hall staircase.',         img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/60/ChristChurch.jpg/400px-ChristChurch.jpg' },
-    { name: 'The Elephant House, Edinburgh',type: 'hp',       emoji: '☕', desc: 'Café where J.K. Rowling wrote early Harry Potter chapters.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6b/Elephant_House_Edinburgh.jpg/400px-Elephant_House_Edinburgh.jpg' },
+  london:[
+    {name:"Tower of London",        type:"landmarks",emoji:"🏰",img:"https://picsum.photos/seed/towerlon/400/220",visit:"2–3 hrs",hood:"Tower / Southwark",desc:"Historic castle and home of the Crown Jewels."},
+    {name:"Buckingham Palace",      type:"landmarks",emoji:"👑",img:"https://picsum.photos/seed/buckpal/400/220",  visit:"1–2 hrs",hood:"Westminster",      desc:"Official London residence of the King."},
+    {name:"Tower Bridge",           type:"landmarks",emoji:"🌉",img:"https://picsum.photos/seed/towbrid/400/220",  visit:"1 hr",   hood:"Tower / Southwark",desc:"Iconic Victorian bridge — walk across and visit the glass walkway."},
+    {name:"Big Ben & Parliament",   type:"landmarks",emoji:"🕰️",img:"https://picsum.photos/seed/bigben1/400/220", visit:"1 hr",   hood:"Westminster",      desc:"The famous clock tower and Houses of Parliament."},
+    {name:"St. Paul's Cathedral",   type:"landmarks",emoji:"🔔",img:"https://picsum.photos/seed/stpauls/400/220", visit:"1.5 hrs",hood:"City of London",    desc:"Wren's masterpiece — climb the dome for panoramic views."},
+    {name:"The British Museum",     type:"history",  emoji:"🏛️",img:"https://picsum.photos/seed/britmus/400/220", visit:"3–4 hrs",hood:"Bloomsbury",        desc:"World-class collection spanning 2 million years of human history."},
+    {name:"Westminster Abbey",      type:"history",  emoji:"⛪",img:"https://picsum.photos/seed/westabb/400/220", visit:"1.5 hrs",hood:"Westminster",        desc:"Gothic coronation church of British monarchs."},
+    {name:"Churchill War Rooms",    type:"history",  emoji:"🗺️",img:"https://picsum.photos/seed/churwar/400/220", visit:"1.5 hrs",hood:"Westminster",        desc:"Underground WWII bunker used by Churchill and his war cabinet."},
+    {name:"National Portrait Gallery",type:"history",emoji:"🖼️",img:"https://picsum.photos/seed/natport/400/220",visit:"2 hrs",  hood:"Trafalgar Square",  desc:"Faces of kings, scientists and artists across the centuries."},
+    {name:"Borough Market",         type:"food",     emoji:"🥩",img:"https://picsum.photos/seed/boromar/400/220", visit:"1–2 hrs",hood:"Southwark",          desc:"London's oldest food market — best on Thursdays–Saturdays."},
+    {name:"Covent Garden",          type:"food",     emoji:"🍽️",img:"https://picsum.photos/seed/covgar/400/220",  visit:"1–2 hrs",hood:"Trafalgar / WC2",   desc:"Lively piazza with restaurants, cafes and street performers."},
+    {name:"Brick Lane",             type:"food",     emoji:"🍛",img:"https://picsum.photos/seed/briclan/400/220", visit:"1–2 hrs",hood:"East London",        desc:"Famous for Bengali curry houses, vintage shops and street art."},
+    {name:"Portobello Road Market", type:"food",     emoji:"🧆",img:"https://picsum.photos/seed/portob/400/220",  visit:"2 hrs",  hood:"Notting Hill",       desc:"Weekend antiques and street food market in Notting Hill."},
+    {name:"Hyde Park",              type:"scenic",   emoji:"🌳",img:"https://picsum.photos/seed/hydepk/400/220",  visit:"1–2 hrs",hood:"Kensington",         desc:"Royal park with the Serpentine lake — perfect morning stroll."},
+    {name:"Greenwich Park",         type:"scenic",   emoji:"🌅",img:"https://picsum.photos/seed/greenwich/400/220",visit:"2 hrs", hood:"Greenwich",           desc:"Hilltop views over London and the home of the Prime Meridian."},
+    {name:"River Thames Cruise",    type:"scenic",   emoji:"⛵",img:"https://picsum.photos/seed/thames1/400/220", visit:"1–2 hrs",hood:"South Bank",         desc:"See London's skyline from the water — many routes to choose from."},
+    {name:"London Eye",             type:"fun",      emoji:"🎡",img:"https://picsum.photos/seed/londey/400/220",  visit:"1 hr",   hood:"South Bank",         desc:"Giant observation wheel — book timed entry in advance."},
+    {name:"Natural History Museum", type:"fun",      emoji:"🦕",img:"https://picsum.photos/seed/nathist/400/220", visit:"2–3 hrs",hood:"Kensington",         desc:"Free museum — dinosaurs, gems and the famous blue whale skeleton."},
+    {name:"Science Museum",         type:"fun",      emoji:"🚀",img:"https://picsum.photos/seed/scimus/400/220",  visit:"2–3 hrs",hood:"Kensington",         desc:"Interactive exhibits for all ages including a space gallery."},
+    {name:"Platform 9¾ (King's Cross)",type:"hp",   emoji:"🧙",img:"https://picsum.photos/seed/kingsxhp/400/220",visit:"30 min",hood:"King's Cross",       desc:"The iconic Harry Potter departure platform — free photo spot."},
+    {name:"Warner Bros. Studio Tour",type:"hp",      emoji:"⚡",img:"https://picsum.photos/seed/wbstudio/400/220",visit:"3–4 hrs",hood:"Watford (day trip)", desc:"Walk through original HP film sets, costumes and props."},
+    {name:"Leadenhall Market",      type:"hp",       emoji:"🏮",img:"https://picsum.photos/seed/leadhall/400/220",visit:"30 min",hood:"City of London",      desc:"The real-world filming location for Diagon Alley entrance."},
+    {name:"Christ Church, Oxford",  type:"hp",       emoji:"🏫",img:"https://picsum.photos/seed/oxfordcc/400/220",visit:"2 hrs", hood:"Oxford (day trip)",   desc:"Inspiration for Hogwarts — original Great Hall staircase."},
+    {name:"Elephant House, Edinburgh",type:"hp",     emoji:"☕",img:"https://picsum.photos/seed/elehou/400/220",  visit:"1 hr",  hood:"Edinburgh (day trip)","desc":"Café where J.K. Rowling wrote early Harry Potter chapters."},
   ],
-  ams: [
-    { name: 'Rijksmuseum',                 type: 'landmarks', emoji: '🏛️', desc: 'Dutch national museum with Rembrandt and Vermeer.',             img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b7/Amsterdam_-_Rijksmuseum_-_2013_%28cropped%29.jpg/400px-Amsterdam_-_Rijksmuseum_-_2013_%28cropped%29.jpg' },
-    { name: 'Van Gogh Museum',             type: 'landmarks', emoji: '🌻', desc: "Largest collection of Van Gogh's paintings in the world.",      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c5/Van_Gogh_Museum_2013.jpg/400px-Van_Gogh_Museum_2013.jpg' },
-    { name: 'Royal Palace (Dam Square)',   type: 'landmarks', emoji: '👑', desc: '17th-century palace at the heart of the city.',                 img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9a/Amsterdam_-_Koninklijk_Paleis_-_2013.jpg/400px-Amsterdam_-_Koninklijk_Paleis_-_2013.jpg' },
-    { name: 'Westerkerk Tower',            type: 'landmarks', emoji: '🗼', desc: 'Climb the tower for the best views over the canal ring.',       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/Westerkerk_Amsterdam_2016.jpg/400px-Westerkerk_Amsterdam_2016.jpg' },
-    { name: 'Anne Frank House',            type: 'history',   emoji: '📖', desc: 'The hiding place where Anne Frank wrote her diary.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2f/Anne_Frank_House_Amsterdam_-_April_2017.jpg/400px-Anne_Frank_House_Amsterdam_-_April_2017.jpg' },
-    { name: 'Jewish Historical Museum',    type: 'history',   emoji: '✡️', desc: 'Tells the story of Jewish life in the Netherlands.',           img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Joods_historisch_museum_Amsterdam.jpg/400px-Joods_historisch_museum_Amsterdam.jpg' },
-    { name: 'Stedelijk Museum',            type: 'history',   emoji: '🎨', desc: 'Modern art including Mondrian, Warhol and Basquiat.',          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ea/Stedelijk_museum_amsterdam_2012.jpg/400px-Stedelijk_museum_amsterdam_2012.jpg' },
-    { name: 'Canal Ring Cruise',           type: 'scenic',    emoji: '🛶', desc: 'Glide through UNESCO-listed golden-age canals by boat.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Herengracht_386_-_386A.jpg/400px-Herengracht_386_-_386A.jpg' },
-    { name: 'Jordaan Neighbourhood',       type: 'scenic',    emoji: '🌷', desc: 'Charming streets, houseboats and independent boutiques.',       img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/20/Jordaan_area_Amsterdam.jpg/400px-Jordaan_area_Amsterdam.jpg' },
-    { name: 'Vondelpark',                  type: 'scenic',    emoji: '🌳', desc: "Amsterdam's most beloved green space for a morning walk.",      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/07/Vondelpark_2012.JPG/400px-Vondelpark_2012.JPG' },
-    { name: 'Albert Cuyp Market',          type: 'food',      emoji: '🧀', desc: 'Longest street market in the Netherlands — try stroopwafels.', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c4/Albert_Cuypmarkt.jpg/400px-Albert_Cuypmarkt.jpg' },
-    { name: 'Foodhallen',                  type: 'food',      emoji: '🍽️', desc: 'Indoor food hall with diverse street food stalls.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9d/Foodhallen_Amsterdam.jpg/400px-Foodhallen_Amsterdam.jpg' },
-    { name: 'Dutch Cheese Tasting',        type: 'food',      emoji: '🧀', desc: 'Sample Gouda and Edam at traditional cheese shops.',           img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/28/Cheeses_at_a_market.jpg/400px-Cheeses_at_a_market.jpg' },
-    { name: 'Heineken Experience',         type: 'fun',       emoji: '🍺', desc: 'Interactive brewery tour in the original Heineken factory.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/6d/Heineken_Experience_Amsterdam_2.jpg/400px-Heineken_Experience_Amsterdam_2.jpg' },
-    { name: 'NEMO Science Museum',         type: 'fun',       emoji: '🔬', desc: 'Hands-on science for families — great rooftop views too.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a3/NEMO_science_museum_Amsterdam.jpg/400px-NEMO_science_museum_Amsterdam.jpg' },
-    { name: 'City Cycling Tour',           type: 'fun',       emoji: '🚲', desc: 'Rent a bike and explore the city exactly like a local.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d6/Amsterdam_Bicycle.jpg/400px-Amsterdam_Bicycle.jpg' },
+  ams:[
+    {name:"Rijksmuseum",                type:"landmarks",emoji:"🏛️",img:"https://picsum.photos/seed/rijks1/400/220",  visit:"2–3 hrs",hood:"Museum Quarter",  desc:"Dutch national museum with Rembrandt, Vermeer and Delftware."},
+    {name:"Van Gogh Museum",            type:"landmarks",emoji:"🌻",img:"https://picsum.photos/seed/vangogh/400/220",  visit:"2 hrs",  hood:"Museum Quarter",  desc:"Largest collection of Van Gogh's paintings in the world."},
+    {name:"Royal Palace (Dam Square)",  type:"landmarks",emoji:"👑",img:"https://picsum.photos/seed/dampal/400/220",   visit:"1 hr",   hood:"Dam Square",      desc:"Magnificent 17th-century palace — free to visit the exterior."},
+    {name:"Westerkerk Tower",           type:"landmarks",emoji:"🗼",img:"https://picsum.photos/seed/westerk/400/220",  visit:"1 hr",   hood:"Jordaan",         desc:"Climb the tower for the best panoramic views over the canal ring."},
+    {name:"Anne Frank House",           type:"history",  emoji:"📖",img:"https://picsum.photos/seed/annefr/400/220",   visit:"1–2 hrs",hood:"Jordaan",         desc:"The hiding place where Anne Frank wrote her famous diary. Book ahead."},
+    {name:"Jewish Historical Museum",   type:"history",  emoji:"✡️",img:"https://picsum.photos/seed/jewmus/400/220",   visit:"1.5 hrs",hood:"Jewish Quarter",  desc:"Tells the story of Jewish life and culture in the Netherlands."},
+    {name:"Stedelijk Museum",           type:"history",  emoji:"🎨",img:"https://picsum.photos/seed/stedel/400/220",   visit:"2 hrs",  hood:"Museum Quarter",  desc:"Modern and contemporary art — Mondrian, Warhol, Basquiat."},
+    {name:"Canal Ring Cruise",          type:"scenic",   emoji:"🛶",img:"https://picsum.photos/seed/amscana/400/220",  visit:"1 hr",   hood:"City Centre",     desc:"Glide through UNESCO-listed golden-age canals by boat."},
+    {name:"Jordaan Neighbourhood",      type:"scenic",   emoji:"🌷",img:"https://picsum.photos/seed/jordaan/400/220",  visit:"2 hrs",  hood:"Jordaan",         desc:"Charming streets, houseboats and independent boutiques."},
+    {name:"Vondelpark",                 type:"scenic",   emoji:"🌳",img:"https://picsum.photos/seed/vondel/400/220",   visit:"1–2 hrs",hood:"Museum Quarter",  desc:"Amsterdam's most loved green space — ideal for a morning walk."},
+    {name:"Keukenhof Gardens",          type:"scenic",   emoji:"🌸",img:"https://picsum.photos/seed/keukenhof/400/220",visit:"3 hrs",  hood:"Lisse (day trip)","desc":"World's largest flower garden — 45 min from Amsterdam."},
+    {name:"Albert Cuyp Market",         type:"food",     emoji:"🧀",img:"https://picsum.photos/seed/albertcuyp/400/220",visit:"1 hr", hood:"De Pijp",          desc:"Longest street market in the Netherlands — try stroopwafels."},
+    {name:"Foodhallen",                 type:"food",     emoji:"🍽️",img:"https://picsum.photos/seed/foodhall/400/220", visit:"1–2 hrs",hood:"West Amsterdam",  desc:"Indoor food hall with 20+ diverse street food stalls."},
+    {name:"Dutch Cheese Tasting",       type:"food",     emoji:"🧀",img:"https://picsum.photos/seed/dutchche/400/220", visit:"30 min",hood:"City Centre",       desc:"Sample Gouda and Edam at traditional city cheese shops."},
+    {name:"Heineken Experience",        type:"fun",      emoji:"🍺",img:"https://picsum.photos/seed/heinek/400/220",   visit:"1.5 hrs",hood:"De Pijp",         desc:"Interactive brewery tour in the original Heineken factory."},
+    {name:"NEMO Science Museum",        type:"fun",      emoji:"🔬",img:"https://picsum.photos/seed/nemoams/400/220",  visit:"2–3 hrs",hood:"Waterfront",      desc:"Hands-on science for families — great rooftop city views."},
+    {name:"Amsterdam Dungeon",          type:"fun",      emoji:"👻",img:"https://picsum.photos/seed/amsdung/400/220",  visit:"1 hr",   hood:"Dam Square",      desc:"Theatrical walk-through of Amsterdam's dark history."},
+    {name:"City Cycling Tour",          type:"fun",      emoji:"🚲",img:"https://picsum.photos/seed/cycling/400/220",  visit:"2–3 hrs",hood:"City-wide",        desc:"Rent a bike and explore the city exactly like a local."},
   ],
-  cdg: [
-    { name: 'Eiffel Tower',                type: 'landmarks', emoji: '🗼', desc: "Paris's most iconic landmark — book tickets in advance.",      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Tour_Eiffel_Wikimedia_Commons.jpg/400px-Tour_Eiffel_Wikimedia_Commons.jpg' },
-    { name: 'The Louvre',                  type: 'landmarks', emoji: '🏛️', desc: "World's largest art museum and home of the Mona Lisa.",        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/66/Louvre_Museum_Wikimedia_Commons.jpg/400px-Louvre_Museum_Wikimedia_Commons.jpg' },
-    { name: 'Notre-Dame Cathedral',        type: 'landmarks', emoji: '⛪', desc: 'Gothic masterpiece — stunning exterior views.',                img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/d4/Notre_Dame_de_Paris_2013-07-24.jpg/400px-Notre_Dame_de_Paris_2013-07-24.jpg' },
-    { name: 'Arc de Triomphe',             type: 'landmarks', emoji: '🏛️', desc: "Monumental arch at the centre of the Champs-Élysées.",        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/79/Arc_de_Triomphe%2C_Paris_21_October_2010.jpg/400px-Arc_de_Triomphe%2C_Paris_21_October_2010.jpg' },
-    { name: 'Sacré-Cœur Basilica',        type: 'landmarks', emoji: '🕌', desc: 'White basilica on Montmartre hill with city panoramas.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/57/Sacre_Coeur_2014.jpg/400px-Sacre_Coeur_2014.jpg' },
-    { name: 'Palace of Versailles',        type: 'history',   emoji: '👑', desc: 'Royal château with the Hall of Mirrors (30 min from Paris).',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Versailles_garden.jpg/400px-Versailles_garden.jpg' },
-    { name: "Musée d'Orsay",              type: 'history',   emoji: '🎨', desc: 'Impressionist masterpieces by Monet, Renoir and Degas.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8a/Mus%C3%A9e_d%27Orsay_2.jpg/400px-Mus%C3%A9e_d%27Orsay_2.jpg' },
-    { name: 'Sainte-Chapelle',             type: 'history',   emoji: '🌈', desc: 'Medieval chapel with breathtaking stained glass windows.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Sainte_Chapelle_-_Upper_Chapel_Apse.jpg/400px-Sainte_Chapelle_-_Upper_Chapel_Apse.jpg' },
-    { name: 'Catacombs of Paris',          type: 'history',   emoji: '💀', desc: 'Underground ossuary holding remains of six million people.',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Catacombes_de_Paris_-_Ossuaire_-_1.jpg/400px-Catacombes_de_Paris_-_Ossuaire_-_1.jpg' },
-    { name: 'Montmartre Quarter',          type: 'scenic',    emoji: '🎨', desc: "Artists' village with cobblestone streets and vineyard views.", img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/0/0e/Paris_-_Montmartre_-_Rue_Lepic.jpg/400px-Paris_-_Montmartre_-_Rue_Lepic.jpg' },
-    { name: 'Seine River Cruise',          type: 'scenic',    emoji: '⛵', desc: 'See Paris monuments illuminated at dusk from the water.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Paris_night.jpg/400px-Paris_night.jpg' },
-    { name: 'Luxembourg Gardens',          type: 'scenic',    emoji: '🌳', desc: 'Formal French gardens — perfect for a morning coffee stroll.', img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/48/Jardin_du_Luxembourg.jpg/400px-Jardin_du_Luxembourg.jpg' },
-    { name: 'Champs-Élysées',             type: 'scenic',    emoji: '🛍️', desc: "The world's most famous boulevard.",                          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e5/ChampsElysees.jpg/400px-ChampsElysees.jpg' },
-    { name: 'Le Marais',                   type: 'food',      emoji: '🥐', desc: 'Historic quarter packed with bakeries and bistros.',           img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/1/17/Le_Marais_Paris.jpg/400px-Le_Marais_Paris.jpg' },
-    { name: 'French Patisserie Walk',      type: 'food',      emoji: '🥖', desc: 'Sample croissants, macarons and eclairs across the 6th.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/4e/Assorted_French_Macarons.jpg/400px-Assorted_French_Macarons.jpg' },
-    { name: 'Café de Flore',               type: 'food',      emoji: '☕', desc: "One of Paris's oldest and most famous literary cafes.",        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Cafe_de_Flore_exterior.jpg/400px-Cafe_de_Flore_exterior.jpg' },
-    { name: 'Centre Pompidou',             type: 'fun',       emoji: '🎭', desc: 'Bold inside-out architecture and modern art collections.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3b/Centre_Georges_Pompidou_2017.jpg/400px-Centre_Georges_Pompidou_2017.jpg' },
-    { name: 'Disneyland Paris',            type: 'fun',       emoji: '🎡', desc: 'Full day at the magical park — 45 min from central Paris.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/c/c0/Disneyland_Paris_Sleeping_Beauty_Castle.jpg/400px-Disneyland_Paris_Sleeping_Beauty_Castle.jpg' },
+  cdg:[
+    {name:"Eiffel Tower",           type:"landmarks",emoji:"🗼",img:"https://picsum.photos/seed/eiffel1/400/220",  visit:"2–3 hrs",hood:"Champ de Mars",     desc:"Paris's most iconic landmark — book timed entry well in advance."},
+    {name:"The Louvre",             type:"landmarks",emoji:"🏛️",img:"https://picsum.photos/seed/louvre1/400/220",  visit:"3–4 hrs",hood:"Louvre / Palais Royal",desc:"World's largest art museum and home of the Mona Lisa."},
+    {name:"Notre-Dame Cathedral",   type:"landmarks",emoji:"⛪",img:"https://picsum.photos/seed/notredm/400/220",  visit:"1 hr",   hood:"Île de la Cité",   desc:"Gothic masterpiece — restored after the 2019 fire, now reopened."},
+    {name:"Arc de Triomphe",        type:"landmarks",emoji:"🏛️",img:"https://picsum.photos/seed/arctri/400/220",   visit:"1 hr",   hood:"Champs-Élysées",  desc:"Climb to the top for a spectacular view of 12 radiating avenues."},
+    {name:"Sacré-Cœur Basilica",   type:"landmarks",emoji:"🕌",img:"https://picsum.photos/seed/sacrecoeur/400/220",visit:"1 hr",   hood:"Montmartre",       desc:"White hilltop basilica with sweeping panoramas over Paris."},
+    {name:"Palace of Versailles",   type:"history",  emoji:"👑",img:"https://picsum.photos/seed/versail/400/220",  visit:"4–5 hrs",hood:"Versailles (day trip)","desc":"Royal palace with the Hall of Mirrors — 30 min by RER train."},
+    {name:"Musée d'Orsay",         type:"history",  emoji:"🎨",img:"https://picsum.photos/seed/dorsay/400/220",   visit:"2–3 hrs",hood:"Saint-Germain",      desc:"Impressionist masterpieces by Monet, Renoir and Degas."},
+    {name:"Sainte-Chapelle",        type:"history",  emoji:"🌈",img:"https://picsum.photos/seed/stchap/400/220",   visit:"1 hr",   hood:"Île de la Cité",   desc:"Medieval royal chapel with breathtaking stained glass windows."},
+    {name:"Catacombs of Paris",     type:"history",  emoji:"💀",img:"https://picsum.photos/seed/catacomb/400/220", visit:"1.5 hrs",hood:"Montparnasse",       desc:"Underground ossuary holding remains of six million people."},
+    {name:"Conciergerie",           type:"history",  emoji:"⚔️",img:"https://picsum.photos/seed/concier/400/220",  visit:"1.5 hrs",hood:"Île de la Cité",   desc:"Former royal palace and prison from the French Revolution era."},
+    {name:"Montmartre Quarter",     type:"scenic",   emoji:"🎨",img:"https://picsum.photos/seed/montmartre/400/220",visit:"2 hrs", hood:"Montmartre",        desc:"Artists' village with cobblestone streets and a working vineyard."},
+    {name:"Seine River Cruise",     type:"scenic",   emoji:"⛵",img:"https://picsum.photos/seed/seine1/400/220",   visit:"1 hr",   hood:"City Centre",       desc:"See Paris monuments illuminated at dusk from the water."},
+    {name:"Luxembourg Gardens",     type:"scenic",   emoji:"🌳",img:"https://picsum.photos/seed/luxgard/400/220",  visit:"1–2 hrs",hood:"Saint-Germain",      desc:"Formal French gardens — perfect for a morning coffee stroll."},
+    {name:"Champs-Élysées",        type:"scenic",   emoji:"🛍️",img:"https://picsum.photos/seed/champs/400/220",   visit:"1–2 hrs",hood:"Champs-Élysées",   desc:"The world's most famous boulevard — shops, cafes and cinemas."},
+    {name:"Le Marais",              type:"food",     emoji:"🥐",img:"https://picsum.photos/seed/marais/400/220",   visit:"2 hrs",  hood:"Le Marais",         desc:"Historic quarter packed with bakeries, bistros and falafel shops."},
+    {name:"French Patisserie Walk", type:"food",     emoji:"🥖",img:"https://picsum.photos/seed/patisserie/400/220",visit:"1.5 hrs",hood:"Saint-Germain",    desc:"Sample croissants, macarons and éclairs across the 6th arrondissement."},
+    {name:"Rue Cler Market",        type:"food",     emoji:"🧺",img:"https://picsum.photos/seed/ruecler/400/220",  visit:"1 hr",   hood:"Champ de Mars",     desc:"Charming pedestrian market street beloved by local Parisians."},
+    {name:"Café de Flore",          type:"food",     emoji:"☕",img:"https://picsum.photos/seed/cafeflore/400/220",visit:"1 hr",   hood:"Saint-Germain",     desc:"One of Paris's oldest and most famous literary cafes since 1887."},
+    {name:"Centre Pompidou",        type:"fun",      emoji:"🎭",img:"https://picsum.photos/seed/pompidou/400/220", visit:"2–3 hrs",hood:"Le Marais",         desc:"Bold inside-out architecture and modern art collections."},
+    {name:"Disneyland Paris",       type:"fun",      emoji:"🎡",img:"https://picsum.photos/seed/disneypar/400/220",visit:"Full day",hood:"Marne-la-Vallée",  desc:"Full day at the magical theme park — 45 min from central Paris."},
   ],
-  fco: [
-    { name: 'Colosseum',                   type: 'landmarks', emoji: '🏟️', desc: 'Ancient amphitheatre — one of the greatest ever built.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/400px-Colosseo_2020.jpg' },
-    { name: 'Vatican Museums',             type: 'landmarks', emoji: '🏛️', desc: 'Vast papal collection leading to the Sistine Chapel.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/8c/Vatican_Museums_2013.jpg/400px-Vatican_Museums_2013.jpg' },
-    { name: "St. Peter's Basilica",        type: 'landmarks', emoji: '⛪', desc: 'Renaissance masterpiece with free entry and dome views.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f5/Basilica_di_San_Pietro_in_Vaticano_September_2015-1a.jpg/400px-Basilica_di_San_Pietro_in_Vaticano_September_2015-1a.jpg' },
-    { name: 'Trevi Fountain',              type: 'landmarks', emoji: '⛲', desc: "Toss a coin in the world's most famous Baroque fountain.",     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Trevi_fountain%2C_Rome%2C_Italy_2.jpg/400px-Trevi_fountain%2C_Rome%2C_Italy_2.jpg' },
-    { name: "Castel Sant'Angelo",          type: 'landmarks', emoji: '🏰', desc: 'Former papal fortress with rooftop views over the Tiber.',     img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/5e/Castel_sant%27angelo_2013.jpg/400px-Castel_sant%27angelo_2013.jpg' },
-    { name: 'Pantheon',                    type: 'history',   emoji: '🏛️', desc: 'Almost perfectly preserved ancient Roman temple.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/8/87/Pantheon_Rome.jpg/400px-Pantheon_Rome.jpg' },
-    { name: 'Roman Forum',                 type: 'history',   emoji: '🏺', desc: 'Heart of ancient Rome — ruins of temples and government.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Forum_Romanum_Rom.jpg/400px-Forum_Romanum_Rom.jpg' },
-    { name: 'Palatine Hill',               type: 'history',   emoji: '🌿', desc: 'The oldest part of Rome with sweeping Forum views.',          img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e1/Palatine_Hill_Rome.jpg/400px-Palatine_Hill_Rome.jpg' },
-    { name: 'Borghese Gallery',            type: 'history',   emoji: '🎨', desc: 'Bernini sculptures and Caravaggio paintings in a villa.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e3/Galleria_borghese_facade.jpg/400px-Galleria_borghese_facade.jpg' },
-    { name: 'Day Trip: Pompeii',           type: 'history',   emoji: '🌋', desc: 'Preserved Roman city buried by Vesuvius (~2.5 hrs by train).',  img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/47/Pompeii_Ruins_2014.jpg/400px-Pompeii_Ruins_2014.jpg' },
-    { name: 'Piazza Navona',               type: 'scenic',    emoji: '🏙️', desc: 'Baroque oval piazza with three monumental fountains.',        img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/9c/Piazza_Navona_at_night_2.jpg/400px-Piazza_Navona_at_night_2.jpg' },
-    { name: 'Pincio Hill Terrace',         type: 'scenic',    emoji: '🌅', desc: 'Best panoramic viewpoint over Rome — stunning at sunset.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/bf/Rome_from_Pincio.jpg/400px-Rome_from_Pincio.jpg' },
-    { name: 'Trastevere Walk',             type: 'scenic',    emoji: '🌿', desc: 'Medieval streets lit by lanterns — magical in the evening.',   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Trastevere_street_Rome.jpg/400px-Trastevere_street_Rome.jpg' },
-    { name: "Campo de' Fiori Market",      type: 'food',      emoji: '🥗', desc: 'Vibrant morning market and lively evening piazza.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b8/Campo_de%27_Fiori_Rome.jpg/400px-Campo_de%27_Fiori_Rome.jpg' },
-    { name: 'Testaccio Market',            type: 'food',      emoji: '🍝', desc: "Rome's best indoor food market — try supplì and porchetta.",   img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/9/95/Mercato_Testaccio_Roma.jpg/400px-Mercato_Testaccio_Roma.jpg' },
-    { name: 'Trastevere Dining',           type: 'food',      emoji: '🍷', desc: 'Cobblestone neighbourhood packed with trattorias.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/6/68/Trastevere_street_Rome.jpg/400px-Trastevere_street_Rome.jpg' },
-    { name: 'Gelato Tour',                 type: 'food',      emoji: '🍦', desc: 'Hunt for the best artisan gelato in the old town.',            img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/35/Italian_ice_cream_Rome.jpg/400px-Italian_ice_cream_Rome.jpg' },
-    { name: 'Bioparco Rome Zoo',           type: 'fun',       emoji: '🦁', desc: 'Family-friendly zoo inside the Villa Borghese gardens.',      img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/Bioparco_Roma.jpg/400px-Bioparco_Roma.jpg' },
-    { name: 'Piazza Venezia',              type: 'fun',       emoji: '🎭', desc: 'Central hub — great for people-watching and street life.',    img: 'https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/Piazza_Venezia_Rome_2014.jpg/400px-Piazza_Venezia_Rome_2014.jpg' },
+  fco:[
+    {name:"Colosseum",              type:"landmarks",emoji:"🏟️",img:"https://picsum.photos/seed/coloss1/400/220",  visit:"2–3 hrs",hood:"Ancient Rome",      desc:"Ancient amphitheatre — one of the greatest ever built. Book ahead."},
+    {name:"Vatican Museums",        type:"landmarks",emoji:"🏛️",img:"https://picsum.photos/seed/vatmus/400/220",   visit:"3–4 hrs",hood:"Vatican",           desc:"Vast papal collection culminating in the Sistine Chapel."},
+    {name:"St. Peter's Basilica",   type:"landmarks",emoji:"⛪",img:"https://picsum.photos/seed/stpeter/400/220",  visit:"1.5 hrs",hood:"Vatican",           desc:"Renaissance masterpiece — free entry, climb the dome for views."},
+    {name:"Trevi Fountain",         type:"landmarks",emoji:"⛲",img:"https://picsum.photos/seed/trevi1/400/220",   visit:"30 min", hood:"Trevi / Quirinale", desc:"World's most famous Baroque fountain — toss a coin for good luck."},
+    {name:"Castel Sant'Angelo",     type:"landmarks",emoji:"🏰",img:"https://picsum.photos/seed/castelsa/400/220", visit:"2 hrs",  hood:"Prati",             desc:"Former papal fortress with rooftop views over the Tiber river."},
+    {name:"Pantheon",               type:"history",  emoji:"🏛️",img:"https://picsum.photos/seed/pantheon/400/220", visit:"1 hr",   hood:"Pantheon / Navona", desc:"Almost perfectly preserved ancient Roman temple — stunning dome."},
+    {name:"Roman Forum",            type:"history",  emoji:"🏺",img:"https://picsum.photos/seed/romanfor/400/220", visit:"1.5 hrs",hood:"Ancient Rome",      desc:"The heart of ancient Rome — ruins of temples and senate buildings."},
+    {name:"Palatine Hill",          type:"history",  emoji:"🌿",img:"https://picsum.photos/seed/palatine/400/220", visit:"1 hr",   hood:"Ancient Rome",      desc:"Rome's oldest district with sweeping views over the Forum."},
+    {name:"Borghese Gallery",       type:"history",  emoji:"🎨",img:"https://picsum.photos/seed/borghese/400/220", visit:"2 hrs",  hood:"Villa Borghese",    desc:"Bernini sculptures and Caravaggio paintings in a stunning villa."},
+    {name:"Day Trip: Pompeii",      type:"history",  emoji:"🌋",img:"https://picsum.photos/seed/pompeii/400/220",  visit:"Full day",hood:"Pompeii (2.5 hrs)", desc:"Preserved Roman city buried by Vesuvius eruption in 79 AD."},
+    {name:"Piazza Navona",          type:"scenic",   emoji:"🏙️",img:"https://picsum.photos/seed/navona/400/220",   visit:"45 min", hood:"Pantheon / Navona", desc:"Baroque oval piazza with three monumental fountains."},
+    {name:"Pincio Hill Terrace",    type:"scenic",   emoji:"🌅",img:"https://picsum.photos/seed/pincio/400/220",   visit:"1 hr",   hood:"Villa Borghese",    desc:"Best panoramic viewpoint over Rome — especially beautiful at sunset."},
+    {name:"Trastevere Walk",        type:"scenic",   emoji:"🌿",img:"https://picsum.photos/seed/trastev/400/220",  visit:"1–2 hrs",hood:"Trastevere",        desc:"Medieval cobblestone streets lit by lanterns — magical in the evening."},
+    {name:"Gianicolo Hill",         type:"scenic",   emoji:"🌄",img:"https://picsum.photos/seed/gianicolo/400/220",visit:"1 hr",   hood:"Trastevere",        desc:"Second-best view in Rome — a favourite local picnic spot."},
+    {name:"Campo de' Fiori Market", type:"food",     emoji:"🥗",img:"https://picsum.photos/seed/campofio/400/220", visit:"1 hr",   hood:"Campo de' Fiori",   desc:"Vibrant morning market and lively evening piazza."},
+    {name:"Testaccio Market",       type:"food",     emoji:"🍝",img:"https://picsum.photos/seed/testaccio/400/220",visit:"1 hr",   hood:"Testaccio",         desc:"Rome's best indoor food market — try supplì and porchetta."},
+    {name:"Trastevere Dining",      type:"food",     emoji:"🍷",img:"https://picsum.photos/seed/trastfood/400/220",visit:"2 hrs",  hood:"Trastevere",        desc:"Cobblestone neighbourhood packed with family-run trattorias."},
+    {name:"Gelato Tour",            type:"food",     emoji:"🍦",img:"https://picsum.photos/seed/gelato1/400/220",  visit:"1 hr",   hood:"City-wide",         desc:"Hunt for the best artisan gelato — ask locals, not tourists."},
+    {name:"Bioparco Rome Zoo",      type:"fun",      emoji:"🦁",img:"https://picsum.photos/seed/bioparco/400/220", visit:"2–3 hrs",hood:"Villa Borghese",    desc:"Family-friendly zoo inside the beautiful Villa Borghese gardens."},
+    {name:"Piazza Venezia",         type:"fun",      emoji:"🎭",img:"https://picsum.photos/seed/piavene/400/220",  visit:"30 min", hood:"Piazza Venezia",    desc:"Central hub with the grand Vittoriano monument — great photos."},
   ]
 };
 
-/* ─────────────────────────────────────────
-   SIGHTSEEING ENGINE — "pick first, schedule second"
-
-   Flow per city:
-   1. showSightseeing(city)  — reveals section, builds tile grid
-   2. filterTiles(city,type) — shows/hides tiles by category tab
-   3. togglePlace(city,name) — marks/unmarks a tile; checks realism
-   4. buildItinerary(city)   — distributes chosen places across days,
-                                renders day-by-day with drag+move reorder
-───────────────────────────────────────── */
-
-/* Tracks selected place names per city */
-const chosen = { london: new Set(), ams: new Set(), cdg: new Set(), fco: new Set() };
-/* Active category tab per city */
-const activeFilter = { london: 'all', ams: 'all', cdg: 'all', fco: 'all' };
-
-const TYPE_LABELS = { landmarks:'Landmark', history:'History', food:'Food & Drink', fun:'Fun', scenic:'Scenic', hp:'Harry Potter' };
-const TAG_CLASS   = { landmarks:'tag-landmarks', history:'tag-history', food:'tag-food', fun:'tag-fun', scenic:'tag-scenic', hp:'tag-hp' };
-
-/* Direct Wikimedia Commons image URLs — reliable, no API key needed.
-   Each place has its own curated URL stored in the SIGHTS data.
-   For user-added custom places we fall back to a city-themed placeholder. */
-const CITY_FALLBACK = {
-  london:  'https://upload.wikimedia.org/wikipedia/commons/thumb/6/67/London_Skyline_%28125508655%29.jpeg/400px-London_Skyline_%28125508655%29.jpeg',
-  ams:     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a8/Herengracht_386_-_386A.jpg/400px-Herengracht_386_-_386A.jpg',
-  cdg:     'https://upload.wikimedia.org/wikipedia/commons/thumb/a/a7/Camponotus_flavomarginatus_ant.jpg/400px-Tour_Eiffel_Wikimedia_Commons.jpg',
-  fco:     'https://upload.wikimedia.org/wikipedia/commons/thumb/d/de/Colosseo_2020.jpg/400px-Colosseo_2020.jpg',
+/* ═══════════════════════════════════════════════════════════════
+   TRAVEL TIME MATRIX
+   Each entry: { walk, taxi, transit } in minutes (or null)
+   Key: sorted pair joined by |||
+═══════════════════════════════════════════════════════════════ */
+function tkey(a,b){return [a,b].sort().join('|||');}
+const TRAVEL = {
+  // ── LONDON ──────────────────────────────────────────────
+  [tkey("Tower of London","Tower Bridge")]:               {walk:5,   taxi:5,   transit:null, note:"Literally adjacent"},
+  [tkey("Tower Bridge","St. Paul's Cathedral")]:          {walk:20,  taxi:8,   transit:12},
+  [tkey("St. Paul's Cathedral","The British Museum")]:    {walk:20,  taxi:8,   transit:15},
+  [tkey("The British Museum","Covent Garden")]:           {walk:8,   taxi:6,   transit:null, note:"Short stroll"},
+  [tkey("Covent Garden","National Portrait Gallery")]:    {walk:5,   taxi:5,   transit:null, note:"Short stroll"},
+  [tkey("Westminster Abbey","Big Ben & Parliament")]:     {walk:3,   taxi:5,   transit:null, note:"Side by side"},
+  [tkey("Big Ben & Parliament","Buckingham Palace")]:     {walk:12,  taxi:7,   transit:null},
+  [tkey("Buckingham Palace","Hyde Park")]:                {walk:5,   taxi:5,   transit:null},
+  [tkey("Hyde Park","Natural History Museum")]:           {walk:12,  taxi:8,   transit:null},
+  [tkey("Natural History Museum","Science Museum")]:      {walk:3,   taxi:5,   transit:null, note:"Next door"},
+  [tkey("Borough Market","London Eye")]:                  {walk:15,  taxi:8,   transit:10},
+  [tkey("London Eye","Westminster Abbey")]:               {walk:12,  taxi:7,   transit:15},
+  [tkey("London Eye","Big Ben & Parliament")]:            {walk:10,  taxi:7,   transit:null},
+  [tkey("Tower of London","Borough Market")]:             {walk:10,  taxi:6,   transit:null},
+  [tkey("Covent Garden","Borough Market")]:               {walk:15,  taxi:8,   transit:10},
+  [tkey("St. Paul's Cathedral","Borough Market")]:        {walk:10,  taxi:6,   transit:null},
+  [tkey("Buckingham Palace","Westminster Abbey")]:        {walk:8,   taxi:6,   transit:null},
+  [tkey("Churchill War Rooms","Westminster Abbey")]:      {walk:5,   taxi:5,   transit:null},
+  [tkey("Churchill War Rooms","Big Ben & Parliament")]:   {walk:5,   taxi:5,   transit:null},
+  // ── AMSTERDAM ───────────────────────────────────────────
+  [tkey("Rijksmuseum","Van Gogh Museum")]:                {walk:3,   taxi:5,   transit:null, note:"Next door"},
+  [tkey("Van Gogh Museum","Stedelijk Museum")]:           {walk:3,   taxi:5,   transit:null, note:"Neighbours"},
+  [tkey("Rijksmuseum","Vondelpark")]:                     {walk:5,   taxi:5,   transit:null},
+  [tkey("Royal Palace (Dam Square)","Westerkerk Tower")]: {walk:10,  taxi:7,   transit:10},
+  [tkey("Westerkerk Tower","Anne Frank House")]:          {walk:3,   taxi:5,   transit:null, note:"Very close"},
+  [tkey("Anne Frank House","Jordaan Neighbourhood")]:     {walk:5,   taxi:5,   transit:null},
+  [tkey("Albert Cuyp Market","Heineken Experience")]:     {walk:8,   taxi:6,   transit:10},
+  [tkey("NEMO Science Museum","Royal Palace (Dam Square)")]:{walk:15,taxi:8,   transit:12},
+  [tkey("Canal Ring Cruise","Westerkerk Tower")]:         {walk:10,  taxi:7,   transit:null},
+  [tkey("Rijksmuseum","Albert Cuyp Market")]:             {walk:10,  taxi:7,   transit:10},
+  [tkey("Vondelpark","Rijksmuseum")]:                     {walk:5,   taxi:5,   transit:null},
+  [tkey("Jordaan Neighbourhood","Royal Palace (Dam Square)")]:{walk:8,taxi:6,  transit:null},
+  // ── PARIS ───────────────────────────────────────────────
+  [tkey("Eiffel Tower","Musée d'Orsay")]:                 {walk:20,  taxi:8,   transit:15},
+  [tkey("Musée d'Orsay","The Louvre")]:                   {walk:15,  taxi:8,   transit:12},
+  [tkey("The Louvre","Sainte-Chapelle")]:                 {walk:15,  taxi:7,   transit:20},
+  [tkey("Sainte-Chapelle","Notre-Dame Cathedral")]:       {walk:5,   taxi:5,   transit:null, note:"Very close"},
+  [tkey("Notre-Dame Cathedral","Conciergerie")]:          {walk:5,   taxi:5,   transit:null},
+  [tkey("Notre-Dame Cathedral","Centre Pompidou")]:       {walk:15,  taxi:8,   transit:12},
+  [tkey("Centre Pompidou","Le Marais")]:                  {walk:5,   taxi:5,   transit:null, note:"Adjacent"},
+  [tkey("Arc de Triomphe","Champs-Élysées")]:             {walk:2,   taxi:5,   transit:null, note:"Walk down it"},
+  [tkey("Sacré-Cœur Basilica","Montmartre Quarter")]:     {walk:3,   taxi:5,   transit:null},
+  [tkey("Luxembourg Gardens","Café de Flore")]:           {walk:3,   taxi:5,   transit:null},
+  [tkey("Luxembourg Gardens","French Patisserie Walk")]:  {walk:5,   taxi:5,   transit:null},
+  [tkey("Café de Flore","French Patisserie Walk")]:       {walk:5,   taxi:5,   transit:null},
+  [tkey("Café de Flore","Musée d'Orsay")]:                {walk:10,  taxi:7,   transit:null},
+  [tkey("The Louvre","Notre-Dame Cathedral")]:            {walk:20,  taxi:10,  transit:18},
+  [tkey("Eiffel Tower","Arc de Triomphe")]:               {walk:30,  taxi:12,  transit:20},
+  [tkey("Arc de Triomphe","The Louvre")]:                 {walk:25,  taxi:10,  transit:15},
+  [tkey("The Louvre","Arc de Triomphe")]:                 {walk:25,  taxi:10,  transit:15},
+  [tkey("Catacombs of Paris","Luxembourg Gardens")]:      {walk:12,  taxi:7,   transit:15},
+  [tkey("Rue Cler Market","Eiffel Tower")]:               {walk:12,  taxi:7,   transit:null},
+  [tkey("Montmartre Quarter","Sacré-Cœur Basilica")]:     {walk:3,   taxi:5,   transit:null},
+  [tkey("Le Marais","Centre Pompidou")]:                  {walk:5,   taxi:5,   transit:null},
+  [tkey("Le Marais","Notre-Dame Cathedral")]:             {walk:12,  taxi:7,   transit:12},
+  // ── ROME ────────────────────────────────────────────────
+  [tkey("Colosseum","Roman Forum")]:                      {walk:5,   taxi:5,   transit:null, note:"Directly adjacent"},
+  [tkey("Roman Forum","Palatine Hill")]:                  {walk:5,   taxi:5,   transit:null, note:"Same site"},
+  [tkey("Colosseum","Palatine Hill")]:                    {walk:8,   taxi:5,   transit:null},
+  [tkey("Trevi Fountain","Pantheon")]:                    {walk:10,  taxi:6,   transit:null},
+  [tkey("Pantheon","Piazza Navona")]:                     {walk:5,   taxi:5,   transit:null, note:"Very close"},
+  [tkey("Piazza Navona","Campo de' Fiori Market")]:       {walk:5,   taxi:5,   transit:null},
+  [tkey("Castel Sant'Angelo","St. Peter's Basilica")]:    {walk:15,  taxi:7,   transit:null},
+  [tkey("St. Peter's Basilica","Vatican Museums")]:       {walk:5,   taxi:5,   transit:null, note:"Same complex"},
+  [tkey("Borghese Gallery","Pincio Hill Terrace")]:       {walk:10,  taxi:7,   transit:null},
+  [tkey("Borghese Gallery","Bioparco Rome Zoo")]:         {walk:5,   taxi:5,   transit:null},
+  [tkey("Trastevere Walk","Trastevere Dining")]:          {walk:2,   taxi:5,   transit:null, note:"Same area"},
+  [tkey("Testaccio Market","Campo de' Fiori Market")]:    {walk:12,  taxi:7,   transit:15},
+  [tkey("Colosseum","Trevi Fountain")]:                   {walk:25,  taxi:10,  transit:20},
+  [tkey("Trevi Fountain","Castel Sant'Angelo")]:          {walk:20,  taxi:9,   transit:18},
+  [tkey("Vatican Museums","Castel Sant'Angelo")]:         {walk:15,  taxi:7,   transit:null},
+  [tkey("Pantheon","Trevi Fountain")]:                    {walk:12,  taxi:7,   transit:null},
+  [tkey("Colosseum","Palatine Hill")]:                    {walk:8,   taxi:5,   transit:null},
+  [tkey("Piazza Venezia","Colosseum")]:                   {walk:18,  taxi:8,   transit:15},
+  [tkey("Piazza Venezia","Trevi Fountain")]:              {walk:12,  taxi:7,   transit:null},
+  [tkey("Piazza Venezia","Pantheon")]:                    {walk:8,   taxi:6,   transit:null},
+  [tkey("Trastevere Walk","Campo de' Fiori Market")]:     {walk:10,  taxi:6,   transit:null},
+  [tkey("Gelato Tour","Trevi Fountain")]:                 {walk:10,  taxi:6,   transit:null},
 };
-/* Use the place's img field directly as the full URL */
-function imgUrl(place, city) {
-  return place.img || CITY_FALLBACK[city] || '';
-}
 
-/* ── 1. SHOW + INIT TILE GRID ── */
-function showSightseeing(city) {
-  const section = document.getElementById('sight-' + city);
-  if (!section) return;
-  section.classList.add('visible');
+function getTravel(a,b){return TRAVEL[tkey(a,b)]||null;}
+
+/* ═══════════════════════════════════════════════════════════════
+   SIGHTSEEING ENGINE STATE
+═══════════════════════════════════════════════════════════════ */
+const chosen       = {london:new Set(),ams:new Set(),cdg:new Set(),fco:new Set()};
+const activeFilter = {london:'all',ams:'all',cdg:'all',fco:'all'};
+const customPlaces = {london:[],ams:[],cdg:[],fco:[]};
+const itinState    = {london:[],ams:[],cdg:[],fco:[]};
+
+const TYPE_LABELS  = {landmarks:'Landmark',history:'History',food:'Food & Drink',fun:'Fun',scenic:'Scenic',hp:'Harry Potter',custom:'Your pick'};
+const TAG_CLASS    = {landmarks:'tag-landmarks',history:'tag-history',food:'tag-food',fun:'tag-fun',scenic:'tag-scenic',hp:'tag-hp',custom:'tag-custom'};
+
+/* ── Show sightseeing section ── */
+function showSightseeing(city){
+  const s=document.getElementById('sight-'+city);
+  if(!s)return;
+  s.classList.add('visible');
   initGrid(city);
-  /* Scroll to the sightseeing section (NOT to the next city) */
-  setTimeout(() => section.scrollIntoView({ behavior: 'smooth', block: 'start' }), 350);
+  setTimeout(()=>s.scrollIntoView({behavior:'smooth',block:'start'}),350);
 }
 
-function initGrid(city) {
-  const grid = document.getElementById('grid-' + city);
-  if (!grid) return;
-  grid.innerHTML = '';
-  SIGHTS[city].forEach(place => {
-    const isChosen = chosen[city].has(place.name);
-    const hidden   = (activeFilter[city] !== 'all' && place.type !== activeFilter[city]) ? 'style="display:none"' : '';
-    const safeName = place.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    grid.insertAdjacentHTML('beforeend', `
-      <div class="place-tile${isChosen ? ' chosen' : ''}" ${hidden}
+/* ── Build tile grid ── */
+function initGrid(city){
+  const grid=document.getElementById('grid-'+city);
+  if(!grid)return;
+  grid.innerHTML='';
+  const all=[...SIGHTS[city],...customPlaces[city]];
+  all.forEach(place=>{
+    const isChosen=chosen[city].has(place.name);
+    const hidden=(activeFilter[city]!=='all'&&place.type!==activeFilter[city])?'style="display:none"':'';
+    const safeName=place.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
+    grid.insertAdjacentHTML('beforeend',`
+      <div class="place-tile${isChosen?' chosen':''}" ${hidden}
            onclick="togglePlace('${city}','${safeName}',this)"
-           data-type="${place.type}" data-name="${place.name.replace(/"/g,'&quot;')}">
+           data-type="${place.type}">
         <div class="place-img-wrap">
-          <img class="place-img" src="${imgUrl(place, city)}" alt="${place.name}" loading="lazy" onerror="this.style.display='none'">
+          <span class="place-img-fallback">${place.emoji}</span>
+          <img class="place-img" src="${place.img||''}"
+               alt="${place.name}"
+               loading="lazy"
+               onload="this.classList.add('loaded')"
+               onerror="this.style.display='none'">
         </div>
-        <div class="place-tile-top">
-          <span class="place-emoji">${place.emoji}</span>
-          <div class="place-check">${isChosen ? '✓' : ''}</div>
+        <div class="place-body">
+          <div class="place-tile-top">
+            <span style="font-size:14px">${place.emoji}</span>
+            <div class="place-check">${isChosen?'✓':''}</div>
+          </div>
+          <div class="place-name">${place.name}</div>
+          <div class="place-meta">
+            ${place.hood?`<span class="place-hood">📍 ${place.hood}</span>`:''}
+            ${place.visit?`<span class="place-visit">⏱ ${place.visit}</span>`:''}
+          </div>
+          <span class="place-tag ${TAG_CLASS[place.type]||'tag-custom'}">${TYPE_LABELS[place.type]||place.type}</span>
         </div>
-        <div class="place-name">${place.name}</div>
-        <div class="place-desc">${place.desc}</div>
-        ${HOOD[place.name] ? `<div class="place-hood">${HOOD[place.name]}</div>` : ''}
-        <span class="place-tag ${TAG_CLASS[place.type] || 'tag-landmarks'}">${TYPE_LABELS[place.type] || place.type}</span>
-      </div>`);
-  });
-  /* Append any user-added custom places below the built-in grid */
-  customPlaces[city].forEach(place => {
-    const isChosen = chosen[city].has(place.name);
-    const safeName = place.name.replace(/\\/g,'\\\\').replace(/'/g,"\\'");
-    grid.insertAdjacentHTML('beforeend', `
-      <div class="place-tile${isChosen ? ' chosen' : ''}"
-           onclick="togglePlace('${city}','${safeName}',this)"
-           data-type="custom" data-name="${place.name.replace(/"/g,'&quot;')}">
-        <div class="place-tile-top">
-          <span class="place-emoji">📍</span>
-          <div class="place-check">${isChosen ? '✓' : ''}</div>
-        </div>
-        <div class="place-name">${place.name}</div>
-        <div class="place-desc">Your own addition</div>
-        <div class="place-hood">Custom addition</div>
-        <span class="place-tag tag-food" style="background:#E1F5EE;color:#0F6E56">Your pick</span>
       </div>`);
   });
   updateCount(city);
 }
 
-/* ── 2. FILTER TILES BY CATEGORY TAB ── */
-function filterTiles(city, type, btn) {
-  activeFilter[city] = type;
-  document.getElementById('tabs-' + city).querySelectorAll('.cat-tab').forEach(t => t.classList.remove('active'));
+/* ── Filter by category tab ── */
+function filterTiles(city,type,btn){
+  activeFilter[city]=type;
+  document.getElementById('tabs-'+city).querySelectorAll('.cat-tab').forEach(t=>t.classList.remove('active'));
   btn.classList.add('active');
-  document.querySelectorAll('#grid-' + city + ' .place-tile').forEach(tile => {
-    tile.style.display = (type === 'all' || tile.dataset.type === type) ? '' : 'none';
+  document.querySelectorAll('#grid-'+city+' .place-tile').forEach(t=>{
+    t.style.display=(type==='all'||t.dataset.type===type)?'':'none';
   });
 }
 
-/* ── 3. TOGGLE A PLACE + REALISM CHECK ── */
-function togglePlace(city, name, tile) {
-  if (chosen[city].has(name)) {
-    chosen[city].delete(name);
-    tile.classList.remove('chosen');
-    tile.querySelector('.place-check').textContent = '';
-  } else {
-    chosen[city].add(name);
-    tile.classList.add('chosen');
-    tile.querySelector('.place-check').textContent = '✓';
-  }
+/* ── Toggle place selection ── */
+function togglePlace(city,name,tile){
+  if(chosen[city].has(name)){chosen[city].delete(name);tile.classList.remove('chosen');tile.querySelector('.place-check').textContent='';}
+  else{chosen[city].add(name);tile.classList.add('chosen');tile.querySelector('.place-check').textContent='✓';}
   updateCount(city);
   checkRealism(city);
-  /* Clear stale itinerary */
-  document.getElementById('itin-' + city).innerHTML = '';
+  document.getElementById('itin-'+city).innerHTML='';
+  saveState();
 }
 
-function updateCount(city) {
-  const n = chosen[city].size;
-  document.getElementById('count-' + city).innerHTML = `<strong>${n}</strong> place${n !== 1 ? 's' : ''} selected`;
-  document.getElementById('build-' + city).disabled = (n === 0);
+function updateCount(city){
+  const n=chosen[city].size;
+  document.getElementById('count-'+city).innerHTML=`<strong>${n}</strong> place${n!==1?'s':''} selected`;
+  document.getElementById('build-'+city).disabled=(n===0);
+  const optBtn=document.getElementById('opt-'+city);
+  if(optBtn)optBtn.classList.toggle('visible',n>=2);
+  maybeShowSendCard();
 }
 
-/* Realism thresholds: comfortable = ≤3/day, busy = ≤5/day, over = >5/day */
-function checkRealism(city) {
-  const days = picks[city];
-  const n    = chosen[city].size;
-  const warn = document.getElementById('warn-' + city);
-  if (!warn) return;
-  if (!days || n === 0) { warn.className = 'realism-warn'; return; }
-  const perDay = n / days;
-  if (perDay > 5) {
-    warn.className = 'realism-warn over';
-    warn.textContent = `⚠ That's about ${Math.ceil(perDay)} places per day — quite a lot. Consider removing a few or adding more days for a relaxed pace.`;
-  } else if (perDay > 3) {
-    warn.className = 'realism-warn caution';
-    warn.textContent = `That's roughly ${Math.ceil(perDay)} places per day — doable but busy. You may want to trim a couple for a more comfortable pace.`;
-  } else {
-    warn.className = 'realism-warn';
-  }
+function checkRealism(city){
+  const days=picks[city],n=chosen[city].size,warn=document.getElementById('warn-'+city);
+  if(!warn)return;
+  if(!days||n===0){warn.className='realism-warn';return;}
+  const perDay=n/days;
+  if(perDay>5){warn.className='realism-warn over';warn.textContent=`⚠ That's about ${Math.ceil(perDay)} stops per day — very ambitious. Consider spreading visits across more days or choosing fewer places.`;}
+  else if(perDay>3){warn.className='realism-warn caution';warn.textContent=`That's roughly ${Math.ceil(perDay)} stops per day — doable but busy. You may want to trim a couple for a more relaxed pace.`;}
+  else{warn.className='realism-warn';}
 }
 
-/* ── 4. BUILD DAY-BY-DAY ITINERARY ── */
-
-/* Stores current scheduled order per city so drag/move can mutate it */
-const itinState = { london: [], ams: [], cdg: [], fco: [] };
-
-function buildItinerary(city) {
-  const days   = picks[city];
-  const itinEl = document.getElementById('itin-' + city);
-
-  if (!days) {
-    itinEl.innerHTML = '<div class="sight-need-days">Please select the number of days above first.</div>';
-    return;
+/* ═══════════════════════════════════════════════════════════════
+   NEAREST-NEIGHBOUR ROUTE OPTIMIZER
+   Greedily picks the closest unvisited place using TRAVEL data.
+   Falls back to SIGHTS order for unknown pairs.
+═══════════════════════════════════════════════════════════════ */
+function nearestNeighbour(pool){
+  if(pool.length<=2)return pool;
+  const visited=new Set(),result=[],names=pool.map(p=>p.name);
+  // Start with first place in pool (top of selection list)
+  let current=pool[0];
+  result.push(current);visited.add(current.name);
+  while(result.length<pool.length){
+    let best=null,bestTime=Infinity;
+    pool.forEach(p=>{
+      if(visited.has(p.name))return;
+      const t=getTravel(current.name,p.name);
+      const time=t?Math.min(t.walk||999,t.taxi||999,t.transit||999):500;
+      if(time<bestTime){bestTime=time;best=p;}
+    });
+    if(!best)break;
+    result.push(best);visited.add(best.name);current=best;
   }
-  const allPlaces = [...SIGHTS[city], ...customPlaces[city]];
-  const pool = allPlaces.filter(p => chosen[city].has(p.name));
-  if (!pool.length) {
-    itinEl.innerHTML = '<p class="sight-empty">No places selected — tap some above first.</p>';
-    return;
-  }
+  // Add any not yet added (custom places with no travel data)
+  pool.forEach(p=>{if(!visited.has(p.name))result.push(p);});
+  return result;
+}
 
-  /* Store initial ordered list for reorder operations */
-  itinState[city] = pool.map(p => p.name);
+function optimizeAndBuild(city){
+  const allPlaces=[...SIGHTS[city],...customPlaces[city]];
+  const pool=allPlaces.filter(p=>chosen[city].has(p.name));
+  const optimized=nearestNeighbour(pool);
+  itinState[city]=optimized.map(p=>p.name);
+  const banner=document.getElementById('opt-banner-'+city);
+  banner.className='optimize-banner visible';
+  banner.textContent='✦ Route optimized — stops ordered to minimize travel time. You can still drag to rearrange.';
   renderItinerary(city);
 }
 
-/* Renders from itinState — called both initially and after any reorder */
-function renderItinerary(city) {
-  const days   = picks[city];
-  const itinEl = document.getElementById('itin-' + city);
-  const nameMap = {};
-  [...SIGHTS[city], ...customPlaces[city]].forEach(p => nameMap[p.name] = p);
-  const pool = itinState[city].map(n => nameMap[n]).filter(Boolean);
+/* ═══════════════════════════════════════════════════════════════
+   BUILD ITINERARY (standard — preserves selection order)
+═══════════════════════════════════════════════════════════════ */
+function buildItinerary(city){
+  const days=picks[city],itinEl=document.getElementById('itin-'+city);
+  if(!days){itinEl.innerHTML='<div class="sight-need-days">Please select the number of days above first.</div>';return;}
+  const allPlaces=[...SIGHTS[city],...customPlaces[city]];
+  const pool=allPlaces.filter(p=>chosen[city].has(p.name));
+  if(!pool.length){itinEl.innerHTML='<p class="sight-empty">No places selected — tap some above first.</p>';return;}
+  itinState[city]=pool.map(p=>p.name);
+  document.getElementById('opt-banner-'+city).className='optimize-banner';
+  renderItinerary(city);
+}
 
-  const perDay = Math.floor(pool.length / days);
-  const extra  = pool.length % days;
-  const html   = ['<div class="sight-step-label" style="margin-bottom:12px">Your itinerary — drag or use arrows to rearrange</div>'];
-  let idx = 0;
-
-  for (let d = 0; d < days; d++) {
-    const count = perDay + (d < extra ? 1 : 0);
-    if (count === 0) break;
-    const slice = pool.slice(idx, idx + count);
-    idx += count;
-
-    html.push(`<div class="day-group" data-city="${city}" data-day="${d}">
-      <div class="day-label">Day ${d + 1}
-        <span class="day-count-pill">${slice.length} place${slice.length !== 1 ? 's' : ''}</span>
+/* ═══════════════════════════════════════════════════════════════
+   RENDER ITINERARY — builds day groups with travel connectors
+═══════════════════════════════════════════════════════════════ */
+function renderItinerary(city){
+  const days=picks[city],itinEl=document.getElementById('itin-'+city);
+  const nameMap={};
+  [...SIGHTS[city],...customPlaces[city]].forEach(p=>nameMap[p.name]=p);
+  const pool=itinState[city].map(n=>nameMap[n]).filter(Boolean);
+  const perDay=Math.floor(pool.length/days),extra=pool.length%days;
+  const html=[`
+    <div class="itin-header">
+      <span class="itin-title">Your day-by-day itinerary — drag or use ▲▼ to rearrange</span>
+      <button class="itin-email-btn" onclick="emailItinerary('${city}')">📧 Email this</button>
+    </div>`];
+  let idx=0;
+  for(let d=0;d<days;d++){
+    const count=perDay+(d<extra?1:0);
+    if(count===0)break;
+    const slice=pool.slice(idx,idx+count);idx+=count;
+    // Estimate total day time
+    let totalVisit=0;
+    slice.forEach(p=>{
+      const m=p.visit&&p.visit.match(/(\d+)/);
+      if(m)totalVisit+=parseInt(m[1]);
+    });
+    html.push(`<div class="day-group">
+      <div class="day-label">Day ${d+1}
+        <span class="day-count-pill">${slice.length} stop${slice.length!==1?'s':''} · ~${totalVisit}+ hrs</span>
       </div>`);
-
-    slice.forEach((p, i) => {
-      /* Walk-time connector between consecutive places */
-      if (i > 0) {
-        const prev = slice[i - 1];
-        const wt = getWalk(prev.name, p.name);
-        if (wt) {
-          html.push(`<div class="walk-connector"><div class="walk-line"></div><span class="walk-badge">🚶 ${wt}</span><div class="walk-line"></div></div>`);
+    slice.forEach((p,i)=>{
+      // Travel connector between consecutive places
+      if(i>0){
+        const prev=slice[i-1],t=getTravel(prev.name,p.name);
+        if(t){
+          const rows=[];
+          if(t.walk)rows.push(`<div class="travel-row"><span class="travel-icon">🚶</span><span class="travel-time">${t.walk} min</span><span class="travel-label">walking</span>${t.note?`<span class="travel-label"> · ${t.note}</span>`:''}</div>`);
+          if(t.taxi)rows.push(`<div class="travel-row"><span class="travel-icon">🚕</span><span class="travel-time">${t.taxi} min</span><span class="travel-label">by taxi/car</span></div>`);
+          if(t.transit)rows.push(`<div class="travel-row"><span class="travel-icon">🚇</span><span class="travel-time">${t.transit} min</span><span class="travel-label">public transport</span></div>`);
+          html.push(`<div class="travel-connector">${rows.join('')}</div>`);
+        } else {
+          html.push(`<div class="travel-connector"><div class="travel-row"><span class="travel-icon">🗺️</span><span class="travel-label">Travel time varies — check Google Maps for exact route</span></div></div>`);
         }
       }
-      /* Global index in pool for move operations */
-      const globalIdx = itinState[city].indexOf(p.name);
-      html.push(`
-        <div class="sched-card" draggable="true"
-             data-city="${city}" data-idx="${globalIdx}"
-             ondragstart="onDragStart(event)"
-             ondragover="onDragOver(event)"
-             ondrop="onDrop(event,this)"
-             ondragend="onDragEnd(event)">
-          <div class="drag-handle" title="Drag to reorder">
-            <span></span><span></span><span></span>
+      const globalIdx=itinState[city].indexOf(p.name);
+      html.push(`<div class="sched-card" draggable="true"
+           data-city="${city}" data-idx="${globalIdx}"
+           ondragstart="onDragStart(event)"
+           ondragover="onDragOver(event)"
+           ondrop="onDrop(event,this)"
+           ondragend="onDragEnd(event)">
+        <div class="drag-handle"><span></span><span></span><span></span></div>
+        <div class="sched-img-wrap">
+          <span style="font-size:22px">${p.emoji}</span>
+          <img style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:8px;opacity:0;transition:opacity .3s"
+               src="${p.img||''}" alt="${p.name}"
+               onload="this.style.opacity=1"
+               onerror="this.style.display='none'">
+        </div>
+        <div class="sched-body">
+          <div class="sched-name">
+            ${p.name}
+            <span class="place-tag ${TAG_CLASS[p.type]||'tag-custom'}" style="margin-left:4px">${TYPE_LABELS[p.type]}</span>
           </div>
-          <img class="sched-img" src="${imgUrl(p, city)}" alt="${p.name}" loading="lazy" onerror="this.style.display='none'">
-          <div class="sched-body">
-            <div class="sched-name">${p.name}
-              <span class="place-tag ${TAG_CLASS[p.type] || 'tag-landmarks'}" style="margin-left:4px">${TYPE_LABELS[p.type]}</span>
-              ${HOOD[p.name] ? `<span class="place-hood" style="font-size:10px;margin-left:4px">📍 ${HOOD[p.name]}</span>` : ''}
-            </div>
-            <div class="sched-desc">${p.desc}</div>
+          <div class="sched-meta">
+            ${p.hood?`<span class="sched-hood">📍 ${p.hood}</span> &nbsp;`:''}
+            ${p.visit?`⏱ Typical visit: <strong>${p.visit}</strong> &nbsp;`:''}
           </div>
-          <div class="move-btns">
-            <button class="move-btn" title="Move up"
-              onclick="movePlace('${city}',${globalIdx},-1)"
-              ${globalIdx === 0 ? 'disabled' : ''}>▲</button>
-            <button class="move-btn" title="Move down"
-              onclick="movePlace('${city}',${globalIdx},+1)"
-              ${globalIdx === itinState[city].length - 1 ? 'disabled' : ''}>▼</button>
-          </div>
-        </div>`);
+          <div class="sched-meta" style="color:var(--text-faint);font-size:10px;margin-top:2px">${p.desc}</div>
+        </div>
+        <div class="move-btns">
+          <button class="move-btn" onclick="movePlace('${city}',${globalIdx},-1)" ${globalIdx===0?'disabled':''}>▲</button>
+          <button class="move-btn" onclick="movePlace('${city}',${globalIdx},+1)" ${globalIdx===itinState[city].length-1?'disabled':''}>▼</button>
+        </div>
+      </div>`);
     });
     html.push('</div>');
   }
-
-  if (idx < pool.length) {
-    const left = pool.length - idx;
-    html.push(`<p class="sight-empty" style="font-size:11px;padding:6px 0">${left} more place${left > 1 ? 's' : ''} couldn't fit — consider adding a day or removing some.</p>`);
-  }
-
-  itinEl.innerHTML = html.join('');
-  setTimeout(() => itinEl.scrollIntoView({ behavior: 'smooth', block: 'start' }), 100);
+  if(idx<pool.length){const l=pool.length-idx;html.push(`<p class="sight-empty" style="font-size:11px;padding:6px 0">${l} more place${l>1?'s':''} selected — not enough days to fit them all. Consider adding a day or removing some.</p>`);}
+  itinEl.innerHTML=html.join('');
+  setTimeout(()=>itinEl.scrollIntoView({behavior:'smooth',block:'start'}),100);
 }
 
-/* ── MOVE BUTTONS (mobile-friendly reorder) ── */
-function movePlace(city, idx, dir) {
-  const arr  = itinState[city];
-  const newIdx = idx + dir;
-  if (newIdx < 0 || newIdx >= arr.length) return;
-  /* Swap */
-  [arr[idx], arr[newIdx]] = [arr[newIdx], arr[idx]];
+/* ── Move buttons ── */
+function movePlace(city,idx,dir){
+  const arr=itinState[city],n=idx+dir;
+  if(n<0||n>=arr.length)return;
+  [arr[idx],arr[n]]=[arr[n],arr[idx]];
   renderItinerary(city);
 }
 
-/* ── DRAG AND DROP REORDER ── */
-let dragSrcCity = null;
-let dragSrcIdx  = null;
+/* ── Drag and drop ── */
+let dragCity=null,dragIdx=null;
+function onDragStart(e){dragCity=e.currentTarget.dataset.city;dragIdx=parseInt(e.currentTarget.dataset.idx);e.currentTarget.classList.add('dragging');e.dataTransfer.effectAllowed='move';}
+function onDragOver(e){e.preventDefault();e.dataTransfer.dropEffect='move';document.querySelectorAll('.sched-card.drag-over').forEach(el=>el.classList.remove('drag-over'));e.currentTarget.classList.add('drag-over');}
+function onDrop(e,target){
+  e.preventDefault();const tc=target.dataset.city,ti=parseInt(target.dataset.idx);
+  if(dragCity!==tc||dragIdx===ti)return;
+  const arr=itinState[tc];const[m]=arr.splice(dragIdx,1);arr.splice(ti,0,m);
+  renderItinerary(tc);
+}
+function onDragEnd(e){document.querySelectorAll('.sched-card').forEach(el=>el.classList.remove('dragging','drag-over'));dragCity=null;dragIdx=null;}
 
-function onDragStart(e) {
-  dragSrcCity = e.currentTarget.dataset.city;
-  dragSrcIdx  = parseInt(e.currentTarget.dataset.idx);
-  e.currentTarget.classList.add('dragging');
-  e.dataTransfer.effectAllowed = 'move';
+/* ═══════════════════════════════════════════════════════════════
+   CUSTOM PLACES
+═══════════════════════════════════════════════════════════════ */
+function addCustomPlace(city){
+  const input=document.getElementById('custom-input-'+city);
+  const name=(input.value||'').trim();
+  if(!name)return;
+  const already=[...SIGHTS[city],...customPlaces[city]].some(p=>p.name.toLowerCase()===name.toLowerCase());
+  if(already){input.value='';input.placeholder='Already on the list!';setTimeout(()=>{input.placeholder='Add a place not listed…';},2000);return;}
+  const place={name,type:'custom',emoji:'📍',img:'',visit:'',hood:'',desc:'Your own addition.'};
+  customPlaces[city].push(place);chosen[city].add(name);
+  input.value='';renderCustomList(city);initGrid(city);checkRealism(city);
+  document.getElementById('itin-'+city).innerHTML='';saveState();
+}
+function removeCustomPlace(city,name){
+  customPlaces[city]=customPlaces[city].filter(p=>p.name!==name);chosen[city].delete(name);
+  renderCustomList(city);initGrid(city);checkRealism(city);
+  document.getElementById('itin-'+city).innerHTML='';saveState();
+}
+function renderCustomList(city){
+  const list=document.getElementById('custom-list-'+city);
+  if(!list)return;
+  list.innerHTML=customPlaces[city].map(p=>`<div class="custom-tile"><span>📍</span><span class="custom-tile-name">${p.name}</span><button class="custom-tile-remove" onclick="removeCustomPlace('${city}','${p.name.replace(/'/g,"\\'")}')">×</button></div>`).join('');
 }
 
-function onDragOver(e) {
-  e.preventDefault();
-  e.dataTransfer.dropEffect = 'move';
-  document.querySelectorAll('.sched-card.drag-over').forEach(el => el.classList.remove('drag-over'));
-  e.currentTarget.classList.add('drag-over');
-}
-
-function onDrop(e, target) {
-  e.preventDefault();
-  const targetCity = target.dataset.city;
-  const targetIdx  = parseInt(target.dataset.idx);
-  if (dragSrcCity !== targetCity || dragSrcIdx === targetIdx) return;
-  const arr = itinState[targetCity];
-  /* Remove src, insert at target position */
-  const [moved] = arr.splice(dragSrcIdx, 1);
-  arr.splice(targetIdx, 0, moved);
-  renderItinerary(targetCity);
-}
-
-function onDragEnd(e) {
-  document.querySelectorAll('.sched-card').forEach(el => {
-    el.classList.remove('dragging', 'drag-over');
-  });
-  dragSrcCity = null;
-  dragSrcIdx  = null;
-}
-
-/* ── CUSTOM PLACE HANDLING ──
-   Users can type any place not in our list. Custom places are stored in
-   customPlaces[city] as objects with name, type:'custom', emoji:'📍', img:''.
-   They appear as green tiles in the place grid and are treated exactly like
-   built-in places for selection, realism check, and itinerary building.
-*/
-const customPlaces = { london: [], ams: [], cdg: [], fco: [] };
-
-function addCustomPlace(city) {
-  const input = document.getElementById('custom-input-' + city);
-  const name  = (input.value || '').trim();
-  if (!name) return;
-  /* Prevent duplicates */
-  const already = SIGHTS[city].some(p => p.name.toLowerCase() === name.toLowerCase())
-                  || customPlaces[city].some(p => p.name.toLowerCase() === name.toLowerCase());
-  if (already) {
-    input.value = '';
-    input.placeholder = 'Already on the list!';
-    setTimeout(() => { input.placeholder = 'e.g. Kew Gardens, Oxford Street…'; }, 2000);
-    return;
-  }
-  const place = { name, type: 'custom', emoji: '📍', img: '', desc: 'Your own addition.' };
-  customPlaces[city].push(place);
-  chosen[city].add(name);
-  input.value = '';
-  renderCustomList(city);
-  /* Re-render grid to show the new tile (appended at bottom) */
-  initGrid(city);
-  checkRealism(city);
-  document.getElementById('itin-' + city).innerHTML = '';
-}
-
-function removeCustomPlace(city, name) {
-  customPlaces[city] = customPlaces[city].filter(p => p.name !== name);
-  chosen[city].delete(name);
-  renderCustomList(city);
-  initGrid(city);
-  checkRealism(city);
-  document.getElementById('itin-' + city).innerHTML = '';
-}
-
-function renderCustomList(city) {
-  const list = document.getElementById('custom-list-' + city);
-  if (!list) return;
-  if (!customPlaces[city].length) { list.innerHTML = ''; return; }
-  list.innerHTML = customPlaces[city].map(p => `
-    <div class="custom-tile">
-      <span>📍</span>
-      <span class="custom-tile-name">${p.name}</span>
-      <button class="custom-tile-remove" onclick="removeCustomPlace('${city}','${p.name.replace(/'/g,"\'")}')">×</button>
-    </div>`).join('');
-}
-
-/* ═══════════════════════════════════════════════════════
-   NEIGHBOURHOOD DATA
-   Each place belongs to a neighbourhood string shown on
-   its tile so users can cluster nearby attractions.
-═══════════════════════════════════════════════════════ */
-const HOOD = {
-  // London
-  'Tower of London':            'South Bank / Tower',
-  'Buckingham Palace':          'Westminster',
-  'Tower Bridge':               'South Bank / Tower',
-  'Big Ben & Parliament':       'Westminster',
-  "St. Paul's Cathedral":       'City of London',
-  'The British Museum':         'Bloomsbury',
-  'Westminster Abbey':          'Westminster',
-  'Churchill War Rooms':        'Westminster',
-  'National Portrait Gallery':  'Trafalgar / Covent Garden',
-  'Borough Market':             'Southwark',
-  'Covent Garden':              'Trafalgar / Covent Garden',
-  'Brick Lane':                 'East London',
-  'Portobello Road Market':     'Notting Hill',
-  'Hyde Park':                  'Kensington',
-  'Greenwich Park':             'Greenwich',
-  'River Thames Cruise':        'South Bank',
-  'London Eye':                 'South Bank',
-  'Natural History Museum':     'Kensington',
-  'Science Museum':             'Kensington',
-  "Platform 9¾ (King's Cross)": 'King\'s Cross',
-  'Warner Bros. Studio Tour':   'Watford (day trip)',
-  'Leadenhall Market':          'City of London',
-  'Christ Church, Oxford':      'Oxford (day trip)',
-  'The Elephant House, Edinburgh': 'Edinburgh (day trip)',
-  // Amsterdam
-  'Rijksmuseum':                'Museum Quarter',
-  'Van Gogh Museum':            'Museum Quarter',
-  'Royal Palace (Dam Square)':  'Dam Square',
-  'Westerkerk Tower':           'Jordaan',
-  'Anne Frank House':           'Jordaan',
-  'Jewish Historical Museum':   'Jewish Quarter',
-  'Stedelijk Museum':           'Museum Quarter',
-  'Canal Ring Cruise':          'City Centre',
-  'Jordaan Neighbourhood':      'Jordaan',
-  'Vondelpark':                 'Museum Quarter',
-  'Albert Cuyp Market':         'De Pijp',
-  'Foodhallen':                 'West Amsterdam',
-  'Dutch Cheese Tasting':       'City Centre',
-  'Heineken Experience':        'De Pijp',
-  'NEMO Science Museum':        'Waterfront',
-  'City Cycling Tour':          'City-wide',
-  // Paris
-  'Eiffel Tower':               'Champ de Mars',
-  'The Louvre':                 'Louvre / Palais Royal',
-  'Notre-Dame Cathedral':       'Île de la Cité',
-  'Arc de Triomphe':            'Champs-Élysées',
-  'Sacré-Cœur Basilica':       'Montmartre',
-  'Palace of Versailles':       'Versailles (day trip)',
-  "Musée d'Orsay":             'Saint-Germain',
-  'Sainte-Chapelle':            'Île de la Cité',
-  'Catacombs of Paris':         'Montparnasse',
-  'Montmartre Quarter':         'Montmartre',
-  'Seine River Cruise':         'City Centre',
-  'Luxembourg Gardens':         'Saint-Germain',
-  'Champs-Élysées':            'Champs-Élysées',
-  'Le Marais':                  'Le Marais',
-  'French Patisserie Walk':     'Saint-Germain',
-  'Café de Flore':              'Saint-Germain',
-  'Centre Pompidou':            'Le Marais',
-  'Disneyland Paris':           'Marne-la-Vallée (day trip)',
-  // Rome
-  'Colosseum':                  'Ancient Rome',
-  'Vatican Museums':            'Vatican',
-  "St. Peter's Basilica":       'Vatican',
-  'Trevi Fountain':             'Trevi / Quirinale',
-  "Castel Sant'Angelo":         'Prati',
-  'Pantheon':                   'Pantheon / Navona',
-  'Roman Forum':                'Ancient Rome',
-  'Palatine Hill':              'Ancient Rome',
-  'Borghese Gallery':           'Villa Borghese',
-  'Day Trip: Pompeii':          'Pompeii (day trip)',
-  'Piazza Navona':              'Pantheon / Navona',
-  'Pincio Hill Terrace':        'Villa Borghese',
-  'Trastevere Walk':            'Trastevere',
-  "Campo de' Fiori Market":     'Campo de\' Fiori',
-  'Testaccio Market':           'Testaccio',
-  'Trastevere Dining':          'Trastevere',
-  'Gelato Tour':                'City-wide',
-  'Bioparco Rome Zoo':          'Villa Borghese',
-  'Piazza Venezia':             'Piazza Venezia',
-};
-
-/* ═══════════════════════════════════════════════════════
-   APPROXIMATE WALKING TIMES (minutes) between pairs of
-   places within the same city. Symmetric — stored once.
-   Key format: "PlaceA|||PlaceB" (alphabetical order).
-═══════════════════════════════════════════════════════ */
-function walkKey(a, b) {
-  return [a, b].sort().join('|||');
-}
-const WALK = {
-  // London
-  [walkKey('Tower of London','Tower Bridge')]:              '5 min walk',
-  [walkKey('Tower Bridge',"St. Paul's Cathedral")]:         '20 min walk',
-  [walkKey("St. Paul's Cathedral",'The British Museum')]:   '20 min walk',
-  [walkKey('The British Museum','Covent Garden')]:           '8 min walk',
-  [walkKey('Covent Garden','National Portrait Gallery')]:    '5 min walk',
-  [walkKey('Westminster Abbey','Big Ben & Parliament')]:     '3 min walk',
-  [walkKey('Big Ben & Parliament','Buckingham Palace')]:     '12 min walk',
-  [walkKey('Buckingham Palace','Hyde Park')]:                '5 min walk',
-  [walkKey('Hyde Park','Natural History Museum')]:           '12 min walk',
-  [walkKey('Natural History Museum','Science Museum')]:      '3 min walk',
-  [walkKey('Borough Market','London Eye')]:                  '15 min walk',
-  [walkKey('London Eye','Westminster Abbey')]:               '12 min walk',
-  // Amsterdam
-  [walkKey('Rijksmuseum','Van Gogh Museum')]:                '3 min walk',
-  [walkKey('Van Gogh Museum','Vondelpark')]:                 '5 min walk',
-  [walkKey('Rijksmuseum','Stedelijk Museum')]:               '3 min walk',
-  [walkKey('Royal Palace (Dam Square)','Westerkerk Tower')]: '10 min walk',
-  [walkKey('Westerkerk Tower','Anne Frank House')]:          '3 min walk',
-  [walkKey('Albert Cuyp Market','Heineken Experience')]:     '8 min walk',
-  [walkKey('NEMO Science Museum','Waterfront')]:             '2 min walk',
-  // Paris
-  [walkKey('Eiffel Tower',"Musée d'Orsay")]:                '20 min walk',
-  [walkKey("Musée d'Orsay",'The Louvre')]:                  '15 min walk',
-  [walkKey('The Louvre','Sainte-Chapelle')]:                 '15 min walk',
-  [walkKey('Sainte-Chapelle','Notre-Dame Cathedral')]:       '5 min walk',
-  [walkKey('Notre-Dame Cathedral','Centre Pompidou')]:       '15 min walk',
-  [walkKey('Centre Pompidou','Le Marais')]:                  '5 min walk',
-  [walkKey('Arc de Triomphe','Champs-Élysées')]:            '2 min walk',
-  [walkKey('Sacré-Cœur Basilica','Montmartre Quarter')]:    '3 min walk',
-  [walkKey('Luxembourg Gardens','Café de Flore')]:           '3 min walk',
-  [walkKey('Luxembourg Gardens','French Patisserie Walk')]:  '5 min walk',
-  // Rome
-  [walkKey('Colosseum','Roman Forum')]:                      '5 min walk',
-  [walkKey('Roman Forum','Palatine Hill')]:                  '5 min walk',
-  [walkKey('Colosseum','Palatine Hill')]:                    '8 min walk',
-  [walkKey('Trevi Fountain','Pantheon')]:                    '10 min walk',
-  [walkKey('Pantheon','Piazza Navona')]:                     '5 min walk',
-  [walkKey("Campo de' Fiori Market",'Piazza Navona')]:       '5 min walk',
-  [walkKey("Castel Sant'Angelo","St. Peter's Basilica")]:    '15 min walk',
-  [walkKey("St. Peter's Basilica",'Vatican Museums')]:       '5 min walk',
-  [walkKey('Borghese Gallery','Pincio Hill Terrace')]:       '10 min walk',
-  [walkKey('Borghese Gallery','Bioparco Rome Zoo')]:         '5 min walk',
-  [walkKey('Trastevere Walk','Trastevere Dining')]:          '2 min walk',
-  [walkKey('Testaccio Market',"Campo de' Fiori Market")]:    '12 min walk',
-};
-
-function getWalk(a, b) {
-  return WALK[walkKey(a, b)] || null;
-}
-
-/* ═══════════════════════════════════════════════════════
-   localStorage AUTO-SAVE / RESTORE
-   Saves picks + chosen + customPlaces every time state changes.
-   Restores on page load automatically.
-═══════════════════════════════════════════════════════ */
-const LS_KEY = 'tripPlanner_v1';
-
-function saveState() {
-  try {
-    const state = {
-      picks,
-      chosen: {
-        london: [...chosen.london],
-        ams:    [...chosen.ams],
-        cdg:    [...chosen.cdg],
-        fco:    [...chosen.fco],
-      },
-      customPlaces,
-    };
-    localStorage.setItem(LS_KEY, JSON.stringify(state));
-  } catch(e) { /* private browsing — fail silently */ }
-}
-
-function restoreState() {
-  try {
-    const raw = localStorage.getItem(LS_KEY);
-    if (!raw) return;
-    const state = JSON.parse(raw);
-
-    /* Restore picks */
-    ['london','ams','cdg','fco'].forEach(city => {
-      if (state.picks && state.picks[city]) {
-        picks[city] = state.picks[city];
-        /* Highlight the correct day button */
-        const btns = document.querySelectorAll(`#${city}-picker .day-btn`);
-        btns.forEach(b => { if (parseInt(b.textContent) === picks[city]) b.classList.add('selected'); });
-        recalc();
-        showSightseeing(city);
+/* ═══════════════════════════════════════════════════════════════
+   EMAIL SINGLE CITY ITINERARY
+═══════════════════════════════════════════════════════════════ */
+function emailItinerary(city){
+  const cityLabel={london:'London',ams:'Amsterdam',cdg:'Paris',fco:'Rome'}[city];
+  const nameMap={};[...SIGHTS[city],...customPlaces[city]].forEach(p=>nameMap[p.name]=p);
+  const pool=itinState[city].map(n=>nameMap[n]).filter(Boolean);
+  const days=picks[city]||1;
+  const perDay=Math.floor(pool.length/days),extra=pool.length%days;
+  const lines=[`YOUR ${cityLabel.toUpperCase()} ITINERARY`,`${'─'.repeat(40)}`,''];
+  let idx=0;
+  for(let d=0;d<days;d++){
+    const count=perDay+(d<extra?1:0);if(count===0)break;
+    const slice=pool.slice(idx,idx+count);idx+=count;
+    lines.push(`DAY ${d+1} — ${cityLabel}`,'');
+    slice.forEach((p,i)=>{
+      if(i>0){
+        const t=getTravel(slice[i-1].name,p.name);
+        if(t){
+          lines.push(`  ↓ Travel to next stop:`);
+          if(t.walk)lines.push(`     🚶 Walking: ${t.walk} min`);
+          if(t.taxi)lines.push(`     🚕 Taxi/Car: ${t.taxi} min`);
+          if(t.transit)lines.push(`     🚇 Public transport: ${t.transit} min`);
+          if(t.note)lines.push(`     Note: ${t.note}`);
+        } else {lines.push(`  ↓ Check Google Maps for travel time`);}
+        lines.push('');
       }
+      lines.push(`  ${i+1}. ${p.name}  [${p.hood||''}]`);
+      if(p.visit)lines.push(`     Typical visit: ${p.visit}`);
+      if(p.desc)lines.push(`     ${p.desc}`);
+      lines.push('');
     });
-
-    /* Restore chosen sets */
-    if (state.chosen) {
-      ['london','ams','cdg','fco'].forEach(city => {
-        if (Array.isArray(state.chosen[city])) {
-          state.chosen[city].forEach(name => chosen[city].add(name));
-        }
-      });
-    }
-
-    /* Restore custom places */
-    if (state.customPlaces) {
-      ['london','ams','cdg','fco'].forEach(city => {
-        if (Array.isArray(state.customPlaces[city])) {
-          customPlaces[city] = state.customPlaces[city];
-          state.customPlaces[city].forEach(p => chosen[city].add(p.name));
-          renderCustomList(city);
-        }
-      });
-    }
-
-    /* Refresh grids with restored selections */
-    ['london','ams','cdg','fco'].forEach(city => {
-      if (picks[city]) {
-        initGrid(city);
-        updateCount(city);
-        checkRealism(city);
-      }
-    });
-  } catch(e) { /* corrupt data — start fresh */ }
-}
-
-/* Call saveState whenever state changes — patch into existing functions */
-const _origToggle = togglePlace;
-togglePlace = function(city, name, tile) {
-  _origToggle(city, name, tile);
-  saveState();
-};
-
-const _origPick = pick;
-pick = function(city, days, btn) {
-  _origPick(city, days, btn);
-  saveState();
-};
-
-/* ═══════════════════════════════════════════════════════
-   SEND SELECTIONS — Netlify Forms + mailto
-═══════════════════════════════════════════════════════ */
-
-/* Show the send card once all four cities have at least 1 selection */
-function maybeShowSendCard() {
-  const anySelected = ['london','ams','cdg','fco'].some(c => chosen[c].size > 0);
-  document.getElementById('send-card').classList.toggle('visible', anySelected);
-}
-
-function buildSelectionText(name) {
-  const { london, ams, cdg, fco } = picks;
-  const lines = [];
-  lines.push(`Name: ${name || 'Not provided'}`);
-  lines.push('');
-  lines.push('--- Trip dates ---');
-  if (london) {
-    const lhrArrive = addDays(new Date('2024-11-09'), -london);
-    lines.push(`Depart Atlanta: ${fmt(addDays(lhrArrive, -1))}`);
-    lines.push(`London: ${london} night${london>1?'s':''} (${fmt(lhrArrive)} – Nov 9)`);
+    lines.push('─'.repeat(40),'');
   }
+  const subject=encodeURIComponent(`My ${cityLabel} itinerary`);
+  const body=encodeURIComponent(lines.join('\n'));
+  window.location.href=`mailto:?subject=${subject}&body=${body}`;
+}
+
+/* ═══════════════════════════════════════════════════════════════
+   SEND CARD — Netlify Forms + mailto full trip
+═══════════════════════════════════════════════════════════════ */
+function maybeShowSendCard(){
+  const any=['london','ams','cdg','fco'].some(c=>chosen[c].size>0);
+  document.getElementById('send-card').classList.toggle('visible',any);
+}
+
+function buildFullSelectionText(name){
+  const {london,ams,cdg,fco}=picks;
+  const lines=[`Name: ${name||'Not provided'}`,``,`=== TRIP DATES ===`];
+  if(london){const la=addDays(new Date('2024-11-09'),-london);lines.push(`Depart Atlanta: ${fmt(addDays(la,-1))}`,`London: ${london} nights (${fmt(la)} – Nov 9)`);}
   lines.push(`Hyderabad: 5 nights – Nov 11–16 (fixed)`);
-  if (ams) { const d = addDays(HYD_DEPART, ams); lines.push(`Amsterdam: ${ams} night${ams>1?'s':''} (Nov 16 – ${fmt(d)})`); }
-  if (cdg && ams) {
-    const pa = addDays(HYD_DEPART, ams);
-    const pd = addDays(pa, cdg);
-    lines.push(`Paris: ${cdg} night${cdg>1?'s':''} (${fmt(pa)} – ${fmt(pd)})`);
-    if (fco) { const rd = addDays(pd, fco); lines.push(`Rome: ${fco} night${fco>1?'s':''} (${fmt(pd)} – ${fmt(rd)})`); }
-  }
-  lines.push('');
-  lines.push('--- Sightseeing picks ---');
-  ['london','ams','cdg','fco'].forEach(city => {
-    const label = {london:'London',ams:'Amsterdam',cdg:'Paris',fco:'Rome'}[city];
-    const all = [...SIGHTS[city], ...customPlaces[city]].filter(p => chosen[city].has(p.name));
-    if (all.length) lines.push(`${label}: ${all.map(p=>p.name).join(', ')}`);
+  if(ams){const d=addDays(HYD_DEPART,ams);lines.push(`Amsterdam: ${ams} nights (Nov 16 – ${fmt(d)})`);}
+  if(cdg&&ams){const pa=addDays(HYD_DEPART,ams),pd=addDays(pa,cdg);lines.push(`Paris: ${cdg} nights (${fmt(pa)} – ${fmt(pd)})`);if(fco){const rd=addDays(pd,fco);lines.push(`Rome: ${fco} nights (${fmt(pd)} – ${fmt(rd)})`);}}
+  lines.push(``,`=== SIGHTSEEING PICKS ===`);
+  [{key:'london',label:'London'},{key:'ams',label:'Amsterdam'},{key:'cdg',label:'Paris'},{key:'fco',label:'Rome'}].forEach(({key,label})=>{
+    const all=[...SIGHTS[key],...customPlaces[key]].filter(p=>chosen[key].has(p.name));
+    if(all.length){lines.push(`${label}:`);all.forEach(p=>lines.push(`  - ${p.name}${p.visit?' ('+p.visit+')':''}${p.hood?' ['+p.hood+']':''}`));}
   });
   return lines.join('\n');
 }
 
-async function sendSelections() {
-  const name = (document.getElementById('send-name').value || '').trim();
-  const status = document.getElementById('send-status');
-  const text = buildSelectionText(name);
-  status.textContent = 'Sending…';
-  status.className = '';
-
-  try {
-    const formData = new FormData();
-    formData.append('form-name', 'trip-selections');
-    formData.append('name', name);
-    formData.append('days_summary', text.split('--- Sightseeing')[0].trim());
-    formData.append('london_places',    [...chosen.london].join(', '));
-    formData.append('amsterdam_places', [...chosen.ams].join(', '));
-    formData.append('paris_places',     [...chosen.cdg].join(', '));
-    formData.append('rome_places',      [...chosen.fco].join(', '));
-    formData.append('custom_places',    ['london','ams','cdg','fco'].flatMap(c => customPlaces[c].map(p=>p.name)).join(', '));
-
-    const res = await fetch('/', { method: 'POST', body: formData });
-    if (res.ok) {
-      status.textContent = 'Sent! We\'ll be in touch shortly.';
-      status.className = 'send-ok';
-    } else {
-      throw new Error('Network error');
-    }
-  } catch(e) {
-    status.textContent = 'Could not send — please use "Open in mail app" instead.';
-    status.className = 'send-err';
-  }
+async function sendSelections(){
+  const name=(document.getElementById('send-name').value||'').trim();
+  const status=document.getElementById('send-status');
+  const text=buildFullSelectionText(name);
+  status.textContent='Sending…';status.className='';
+  try{
+    const fd=new FormData();
+    fd.append('form-name','trip-selections');fd.append('name',name);
+    fd.append('days_summary',text.split('=== SIGHTSEEING')[0].trim());
+    fd.append('london_places',[...chosen.london].join(', '));
+    fd.append('amsterdam_places',[...chosen.ams].join(', '));
+    fd.append('paris_places',[...chosen.cdg].join(', '));
+    fd.append('rome_places',[...chosen.fco].join(', '));
+    fd.append('custom_places',['london','ams','cdg','fco'].flatMap(c=>customPlaces[c].map(p=>p.name)).join(', '));
+    const res=await fetch('/',{method:'POST',body:fd});
+    if(res.ok){status.textContent="Sent! We'll be in touch shortly.";status.className='send-ok';}
+    else throw new Error();
+  } catch(e){status.textContent='Could not send automatically — please use "Open in mail app" instead.';status.className='send-err';}
 }
 
-function mailtoSelections() {
-  const name = (document.getElementById('send-name').value || '').trim();
-  const text = buildSelectionText(name);
-  const subject = encodeURIComponent('Trip selections — India & Europe');
-  const body    = encodeURIComponent(text);
-  window.location.href = `mailto:?subject=${subject}&body=${body}`;
+function mailtoSelections(){
+  const name=(document.getElementById('send-name').value||'').trim();
+  const text=buildFullSelectionText(name);
+  window.location.href=`mailto:?subject=${encodeURIComponent('Trip selections — India & Europe')}&body=${encodeURIComponent(text)}`;
 }
 
-/* ═══════════════════════════════════════════════════════
-   PATCH updateCount to also show/hide the send card
-═══════════════════════════════════════════════════════ */
-const _origUpdateCount = updateCount;
-updateCount = function(city) {
-  _origUpdateCount(city);
-  maybeShowSendCard();
-  saveState();
-};
-
-/* ── RESTORE ON LOAD ── */
-document.addEventListener("DOMContentLoaded", restoreState);
+/* ═══════════════════════════════════════════════════════════════
+   localStorage SAVE / RESTORE
+═══════════════════════════════════════════════════════════════ */
+const LS_KEY='tripPlanner_v2';
+function saveState(){
+  try{localStorage.setItem(LS_KEY,JSON.stringify({picks,chosen:{london:[...chosen.london],ams:[...chosen.ams],cdg:[...chosen.cdg],fco:[...chosen.fco]},customPlaces}));}catch(e){}
+}
+function restoreState(){
+  try{
+    const raw=localStorage.getItem(LS_KEY);if(!raw)return;
+    const s=JSON.parse(raw);
+    ['london','ams','cdg','fco'].forEach(city=>{
+      if(s.picks&&s.picks[city]){
+        picks[city]=s.picks[city];
+        document.querySelectorAll(`#${city}-picker .day-btn`).forEach(b=>{if(parseInt(b.textContent)===picks[city])b.classList.add('selected');});
+        recalc();showSightseeing(city);
+      }
+      if(s.chosen&&Array.isArray(s.chosen[city]))s.chosen[city].forEach(n=>chosen[city].add(n));
+      if(s.customPlaces&&Array.isArray(s.customPlaces[city])){customPlaces[city]=s.customPlaces[city];s.customPlaces[city].forEach(p=>chosen[city].add(p.name));renderCustomList(city);}
+      if(picks[city]){initGrid(city);updateCount(city);checkRealism(city);}
+    });
+  }catch(e){}
+}
+document.addEventListener('DOMContentLoaded',restoreState);
 </script>
 </body>
 </html>
